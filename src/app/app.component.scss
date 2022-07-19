@@ -8,6 +8,15 @@ app-bloc {
   margin: 15px;
 }
 
+input {
+  font-size: x-large;
+}
+
+.input-form {
+  max-width:500px;
+  width:80%;
+}
+
 .flex-container {
   display: flex;
   flex-direction: row;
@@ -16,6 +25,14 @@ app-bloc {
 
 .flex-item {
   flex: 50%;
+}
+
+button {
+  font-size: xx-large;
+}
+
+li {
+  margin-top:15px;
 }
 
 

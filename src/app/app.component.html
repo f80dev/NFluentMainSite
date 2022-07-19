@@ -11,22 +11,21 @@
 </mat-toolbar>
 
 
-
 <div class="flex-container">
   <div class="flex-item">
-    <div class="rounds-logo">
+    <div class="rounds-logo" (mouseenter)="init()">
       <div class="small-round"></div>
       <div class="medium-round"></div>
       <div class="large-round"></div>
     </div>
   </div>
   <div class="flex-item" style="text-align: right;margin-right:10rem;">
-    <div class="mat-display-4" style="display: inline-block;  margin-top: 3rem;position: relative;">
+    <div class="mat-display-4" style="display: inline-block;  margin-top: 10rem;position: relative;">
       The NFT agency dedicated to
       Non-Fungible Tokens.
         <div style="position: absolute;display:block;height:14px;right:0px;bottom:0px;width:80%;z-index: -1;background-color: #00e726;"></div>
     </div>
-    <div class="mat-display-1">
+    <div class="mat-headline" style="margin-top: 3rem">
       From design to implementation, we bring your NFT projects to life.<br>
       We create, distribute, store, secure and track your digital assets.
     </div>
@@ -186,6 +185,39 @@
 
   </app-section>
 
+
+  <app-section title="What are the services offered by Nfluent ?" id="services">
+    <div class="bloc-container" style="text-align: center;">
+      <app-paragraphe title="Consulting services">
+        <ul>
+          <li>Collecte the business requirements</li>
+          <li>Define the strategy</li>
+          <li>Write the technical specifications for your NFT project.</li>
+        </ul>
+      </app-paragraphe>
+
+      <app-paragraphe title="Smart Contract">
+        NFluenT adapts the Smart contract to your use case.
+      </app-paragraphe>
+
+      <app-paragraphe title="API Connection">
+        <ul>
+          <li>NFluenT connects your front-end application to the blockchain.</li>
+          <li>Promotion of your NFTs.</li>
+        </ul>
+
+
+      </app-paragraphe>
+
+      <app-paragraphe title="Ignition & monitoring">
+        NFluenT brings your NFTs to life and monitors the transactions.
+      </app-paragraphe>
+
+    </div>
+  </app-section>
+
+
+
   <app-section title="The team" id="team">
 
     <app-team firstname="Thomas" lastname="LAFFOURCADE"
@@ -214,11 +246,36 @@
 
 
   <app-section title="Contacts" id="contact">
-    <mat-form-field appearance="legacy" style="width:300px;">
-      <mat-label>Votre nom</mat-label>
+    <mat-form-field appearance="legacy" class="input-form">
+      <mat-label>Name</mat-label>
       <input matInput type="text"  >
-        <mat-icon matSuffix (click)="name=''">cancel</mat-icon>
     </mat-form-field>
+    <br>
+
+    <mat-form-field appearance="legacy" class="input-form">
+      <mat-label>Email</mat-label>
+      <input matInput type="text"  >
+
+    </mat-form-field>
+    <br>
+
+    <mat-form-field appearance="legacy" class="input-form">
+      <mat-label>Subject</mat-label>
+      <input matInput type="text"  >
+
+    </mat-form-field>
+    <br>
+
+    <mat-form-field appearance="legacy" class="input-form">
+      <mat-label>Message</mat-label>
+      <textarea matInput>
+      </textarea>
+    </mat-form-field>
+    <br><br>
+
+    <button mat-button mat-raised-button type="button" color="primary">
+      <mat-icon>send</mat-icon>&nbsp;&nbsp;Send
+    </button>
 
   </app-section>
 

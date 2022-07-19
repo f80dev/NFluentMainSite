@@ -1,9 +1,11 @@
 <div class="divbloc" [style.width]="width" [style.height]="height">
 
-  <img [src]="'/assets/'+icon+'.svg'" [style.width]="w_icon" style="position:absolute;left:10px;top:10px;"><br>
+  <img [src]="'/assets/'+icon+'.svg'" [style.width]="w_icon"
+       style="position:absolute;left:30px;top:30px;">
+  <br>
 
-  <div class="mat-display-2" style="position: absolute;left:10px;top:70px;">{{title}}</div>
-  <div class="mat-title" style="position: absolute;display: block;left:5%;bottom: 5px;width:90%;">
+  <div class="mat-display-1" style="position: absolute;left:30px;top:110px;">{{title}}</div>
+  <div class="mat-subheading-1" style="position: absolute;display: block;left:30px;bottom: 30px;width:90%;">
     <ng-content></ng-content>
   </div>
 

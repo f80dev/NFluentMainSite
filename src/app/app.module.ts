@@ -13,6 +13,7 @@ import { TeamComponent } from './team/team.component';
 import {MatIconModule} from "@angular/material/icon";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
+import { ParagrapheComponent } from './paragraphe/paragraphe.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import {MatInputModule} from "@angular/material/input";
     BlocComponent,
     StepsComponent,
     SectionComponent,
-    TeamComponent
+    TeamComponent,
+    ParagrapheComponent
   ],
   imports: [
     BrowserModule,

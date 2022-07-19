@@ -2,7 +2,7 @@
 
 .flex-container {
     display: flex;
-    margin-top: 1rem;
+    margin-bottom: 40px;
     flex-direction: row;
     align-content: flex-start;
 }
