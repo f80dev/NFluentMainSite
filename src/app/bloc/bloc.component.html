@@ -1,10 +1,10 @@
 <div class="divbloc" [style.width]="width" [style.height]="height">
 
-	<img [src]="'/assets/'+icon+'.svg'" [style.width]="w_icon" style="margin-bottom: 5px;"><br>
+  <img [src]="'/assets/'+icon+'.svg'" [style.width]="w_icon" style="position:absolute;left:10px;top:10px;"><br>
 
-	<div class="mat-display-2" style="display: inline-block">{{title}}</div>
-	<div class="mat-title" style="position: absolute;display: block;left:5%;bottom: 5px;width:90%;">
-		<ng-content></ng-content>
-	</div>
+  <div class="mat-display-2" style="position: absolute;left:10px;top:70px;">{{title}}</div>
+  <div class="mat-title" style="position: absolute;display: block;left:5%;bottom: 5px;width:90%;">
+    <ng-content></ng-content>
+  </div>
 
 </div>

@@ -16,6 +16,7 @@ export class StepsComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    if(screen.width<1000)this.inverse=false;
   }
 
 }

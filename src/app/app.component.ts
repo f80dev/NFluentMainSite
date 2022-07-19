@@ -8,6 +8,7 @@ declare var anime: any;
 })
 export class AppComponent implements AfterViewInit {
   title = 'NFluentWebSite';
+  name:any="";
 
   ngAfterViewInit(): void {
     anime({

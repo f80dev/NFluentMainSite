@@ -11,6 +11,9 @@ import { SectionComponent } from './section/section.component';
 import {MatToolbarModule} from "@angular/material/toolbar";
 import { TeamComponent } from './team/team.component';
 import {MatIconModule} from "@angular/material/icon";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+
 
 @NgModule({
   declarations: [
@@ -20,14 +23,16 @@ import {MatIconModule} from "@angular/material/icon";
     SectionComponent,
     TeamComponent
   ],
-    imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
-        MatButtonModule,
-        MatExpansionModule,
-        MatToolbarModule,
-        MatIconModule,
-    ],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    MatButtonModule,
+    MatExpansionModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })
