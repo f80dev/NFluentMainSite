@@ -1,4 +1,4 @@
-<mat-toolbar style="position:fixed;z-index:100;left:0;top:0;width: 100vw;background: none;">
+<mat-toolbar style="position:fixed;z-index:100;left:0;top:0;width: 100vw;background-color: #EFE5F8;">
   <img src="assets/logo-nfluent-purple.svg" style="height: 40px;">
   <span class="example-spacer"></span>
   <div class="mat-subheading-1" style="font-variant-caps: all-small-caps">
@@ -9,6 +9,12 @@
     <a href="#contact">contact</a>
   </div>
 </mat-toolbar>
+
+
+<div style="background-color: #EFE5F8;width: 100vw;height:800px;position:absolute;display:block;left:0;top:0;z-index:-1;">
+  <div style="background-color: white;width: 100%;height:300px;left:0;bottom:-100px;border-radius:80%;position:absolute;display:block;left:0;">
+  </div>
+</div>
 
 
 <div class="flex-container">
@@ -35,7 +41,7 @@
 
 
 <br><br>
-<div style="padding: 15px;text-align: center;width:100%;">
+<div style="padding: 0;margin:0;text-align: center;width:100vw;overflow: hidden;position:relative;">
   <app-section title="What can you do with NFLUENT ?" id="youcando">
     <div style="align-items: stretch;width:100%;flex-wrap: wrap;justify-content: center;">
       <app-bloc title="innovate" icon="innovate">
@@ -106,17 +112,19 @@
 
 
 
-  <div style="width:100vw;height: fit-content;background: linear-gradient(250.5deg, #64FFA2 1.64%, #7939FF 52.45%, #BD32FF 99.2%);text-align: left;padding-left: 10rem;">
+  <div style="width:100vw;height: fit-content;text-align: left;padding-left: 10rem;" class="backgradient">
 
     <br><br><br>
     <div class="color-accent mat-display-4" style="margin-bottom: 5px;">
+      <br>
       We beleive<br>
       </div>
 
     <div style="color:white" class="mat-display-4">
       in NFTs<br>that make sense
     </div>
-    <br><br>
+
+    <br><br><br><br>
 
   </div>
 
@@ -226,8 +234,7 @@
 
 
 
-  <app-section title="The team" id="team">
-
+  <app-section title="The team" id="team" bgcolor="#EFE5F8">
     <app-team firstname="Thomas" lastname="LAFFOURCADE"
               refs="La Villette, La Tour Eiffel, Bateaux Parisiens, Compagnie des Alpes, Auditoire, FullSIX"
               linkedin="https://www.linkedin.com/in/tlaffourcade/"
@@ -249,11 +256,12 @@
         in project management, IT, programming.
       </div>
     </app-team>
-
   </app-section>
 
 
-  <app-section title="Contacts" id="contact">
+
+
+  <app-section title="Contacts" id="contact" bgcolor="#EFE5F8">
     <mat-form-field appearance="legacy" class="input-form">
       <mat-label>Name</mat-label>
       <input matInput type="text"  >
@@ -286,6 +294,18 @@
     </button>
 
   </app-section>
+
+
+  <div style="width: 100vw;height:700px;position:relative;display:block;left:0;top:0;z-index:-1;overflow:hidden;text-align: center;" class="backgradient">
+    <div style="background-color: #EFE5F8;width: 100%;height:300px;border-radius:50%;top:-150px;position:absolute;display:block;left:0vw;z-index:-10;">
+    </div>
+
+    <img src="./assets/logo-nfluent-white.svg" style="width: 300px;margin-top: 350px;">
+
+    <div style="width: 80%;margin-left: 10%;color: white;position:absolute;bottom: 10px;font-variant-caps: all-petite-caps;" class="mat-subheading-1">
+      © NFluenT 2022. Tous droits réservés   ·   Politique de confidentialité   ·  Conditions générales   ·  Mentions légales
+    </div>
+  </div>
 
 </div>
 

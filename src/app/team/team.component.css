@@ -2,7 +2,8 @@
     width: 200px;
     height: 200px;
     position: relative;
-    /*overflow: hidden;*/
-    /*border-radius: 50%;*/
+    overflow: hidden;
+    border-radius: 50%;
+    background: none;
 }
 

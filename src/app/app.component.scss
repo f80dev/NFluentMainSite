@@ -35,6 +35,9 @@ li {
   margin-top:15px;
 }
 
+.backgradient {
+  background: linear-gradient(250.5deg, #64FFA2 1.64%, #7939FF 52.45%, #BD32FF 99.2%);
+}
 
 /* Responsive layout - makes a one column layout instead of a two-column layout */
 @media (max-width: 800px) {
