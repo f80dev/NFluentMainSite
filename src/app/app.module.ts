@@ -14,6 +14,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import { ParagrapheComponent } from './paragraphe/paragraphe.component';
+import { ReverseblocComponent } from './reversebloc/reversebloc.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { ParagrapheComponent } from './paragraphe/paragraphe.component';
     StepsComponent,
     SectionComponent,
     TeamComponent,
-    ParagrapheComponent
+    ParagrapheComponent,
+    ReverseblocComponent
   ],
   imports: [
     BrowserModule,

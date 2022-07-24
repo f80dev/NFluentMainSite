@@ -14,6 +14,7 @@ export class BlocComponent implements OnInit {
   @Input() minwidth="350px";
   @Input() maxwidth="450px";
   @Input() height="270px";
+  @Input() reverse=false;
 
   constructor() { }
 
