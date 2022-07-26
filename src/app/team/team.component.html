@@ -1,17 +1,17 @@
-<div style="text-align: center;max-width: 600px;display: inline-block;">
+<div style="text-align: center;max-width: 600px;display: inline-block;margin: 50px;">
 
 		<img [src]="photo" class="image-cropper">
 
 		<div class="mat-display-2">
 			{{firstname}}<br>{{lastname}}
 		</div>
-		<div style="height:100px;">
+		<div style="min-height:60px;">
 			<ng-content ></ng-content>
 		</div>
 
 		<hr class="color-accent" style="width: 30%;">
 		<br>
-		<div style="height: 100px;width: 80%;display:inline-block;margin-top: 15px;font-variant-caps: all-petite-caps" class="mat-subheading-2">
+		<div style="height: fit-content;width: 80%;display:inline-block;margin-top: 15px;font-variant-caps: all-petite-caps" class="mat-subheading-2">
 			{{refs}}
 		</div>
 

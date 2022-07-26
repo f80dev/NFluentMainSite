@@ -1,13 +1,28 @@
 <mat-toolbar style="position:fixed;z-index:100;left:0;top:0;width: 100vw;background-color: #EFE5F8;">
   <img src="assets/logo-nfluent-purple.svg" style="height: 40px;">
   <span class="example-spacer"></span>
-  <div class="mat-subheading-1" style="font-variant-caps: all-small-caps">
-    <a href="#youcando">project</a>
-    <a href="#howitwork">vision</a>
-    <a href="#service">service</a>
-    <a href="#team">team</a>
-    <a href="#contact">contact</a>
-  </div>
+
+  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Menu du site">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="open_menu('project')">
+      <span>project</span>
+    </button>
+    <button mat-menu-item (click)="open_menu('vision')">
+      <span>vision</span>
+    </button>
+    <button mat-menu-item (click)="open_menu('service')">
+      <span>service</span>
+    </button>
+    <button mat-menu-item (click)="open_menu('team')">
+      <span>team</span>
+    </button>
+    <button mat-menu-item (click)="open_menu('contact')">
+      <span>contact</span>
+    </button>
+  </mat-menu>
 </mat-toolbar>
 
 
@@ -17,14 +32,8 @@
 </div>
 
 
-<div class="flex-container">
-  <div class="flex-item">
-    <div class="rounds-logo" (mouseenter)="init()">
-      <div class="small-round"></div>
-      <div class="medium-round"></div>
-      <div class="large-round"></div>
-    </div>
-  </div>
+<!-- TODO: introduire un changement de direction sur la largeur avec reverse-->
+<div class="flex-container" >
   <div class="flex-item" style="text-align: right;margin-right:10rem;">
     <div class="mat-display-4" style="display: inline-block;  margin-top: 10rem;position: relative;">
       NFLUENT<br>
@@ -36,6 +45,14 @@
       From design to implementation,<br>
       we bring your NFT projects to life.
       </div>
+  </div>
+
+  <div class="flex-item">
+    <div class="rounds-logo" (mouseenter)="init()">
+      <div class="small-round"></div>
+      <div class="medium-round"></div>
+      <div class="large-round"></div>
+    </div>
   </div>
 </div>
 
@@ -235,6 +252,7 @@
     <app-team firstname="Thomas" lastname="LAFFOURCADE"
               linkedin="https://www.linkedin.com/in/tlaffourcade/"
               photo="assets/persona_Thomas.png">
+
       <div class="mat-subheading-2">
         CEO<br>
         co-founder
@@ -245,6 +263,7 @@
     <app-team firstname="Hervé" lastname="HOAREAU"
               linkedin="https://www.linkedin.com/in/hhoareau/"
               photo="assets/persona_hervé.png">
+
       <div class="mat-subheading-2">
         CTO<br>
         co-founder

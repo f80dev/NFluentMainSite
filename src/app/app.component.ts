@@ -103,4 +103,10 @@ export class AppComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.play();
   }
+
+  open_menu(idsection: string) {
+
+  }
+
+
 }

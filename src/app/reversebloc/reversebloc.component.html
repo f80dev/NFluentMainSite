@@ -1,0 +1,20 @@
+<div class="surbloc" [style.width]="width" [style.height]="height">
+
+
+<div class="flip-card-inner"  >
+  <div class="flip-card-front" >
+    <img [src]="'/assets/'+icon+'.svg'" [style.width]="w_icon"
+         style="position:absolute;left:30px;top:30px;">
+    <br>
+
+    <div class="mat-display-1" style="position: absolute;left:30px;top:110px;">{{title}}</div>
+
+  </div>
+  <div class="flip-card-back">
+    <div class="mat-subheading-2" style="margin: 15px">
+      <ng-content></ng-content>
+    </div>
+
+  </div>
+</div>
+</div>

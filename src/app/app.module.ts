@@ -15,6 +15,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import { ParagrapheComponent } from './paragraphe/paragraphe.component';
 import { ReverseblocComponent } from './reversebloc/reversebloc.component';
+import {MatMenuModule} from "@angular/material/menu";
 
 
 @NgModule({
@@ -27,16 +28,17 @@ import { ReverseblocComponent } from './reversebloc/reversebloc.component';
     ParagrapheComponent,
     ReverseblocComponent
   ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    MatButtonModule,
-    MatExpansionModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatInputModule
-  ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        MatButtonModule,
+        MatExpansionModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatMenuModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

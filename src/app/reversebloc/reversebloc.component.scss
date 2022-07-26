@@ -1,0 +1,58 @@
+@use 'sass:map';
+@use './node_modules/@angular/material' as mat;
+@use '../../nfluent' as nfluent;
+
+$accent-palette: map.get(mat.get-color-config(nfluent.$nfluent-theme), 'accent');
+$primary-palette: map.get(mat.get-color-config(nfluent.$nfluent-theme), 'primary');
+$card-color: white;
+
+.surbloc {
+  position: relative;
+  display: inline-flex;
+  background-color: white;
+
+  margin: 20px;
+  max-width: 450px;
+  min-width: 300px;
+  max-height: 30vh;
+  text-align: left;
+  color: mat.get-color-from-palette($primary-palette, 700);
+}
+
+.flip-card-inner {
+  height: 100%;
+  width: 100%;
+  border:solid 3px #AAF6A1;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+
+.surbloc:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 80%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+
+.flip-card-front {
+  background-color: $card-color;
+  overflow: hidden;
+}
+
+
+.flip-card-back {
+  background-color: $card-color;
+  position: relative;
+
+  width: 100%;
+  height: 80%;
+  transform: rotateY(180deg);
+}
