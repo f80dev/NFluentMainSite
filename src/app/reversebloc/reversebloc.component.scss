@@ -23,7 +23,9 @@ $card-color: white;
   height: 100%;
   width: 100%;
   border:solid 3px #AAF6A1;
-  transition: transform 0.6s;
+  transition: transform 1s;
+  transition-delay: 0.1s;
+  transition-timing-function: ease-out;
   transform-style: preserve-3d;
 }
 
@@ -55,4 +57,5 @@ $card-color: white;
   width: 100%;
   height: 80%;
   transform: rotateY(180deg);
+
 }
