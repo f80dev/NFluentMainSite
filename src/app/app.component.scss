@@ -37,15 +37,6 @@ li {
   background: linear-gradient(250.5deg, #64FFA2 1.64%, #7939FF 52.45%, #BD32FF 99.2%);
 }
 
-/* Responsive layout - makes a one column layout instead of a two-column layout */
-@media (max-width: 800px) {
-  .flex-container {
-    flex-direction: column;
-  }
-  .flex-item {
-    flex: 95%;
-  }
-}
 
 
 
@@ -102,9 +93,19 @@ a {
 .orientation_logo {
   flex-direction: row;
 }
+
 @media(max-width: 600px) {
+
+  .flex-container {
+    flex-direction: column;
+  }
+
+  .flex-item {
+    flex: 95%;
+  }
+
   .orientation_logo {
     flex-direction: column-reverse;
-    margin-top: 50px;
+    padding-top: 150px;
   }
 }

@@ -6,7 +6,7 @@
     <mat-icon>more_vert</mat-icon>
   </button>
 
-  <mat-menu #menu="matMenu">
+  <mat-menu #menu="matMenu" class="mat-headline">
     <button mat-menu-item (click)="open_menu('project')">
       <span>project</span>
     </button>
@@ -31,13 +31,12 @@
 <!-- TODO: introduire un changement de direction sur la largeur avec reverse-->
 <div class="flex-container orientation_logo" style="height: 600px;background-color: #EFE5F8">
   <div class="flex-item" style="text-align: right;margin-right:10rem;">
-    <div class="mat-display-4" style="display: inline-block;  margin-top: 10rem;position: relative;">
+    <div class="mat-display-3" style="display: inline-block;  margin-top: 10rem;position: relative;">
       NFLUENT<br>
       The agency dedicated to<br>
       non-fungible tokens.
       <div class="greenline"></div>
     </div>
-
 
     <div class="mat-headline" style="margin-top: 3rem">
       From design to implementation,<br>
@@ -61,7 +60,7 @@
 
 <br><br>
 <div style="padding: 0;margin:0;text-align: center;width:100vw;overflow: hidden;position:relative;">
-  <app-section title="What can you do with NFLUENT ?" id="youcando">
+  <app-section title="What can you do with NFLUENT?" id="youcando">
     <div style="align-items: stretch;width:100%;flex-wrap: wrap;justify-content: center;">
       <app-bloc title="innovate" icon="innovate">
         use NFT technology to
@@ -98,7 +97,7 @@
 
 
 
-  <app-section title="How it works ?" id="howitwork">
+  <app-section title="How does it work?" id="howitwork">
 
     <app-steps step="01"
                icon="study"
@@ -136,7 +135,7 @@
     <br><br><br>
     <div class="color-accent mat-display-4" style="margin-bottom: 5px;">
       <br>
-      We beleive<br>
+      We believe<br>
       </div>
 
     <div style="color:white" class="mat-display-4">
@@ -152,14 +151,10 @@
 
 
 
-  <app-section title="The extented NFT" id="service">
-    <div class="mat-title">
-      NFluenT is implementing innovative customized functionalities
-      on basic NFTs to create X-NFTs.
-    </div>
+  <app-section title="The extented NFT" id="service"
+               subtitle="NFluenT is implementing innovative customized functionalities on basic NFTs to create X-NFTs.">
 
     <div class="bloc-container">
-
       <app-reversebloc title="Core attributes" icon="innovate">
         Name and visuals<br>
         Scarcity, price<br>
@@ -215,7 +210,7 @@
   </app-section>
 
 
-  <app-section title="What are the services offered by Nfluent ?" id="services">
+  <app-section title="What are the services offered by Nfluent?" id="services">
     <div class="bloc-container" style="text-align: center;">
       <app-paragraphe title="Consulting services">
         <ul>

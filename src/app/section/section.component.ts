@@ -7,6 +7,7 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class SectionComponent implements OnInit {
   @Input() title: any;
+  @Input() subtitle: any;
   @Input() bgcolor="white";
 
   constructor() { }

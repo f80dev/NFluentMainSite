@@ -1,7 +1,11 @@
 <div class="app-section" [style.background-color]="bgcolor">
-	<div class="mat-display-3" style="display: inline-block;position:relative;width:80%;">
+	<div class="mat-display-3" style="display: inline-block;position:relative;width:fit-content;max-width: 80%;">
 		  {{title}}
     <div class="greenline"></div>
+  </div>
+
+  <div *ngIf="subtitle?.length>0" class="mat-subheading-2" style="margin-top: -20px;width: 80%;text-align: center;display: inline-block;">
+		  {{subtitle}}
   </div>
 
   <br><br>
