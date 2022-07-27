@@ -2,16 +2,6 @@
 @use './node_modules/@angular/material' as mat;
 @use '../nfluent' as nfluent;
 
-.greenline {
-  position: absolute;
-  display: block;
-  right: 0px;
-  bottom: 0px;
-  width: 80%;
-  height: 14px;
-  z-index: -1;
-  background-color: #00e726 !important;
-}
 
 app-bloc {
   margin: 15px;
