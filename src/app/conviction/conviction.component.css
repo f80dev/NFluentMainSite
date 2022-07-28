@@ -1,0 +1,8 @@
+.conviction-bloc {
+    display: inline-flex;
+    position: relative;
+    background-color: white;
+    margin: 30px;
+    height: 200px;
+    text-align: center;
+}
