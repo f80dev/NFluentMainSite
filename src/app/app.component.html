@@ -29,19 +29,19 @@
 
 
 <!-- TODO: introduire un changement de direction sur la largeur avec reverse-->
-<div class="flex-container orientation_logo" style="height: 600px;background-color: #EFE5F8">
+<div class="flex-container orientation_logo" style="height: fit-content;background-color: #EFE5F8">
   <div class="flex-item" style="text-align: right;margin-right:10rem;">
-    <div class="mat-display-3" style="display: inline-block;  margin-top: 10rem;position: relative;">
+    <div class="mat-display-4" style="display: inline-block;  margin-top: 10rem;position: relative;width: fit-content;margin-left: 15%;">
       NFLUENT<br>
       The agency dedicated to<br>
       non-fungible tokens.
       <div class="greenline"></div>
     </div>
 
-    <div class="mat-headline" style="margin-top: 3rem">
+    <div class="mat-subheading-1" style="margin-top: 3rem;margin-bottom: 4rem;">
       From design to implementation,<br>
       we bring your NFT projects to life.
-      </div>
+    </div>
   </div>
 
   <div class="flex-item">
@@ -58,8 +58,24 @@
 </div>
 
 
-<br><br>
+
+
 <div style="padding: 0;margin:0;text-align: center;width:100vw;overflow: hidden;position:relative;">
+
+  <app-section title="Convictions" id="conviction" subtitle="We beleive that NFTs should be">
+    <div style="align-items: flex-start;width:100%;flex-wrap: wrap;justify-content: center;flex-direction: row;">
+
+      <app-conviction title="Useful">Bring values that are useful to their owner.</app-conviction>
+      <app-conviction title="Innovative">Reproducing existing features is not an option.</app-conviction>
+      <app-conviction title="Simple">Democratize usage, no need to talk about blockchain/crypto/wallet, an email and a credit card is enough.</app-conviction>
+      <app-conviction title="Beautiful">Offer an aesthetical proposition artistically meaningful and visually unique.</app-conviction>
+      <app-conviction title="Sustainable">Use carbon-neutral blockchain technology.</app-conviction>
+
+
+    </div>
+  </app-section>
+
+
   <app-section title="What can you do with NFLUENT?" id="youcando">
     <div style="align-items: stretch;width:100%;flex-wrap: wrap;justify-content: center;">
       <app-bloc title="innovate" icon="innovate">

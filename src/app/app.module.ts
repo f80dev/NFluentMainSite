@@ -16,6 +16,7 @@ import {MatInputModule} from "@angular/material/input";
 import { ParagrapheComponent } from './paragraphe/paragraphe.component';
 import { ReverseblocComponent } from './reversebloc/reversebloc.component';
 import {MatMenuModule} from "@angular/material/menu";
+import { ConvictionComponent } from './conviction/conviction.component';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import {MatMenuModule} from "@angular/material/menu";
     SectionComponent,
     TeamComponent,
     ParagrapheComponent,
-    ReverseblocComponent
+    ReverseblocComponent,
+    ConvictionComponent
   ],
     imports: [
         BrowserModule,
