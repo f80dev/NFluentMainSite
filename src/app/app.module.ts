@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { AppComponent } from './app.component';
 import {MatButtonModule} from "@angular/material/button";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
@@ -17,18 +16,32 @@ import { ParagrapheComponent } from './paragraphe/paragraphe.component';
 import { ReverseblocComponent } from './reversebloc/reversebloc.component';
 import {MatMenuModule} from "@angular/material/menu";
 import { ConvictionComponent } from './conviction/conviction.component';
+import { StoreComponent } from './store/store.component';
+import {RouterModule, Routes} from "@angular/router";
+import {MainComponent} from "./main/main.component";
+import {AppComponent} from "./app.component";
+
+
+
+
+const routes: Routes = [
+  { path: 'store', component: StoreComponent },
+  { path: '', component: MainComponent ,pathMatch: 'full'}
+]
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    MainComponent,
     BlocComponent,
     StepsComponent,
     SectionComponent,
     TeamComponent,
     ParagrapheComponent,
     ReverseblocComponent,
-    ConvictionComponent
+    ConvictionComponent,
+    StoreComponent
   ],
     imports: [
         BrowserModule,
@@ -39,7 +52,8 @@ import { ConvictionComponent } from './conviction/conviction.component';
         MatIconModule,
         MatFormFieldModule,
         MatInputModule,
-        MatMenuModule
+        MatMenuModule,
+        RouterModule.forRoot(routes)
     ],
   providers: [],
   bootstrap: [AppComponent]
