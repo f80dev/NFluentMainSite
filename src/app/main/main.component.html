@@ -1,0 +1,343 @@
+<mat-toolbar style="position:fixed;z-index:100;left:0;top:0;width: 100vw;background-color: #EFE5F8;">
+  <img src="assets/logo-nfluent-purple.svg" style="height: 40px;">
+  <span class="example-spacer"></span>
+
+  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Menu du site">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+
+  <mat-menu #menu="matMenu" class="mat-headline">
+    <button mat-menu-item (click)="open_menu('project')">
+      <span>project</span>
+    </button>
+    <button mat-menu-item (click)="open_menu('vision')">
+      <span>vision</span>
+    </button>
+    <button mat-menu-item (click)="open_menu('service')">
+      <span>service</span>
+    </button>
+    <button mat-menu-item (click)="open_menu('team')">
+      <span>team</span>
+    </button>
+    <button mat-menu-item (click)="open_menu('contact')">
+      <span>contact</span>
+    </button>
+  </mat-menu>
+</mat-toolbar>
+
+
+
+
+<!-- TODO: introduire un changement de direction sur la largeur avec reverse-->
+<div class="flex-container orientation_logo" style="height: fit-content;background-color: #EFE5F8">
+  <div class="flex-item" style="text-align: right;margin-right:10rem;">
+    <div class="mat-display-4" style="display: inline-block;  margin-top: 10rem;position: relative;width: fit-content;margin-left: 15%;">
+      NFLUENT<br>
+      The agency dedicated to<br>
+      non-fungible tokens.
+      <div class="greenline"></div>
+    </div>
+
+    <div class="mat-subheading-1" style="margin-top: 3rem;margin-bottom: 4rem;">
+      From design to implementation,<br>
+      we bring your NFT projects to life.
+    </div>
+  </div>
+
+  <div class="flex-item">
+    <div class="rounds-logo" (mouseenter)="init()">
+      <div class="small-round"></div>
+      <div class="medium-round"></div>
+      <div class="large-round"></div>
+    </div>
+  </div>
+
+  <div style="background-color: white;width: 100%;height:300px;left:0;bottom:-300px;margin:0;border-radius:80%;position:absolute;display:block;left:0;">
+  </div>
+
+</div>
+
+
+
+
+<div style="padding: 0;margin:0;text-align: center;width:100vw;overflow: hidden;position:relative;">
+
+  <app-section title="Convictions" id="conviction" subtitle="We beleive that NFTs should be">
+    <div style="align-items: flex-start;width:100%;flex-wrap: wrap;justify-content: center;flex-direction: row;">
+
+      <app-conviction title="Useful">Bring values that are useful to their owner.</app-conviction>
+      <app-conviction title="Innovative">Reproducing existing features is not an option.</app-conviction>
+      <app-conviction title="Simple">Democratize usage, no need to talk about blockchain/crypto/wallet, an email and a credit card is enough.</app-conviction>
+      <app-conviction title="Beautiful">Offer an aesthetical proposition artistically meaningful and visually unique.</app-conviction>
+      <app-conviction title="Sustainable">Use carbon-neutral blockchain technology.</app-conviction>
+
+
+    </div>
+  </app-section>
+
+
+  <app-section title="What can you do with NFLUENT?" id="youcando">
+    <div style="align-items: stretch;width:100%;flex-wrap: wrap;justify-content: center;">
+      <app-bloc title="innovate" icon="innovate">
+        use NFT technology to
+        offfer new services,
+        generate new revenues.
+      </app-bloc>
+
+      <app-bloc title="create NFTs" icon="create">
+        mint NFTs containing any digital asset.
+      </app-bloc>
+
+      <app-bloc title="sell NFTs" icon="sell-nft">
+        on webstore/marketplace,
+        or thanks to a distributror.
+      </app-bloc>
+
+      <app-bloc title="regulate NFTs" icon="regulate">
+        secure/control transactions,
+        grant revenues/benefits.
+      </app-bloc>
+
+      <app-bloc title="track NFTs" icon="track">
+        blockchain explorers,
+        analytics web tools.
+      </app-bloc>
+
+      <app-bloc title="promote NFTs" icon="promote">
+        use resellers’ marketplace,
+        awareness on social channels IG, Twtter, Discord.
+      </app-bloc>
+    </div>
+
+  </app-section>
+
+
+
+  <app-section title="How does it work?" id="howitwork">
+
+    <app-steps step="01"
+               icon="study"
+               options="Requirements,Strategy,Technical specifications"
+               title="Preliminary study">
+    </app-steps>
+
+    <app-steps step="02"
+               icon="build"
+               [inverse]="true"
+               options="Core attributes,Smart contract,Mint,webstore/marketplace,API"
+               title="Build">
+    </app-steps>
+
+    <app-steps step="03"
+               icon="sell"
+               w_icon="80%"
+               options="Direct sale,Auction,Secondary market,Price control,Royalties"
+               title="Sell NFTs">
+    </app-steps>
+
+    <app-steps step="04"
+               icon="promote-nft"
+               [inverse]="true"
+               w_icon="60%"
+               options="Raise awareness on social channels (IG Twttr Discord),NFTLaunches,SEO management"
+               title="Promote your NFTs">
+    </app-steps>
+  </app-section>
+
+
+
+  <div style="width:100vw;height: fit-content;text-align: left;padding-left: 10rem;" class="backgradient">
+
+    <br><br><br>
+    <div class="color-accent mat-display-4" style="margin-bottom: 5px;">
+      <br>
+      We believe<br>
+    </div>
+
+    <div style="color:white" class="mat-display-4">
+      in NFTs<br>that make sense
+    </div>
+
+    <br><br><br><br>
+
+  </div>
+
+
+
+
+
+
+  <app-section title="The extented NFT" id="service"
+               subtitle="NFluenT is implementing innovative customized functionalities on basic NFTs to create X-NFTs.">
+
+    <div class="bloc-container">
+      <app-reversebloc title="Core attributes" icon="innovate">
+        Name and visuals<br>
+        Scarcity, price<br>
+        Benefits
+      </app-reversebloc>
+
+      <app-reversebloc title="Resale" icon="create">
+        Resellers authorized/blocked<br>
+        Secondary market control<br>
+        Uninhibiting first-time buyer
+
+      </app-reversebloc>
+
+      <app-reversebloc title="Price control" icon="control">
+        Initial price setup<br>
+        Price cap<br>
+        Resell markup
+      </app-reversebloc>
+
+      <app-reversebloc title="Royalties" icon="royalties">
+        Revenue granted to Creator<br>
+        Revenue granted to Producer<br>
+        Donation to nonprofits
+
+      </app-reversebloc>
+
+      <app-reversebloc title="Auction" icon="auction">
+        Market-defined price<br>
+        Floor price<br>
+        Time limited auction
+      </app-reversebloc>
+
+
+      <app-reversebloc title="Benefits" icon="benefits">
+        Discount on NFTs purchasing<br>
+        IRL benefits (printout, ticketing…)<br>
+        Access to virtual events
+      </app-reversebloc>
+
+      <app-reversebloc title="Governance" icon="governance">
+        DAO<br>
+        Vote<br>
+        Participative decision
+      </app-reversebloc>
+
+      <app-reversebloc title="Certificates" icon="certificates">
+        Digital art property<br>
+        Authenticity certificate<br>
+        Property deed (patent, trademark, phycical asset)
+      </app-reversebloc>
+    </div>
+
+  </app-section>
+
+
+  <app-section title="What are the services offered by Nfluent?" id="services">
+    <div class="bloc-container" style="text-align: center;">
+      <app-paragraphe title="Consulting services">
+        <ul>
+          <li>Collecte the business requirements</li>
+          <li>Define the strategy</li>
+          <li>Write the technical specifications for your NFT project.</li>
+        </ul>
+      </app-paragraphe>
+
+      <app-paragraphe title="Smart Contract">
+        <ul>
+          <li>NFluenT adapts the Smart contract to your use case.</li>
+        </ul>
+
+      </app-paragraphe>
+
+      <app-paragraphe title="API Connection">
+        <ul>
+          <li>NFluenT connects your front-end application to the blockchain.</li>
+          <li>Promotion of your NFTs.</li>
+        </ul>
+      </app-paragraphe>
+
+      <app-paragraphe title="Ignition & monitoring">
+        <ul>
+          <li>NFluenT brings your NFTs to life and monitors the transactions.</li>
+        </ul>
+      </app-paragraphe>
+
+    </div>
+  </app-section>
+
+
+
+  <app-section title="The team" id="team" bgcolor="#EFE5F8">
+    <app-team firstname="Thomas" lastname="LAFFOURCADE"
+              linkedin="https://www.linkedin.com/in/tlaffourcade/"
+              photo="assets/persona_Thomas.png">
+
+      <div class="mat-subheading-2">
+        CEO<br>
+        co-founder
+      </div>
+
+    </app-team>
+
+    <app-team firstname="Hervé" lastname="HOAREAU"
+              linkedin="https://www.linkedin.com/in/hhoareau/"
+              photo="assets/persona_hervé.png">
+
+      <div class="mat-subheading-2">
+        CTO<br>
+        co-founder
+      </div>
+    </app-team>
+  </app-section>
+
+
+
+
+  <app-section title="Contacts" id="contact" bgcolor="#EFE5F8">
+    <mat-form-field appearance="legacy" class="input-form">
+      <mat-label>Name</mat-label>
+      <input matInput type="text"  >
+    </mat-form-field>
+    <br>
+
+    <mat-form-field appearance="legacy" class="input-form">
+      <mat-label>Email</mat-label>
+      <input matInput type="text"  >
+
+    </mat-form-field>
+    <br>
+
+    <mat-form-field appearance="legacy" class="input-form">
+      <mat-label>Subject</mat-label>
+      <input matInput type="text"  >
+
+    </mat-form-field>
+    <br>
+
+    <mat-form-field appearance="legacy" class="input-form">
+      <mat-label>Message</mat-label>
+      <textarea matInput>
+      </textarea>
+    </mat-form-field>
+    <br><br>
+
+    <button mat-button mat-raised-button type="button" color="primary">
+      <mat-icon>send</mat-icon>&nbsp;&nbsp;Send
+    </button>
+
+  </app-section>
+
+
+  <div style="width: 100vw;height:500px;position:relative;display:block;left:0;top:0;z-index:-1;overflow:hidden;text-align: center;" class="backgradient">
+    <div style="background-color: #EFE5F8;width: 100%;height:200px;border-radius:50%;top:-100px;position:absolute;display:block;left:0vw;z-index:-10;">
+    </div>
+
+    <img src="./assets/logo-nfluent-white.svg" style="width: 300px;margin-top: 250px;">
+
+    <div style="width: 80%;margin-left: 10%;color: white;position:absolute;bottom: 10px;font-variant-caps: all-petite-caps;text-align: justify-all"
+         class="mat-subheading-1">
+      <span style="margin: 20px;">© NFluenT 2022. Tous droits réservés</span> ·
+      <a href="./assets/privacy.pdf>" target="_blank" class="mat-subheading-1" style="color: white;margin: 20px;">Politique de confidentialité</a>·
+      <a href="./assets/cg.pdf>" target="_blank" class="mat-subheading-1" style="color: white;margin: 20px;">Conditions générales</a>·
+      <a href="./assets/mention_legale.pdf>" target="_blank" class="mat-subheading-1" style="color: white;margin: 20px;">Mentions légales</a>
+    </div>
+  </div>
+
+</div>
+
+
+
