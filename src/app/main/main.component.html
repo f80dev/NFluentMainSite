@@ -7,20 +7,26 @@
   </button>
 
   <mat-menu #menu="matMenu" class="mat-headline">
-    <button mat-menu-item (click)="open_menu('project')">
-      <span>project</span>
+    <button mat-menu-item [ngxScrollTo]="'convictions'">
+      <span class="menuitem">Convictions</span>
     </button>
-    <button mat-menu-item (click)="open_menu('vision')">
-      <span>vision</span>
+    <button mat-menu-item [ngxScrollTo]="'youcando'">
+      <span class="menuitem">What can you do</span>
     </button>
-    <button mat-menu-item (click)="open_menu('service')">
-      <span>service</span>
+    <button mat-menu-item [ngxScrollTo]="'howitwork'">
+      <span class="menuitem">How it work</span>
     </button>
-    <button mat-menu-item (click)="open_menu('team')">
-      <span>team</span>
+   <button mat-menu-item [ngxScrollTo]="'extendednft'">
+      <span class="menuitem">Extended NFT</span>
     </button>
-    <button mat-menu-item (click)="open_menu('contact')">
-      <span>contact</span>
+    <button mat-menu-item [ngxScrollTo]="'services'">
+      <span class="menuitem">Services</span>
+    </button>
+    <button mat-menu-item [ngxScrollTo]="'team'">
+      <span class="menuitem">The team</span>
+    </button>
+    <button mat-menu-item [ngxScrollTo]="'contact'">
+      <span class="menuitem">contact</span>
     </button>
   </mat-menu>
 </mat-toolbar>
@@ -62,16 +68,13 @@
 
 <div style="padding: 0;margin:0;text-align: center;width:100vw;overflow: hidden;position:relative;">
 
-  <app-section title="Convictions" id="conviction" subtitle="We beleive that NFTs should be">
+  <app-section title="Convictions" id="convictions" subtitle="We beleive that NFTs should be">
     <div style="align-items: flex-start;width:100%;flex-wrap: wrap;justify-content: center;flex-direction: row;">
-
       <app-conviction title="Useful">Bring values that are useful to their owner.</app-conviction>
       <app-conviction title="Innovative">Reproducing existing features is not an option.</app-conviction>
       <app-conviction title="Simple">Democratize usage, no need to talk about blockchain/crypto/wallet, an email and a credit card is enough.</app-conviction>
       <app-conviction title="Beautiful">Offer an aesthetical proposition artistically meaningful and visually unique.</app-conviction>
       <app-conviction title="Sustainable">Use carbon-neutral blockchain technology.</app-conviction>
-
-
     </div>
   </app-section>
 
@@ -167,7 +170,7 @@
 
 
 
-  <app-section title="The extented NFT" id="service"
+  <app-section title="The extented NFT" id="extendednft"
                subtitle="NFluenT is implementing innovative customized functionalities on basic NFTs to create X-NFTs.">
 
     <div class="bloc-container">
@@ -288,6 +291,7 @@
 
 
   <app-section title="Contacts" id="contact" bgcolor="#EFE5F8">
+    <form [formGroup]="checkoutForm" (ngSubmit)="send_message()">
     <mat-form-field appearance="legacy" class="input-form">
       <mat-label>Name</mat-label>
       <input matInput type="text"  >
@@ -309,15 +313,16 @@
     <br>
 
     <mat-form-field appearance="legacy" class="input-form">
-      <mat-label>Message</mat-label>
-      <textarea matInput>
+      <mat-label>Your message</mat-label>
+      <textarea matInput style="font-size: medium">
       </textarea>
     </mat-form-field>
     <br><br>
 
-    <button mat-button mat-raised-button type="button" color="primary">
-      <mat-icon>send</mat-icon>&nbsp;&nbsp;Send
-    </button>
+      <button mat-button mat-raised-button type="submit" color="primary" style="padding: 10px;" (click)="send_message()">
+        <mat-icon>send</mat-icon>&nbsp;&nbsp;Send
+      </button>
+    </form>
 
   </app-section>
 

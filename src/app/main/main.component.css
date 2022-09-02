@@ -11,6 +11,10 @@ input {
   font-size: x-large;
 }
 
+.menuitem {
+  font-size: medium;
+}
+
 .input-form {
   max-width:500px;
   width:80%;

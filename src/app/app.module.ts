@@ -20,6 +20,8 @@ import { StoreComponent } from './store/store.component';
 import {RouterModule, Routes} from "@angular/router";
 import {MainComponent} from "./main/main.component";
 import {AppComponent} from "./app.component";
+import {ScrollToModule} from "@nicky-lenaers/ngx-scroll-to";
+import {ReactiveFormsModule} from "@angular/forms";
 
 
 
@@ -53,7 +55,9 @@ const routes: Routes = [
         MatFormFieldModule,
         MatInputModule,
         MatMenuModule,
-        RouterModule.forRoot(routes)
+        ScrollToModule.forRoot(),
+        RouterModule.forRoot(routes),
+        ReactiveFormsModule
     ],
   providers: [],
   bootstrap: [AppComponent]

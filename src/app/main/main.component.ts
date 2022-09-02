@@ -1,4 +1,6 @@
 import {AfterViewInit, Component, Input} from '@angular/core';
+import {Router} from "@angular/router";
+import {FormBuilder} from "@angular/forms";
 declare var anime: any;
 
 @Component({
@@ -12,6 +14,19 @@ export class MainComponent implements AfterViewInit {
   message: any="";
   subject="";
   email="";
+
+
+  constructor(
+      public router:Router,
+      private formBuilder: FormBuilder
+  ) { }
+
+  checkoutForm = this.formBuilder.group({
+    name: '',
+    message: '',
+    subject:'',
+    email:''
+  });
 
   init(){
     anime({
@@ -105,8 +120,11 @@ export class MainComponent implements AfterViewInit {
   }
 
   open_menu(idsection: string) {
-
+    this.router.navigate(["/main"],{fragment: idsection});
   }
 
 
+  send_message() {
+
+  }
 }

@@ -25,7 +25,7 @@ $primary-palette: map.get(mat.get-color-config(nfluent.$nfluent-theme), 'primary
     max-height: 30vh;
     text-align: left;
     color: mat.get-color-from-palette($primary-palette, 700);
-  box-shadow: 4px 4px 44px 0px mat.get-color-from-palette($accent-palette, 200);
+    box-shadow: 4px 4px 44px 0px mat.get-color-from-palette($accent-palette, 200);
 }
 
 .divbloc:hover {

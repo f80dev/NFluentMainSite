@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-section',
@@ -10,7 +11,11 @@ export class SectionComponent implements OnInit {
   @Input() subtitle: any;
   @Input() bgcolor="white";
 
-  constructor() { }
+
+
+  constructor(
+
+  ) { }
 
   ngOnInit(): void {
   }
