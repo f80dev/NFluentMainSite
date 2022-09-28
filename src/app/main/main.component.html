@@ -14,7 +14,7 @@
       <span class="menuitem">What can you do</span>
     </button>
     <button mat-menu-item [ngxScrollTo]="'howitwork'">
-      <span class="menuitem">How it work</span>
+      <span class="menuitem">How does it work</span>
     </button>
    <button mat-menu-item [ngxScrollTo]="'extendednft'">
       <span class="menuitem">Extended NFT</span>
@@ -26,7 +26,7 @@
       <span class="menuitem">The team</span>
     </button>
     <button mat-menu-item [ngxScrollTo]="'contact'">
-      <span class="menuitem">contact</span>
+      <span class="menuitem">Contact</span>
     </button>
   </mat-menu>
 </mat-toolbar>
@@ -263,6 +263,13 @@
   </app-section>
 
 
+  <app-section *ngIf="version=='beta'" title="Obtenir des NFTs" id="candymachine">
+    <img src="https://server.f80lab.com:4242/api/qrcode/?code=https%3A%2F%2Ftokenfactory.nfluent.io%2Fcm%3Fparam%3Db3BlPXdlYnNpdGVfbmZsdWVudCZ0b29sYmFyPWZhbHNl&scale=6">
+    <br>
+    <a href="https://tokenfactory.nfluent.io/cm?param=b3BlPXdlYnNpdGVfbmZsdWVudCZ0b29sYmFyPWZhbHNl" target="mint">Ouvrir ce lien</a>
+  </app-section>
+
+
 
   <app-section title="The team" id="team" bgcolor="#EFE5F8">
     <app-team firstname="Thomas" lastname="LAFFOURCADE"
@@ -326,6 +333,7 @@
   </app-section>
 
 
+
   <div style="width: 100vw;height:500px;position:relative;left:0;top:0;z-index:10;text-align: center;" class="backgradient">
     <div style="background-color: #EFE5F8;width: 100%;height:200px;border-radius:50%;top:-100px;position:absolute;left:0;">
     </div>
@@ -336,12 +344,20 @@
          class="mat-subheading-1">
 
       <span style="margin: 20px;">© NFluenT 2022. Tous droits réservés</span> ·
-      <a href="/assets/mention_legale.pdf>"
-         download="mention_legale.pdf"
+      <a href="/mentions_legales.html"
          class="mat-subheading-1"
+         target="_blank"
          style="color: white;margin: 20px;">
         Mentions légales
-      </a>
+      </a> ·
+
+      <span (click)="open_blog()"
+         *ngIf="version=='beta'"
+         class="mat-subheading-1"
+         target="_blank"
+         style="color: white;margin: 20px;cursor: pointer;">
+        NFT news
+      </span>
 
     </div>
   </div>

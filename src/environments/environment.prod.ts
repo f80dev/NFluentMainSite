@@ -1,3 +1,8 @@
 export const environment = {
-  production: true
+  production: true,
+  version: "0.1.35",
+  server:"https://server.f80lab.com:4242",
+  appname:"NFluent Web Site",
+  appli:"https://nfluent.io",
+  wallet:"https://wallet.nfluent.io"
 };

@@ -3,7 +3,12 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  version: "0.1.4",
+  server:"http://127.0.0.1:4242",
+  appname:"NFluent Web Site",
+  appli:"http://127.0.0.1:4200",
+  wallet:"http://127.0.0.1:4200"
 };
 
 /*

@@ -21,45 +21,75 @@ import {RouterModule, Routes} from "@angular/router";
 import {MainComponent} from "./main/main.component";
 import {AppComponent} from "./app.component";
 import {ScrollToModule} from "@nicky-lenaers/ngx-scroll-to";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { TheblogComponent } from './theblog/theblog.component';
+import {AuthentComponent} from "./authent/authent.component";
+import {HttpClientModule} from "@angular/common/http";
+import {GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule} from "angularx-social-login";
+import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
+import { ScannerComponent } from './scanner/scanner.component';
+import {WebcamModule} from "ngx-webcam";
 
 
 
 
 const routes: Routes = [
+    { path: '', component: MainComponent ,pathMatch: 'full'},
   { path: 'store', component: StoreComponent },
-  { path: '', component: MainComponent ,pathMatch: 'full'}
+  { path: 'blog', component: TheblogComponent },
+  { path: 'theblog', component: TheblogComponent },
+
 ]
 
+export const GOOGLE_CLIENT_ID="167299914377-p8vuf2f6npqnigl5kpqrh34cqjd81eko.apps.googleusercontent.com"
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    MainComponent,
-    BlocComponent,
-    StepsComponent,
-    SectionComponent,
-    TeamComponent,
-    ParagrapheComponent,
-    ReverseblocComponent,
-    ConvictionComponent,
-    StoreComponent
-  ],
+    declarations: [
+        AppComponent,
+        MainComponent,
+        BlocComponent,
+        StepsComponent,
+        SectionComponent,
+        TeamComponent,
+        ParagrapheComponent,
+        ReverseblocComponent,
+        ConvictionComponent,
+        StoreComponent,
+        TheblogComponent,
+        AuthentComponent,
+        ScannerComponent
+    ],
     imports: [
         BrowserModule,
+        MatSnackBarModule,
+        HttpClientModule,
+        WebcamModule,
         BrowserAnimationsModule,
         MatButtonModule,
         MatExpansionModule,
         MatToolbarModule,
         MatIconModule,
         MatFormFieldModule,
+        SocialLoginModule,
         MatInputModule,
         MatMenuModule,
         ScrollToModule.forRoot(),
         RouterModule.forRoot(routes),
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        FormsModule
     ],
-  providers: [],
+  providers: [
+      {provide: 'SocialAuthServiceConfig',
+          useValue: {
+              autoLogin: false,
+              providers: [
+                  {
+                      id: GoogleLoginProvider.PROVIDER_ID,
+                      provider: new GoogleLoginProvider(GOOGLE_CLIENT_ID),
+                  }
+              ],
+          } as SocialAuthServiceConfig}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,5 +1,5 @@
-import {AfterViewInit, Component, Input} from '@angular/core';
-import {Router} from "@angular/router";
+import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from "@angular/router";
 import {FormBuilder} from "@angular/forms";
 declare var anime: any;
 
@@ -8,18 +8,25 @@ declare var anime: any;
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
 })
-export class MainComponent implements AfterViewInit {
+export class MainComponent implements AfterViewInit,OnInit {
   title = 'NFluentWebSite';
   name:any="";
   message: any="";
   subject="";
   email="";
-
+  version: string="0.1";
 
   constructor(
       public router:Router,
+      public routes:ActivatedRoute,
       private formBuilder: FormBuilder
   ) { }
+
+  ngOnInit(): void {
+    this.routes.queryParams.subscribe((param)=>{
+      this.version=param["version"];
+    })
+    }
 
   checkoutForm = this.formBuilder.group({
     name: '',
@@ -27,6 +34,8 @@ export class MainComponent implements AfterViewInit {
     subject:'',
     email:''
   });
+
+
 
   init(){
     anime({
@@ -127,4 +136,8 @@ export class MainComponent implements AfterViewInit {
   send_message() {
 
   }
+
+    open_blog() {
+        this.router.navigate(["blog"]);
+    }
 }
