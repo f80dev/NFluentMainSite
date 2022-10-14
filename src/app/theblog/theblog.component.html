@@ -1,17 +1,31 @@
 <div style="width: 100%;text-align: center;">
-	<h2>L'accès au blog est réservé aux possésseurs d'un NFT <a href="http://nfts.nfluent.io">NFluenT</a></h2>
+	<div *ngIf="addr.length==0">
+		<h2>L'accès au blog est réservé aux visiteurs authentifiés</h2>
+		<app-authent
+				[showWebcam]="false"
+				[size]="'600px'"
+				[showDynamicToken]="false"
+				[showNetwork]="false" [showWalletConnect]="false"
+				[showNfluentWalletConnect]="true"
+				style="margin-top: 10px;"
+				explain_message="Veuillez connecter votre wallet pour vérifier le NFT d'accès"
+				[checknft]="nfts_necessaires"
+				network="elrond-devnet"
+				(cancel)="cancel()"
+				(disconnect)="disconnect()"
+				(invalid)="fail()"
+				(authent)="authent($event)"></app-authent>
+		<br><br>
 
-	<app-authent *ngIf="addr.length==0"
-	             [showWebcam]="true"
-	             [showDynamicToken]="true"
-	             [showNetwork]="true"
-	             style="margin-top: 20px;"
-	             explain_message="Veuillez connecter votre wallet pour vérifier le NFT d'accès"
-	             checknft="NFluenT | bayard | Bayard"
-	             network="elrond-devnet"
-	             (cancel)="cancel()"
-	             (disconnect)="disconnect()"
-	             (authent)="authent($event)"></app-authent>
+		<button type="button" mat-raised-button mat-button color="primary"
+		        (click)="open_store()">
+			Obtenir un NFT
+		</button>
+
+
+	</div>
+
+
 
 	<div *ngIf="addr.length>0">
 		<p>theblog works!</p>

@@ -1,5 +1,3 @@
-
-
 import { Injectable } from '@angular/core';
 import {
   clusterApiUrl,
@@ -16,9 +14,10 @@ import {$$, encrypt, words} from "../tools";
 import {environment} from "../environments/environment";
 
 import {retry, timeout} from "rxjs";
-import {Operation} from "../operation";
-import {NFT, SolanaToken, SplTokenInfo} from "../nft";
+import {Collection, Operation} from "../operation";
+import {NFT, SolanaToken, SplTokenInfo, Validator} from "../nft";
 import {Layer} from "../create";
+
 
 
 @Injectable({
@@ -553,10 +552,11 @@ export class NetworkService {
     return this.httpClient.get(url_api);
   }
 
-  mint_for_contest(addr: string,ope:any,miner:string,metadata_storage:string,network:string,nft:NFT){
+  mint_for_contest(addr: string,ope:any,miner:string,metadata_storage:string,network:string,nft:NFT | null=null,nft_id=""){
     let body:any={
       account:addr,
       token: nft,
+      nft_id:nft_id,
       network:network,
       miner:miner,
       ope:ope,
@@ -632,7 +632,7 @@ export class NetworkService {
   }
 
   get_tokens_to_send(ope="",section="dispenser", limit=1000) {
-    return this.httpClient.get(environment.server+"/api/get_tokens_to_send/"+ope+"?limit="+limit+"&section="+section);
+    return this.httpClient.get(environment.server+"/api/get_tokens_to_send/"+ope+"/?limit="+limit+"&section="+section);
   }
 
   get_nfts_from_operation(ope:string){
@@ -641,7 +641,7 @@ export class NetworkService {
 
   transfer_to(mint_addr: string, to_addr: string,owner:string,network="") {
     if(network.length==0)network=this.network;
-    return this.httpClient.get(environment.server+"/api/transfer_to/"+mint_addr+"/"+to_addr+"/"+owner+"?network="+network);
+    return this.httpClient.get(environment.server+"/api/transfer_to/"+encodeURIComponent(mint_addr)+"/"+encodeURIComponent(to_addr)+"/"+encodeURIComponent(owner)+"/?network="+network);
   }
 
   generate_svg(file_content:string,text_to_add:string,layer_name:string) {
@@ -677,17 +677,12 @@ export class NetworkService {
     return this.httpClient.get<string>(environment.server+"/api/check_access_code/"+access_code+"?format=base64");
   }
 
-  get_nft(owner: string, address: string, network: string) {
-    return this.httpClient.get<any>(environment.server+"/api/nft/"+owner+"/"+address+"?network="+network);
+  get_nft(address: string, network: string) {
+    return this.httpClient.get<any>(environment.server+"/api/nfts/"+address+"?network="+network);
   }
 
-  add_user_for_nft(address:string,network:string,operation_id:string,collections:string[]=[]) {
-    return this.httpClient.post(environment.server+"/api/add_user_for_nft/",{
-      address:address,
-      network:network,
-      operation_id:operation_id,
-      collections:collections
-    });
+  add_user_for_nft(body:any) {
+    return this.httpClient.post(environment.server+"/api/add_user_for_nft/",body);
   }
 
   is_beta() {
@@ -712,10 +707,10 @@ export class NetworkService {
   }
 
 
-  mint(token:NFT, miner:string, owner:string,sign=false, platform="nftstorage", network=""){
+  mint(token:NFT, miner:string, owner:string,sign=false, platform="nftstorage", network="",storage_file=""){
     return new Promise((resolve, reject) => {
       this.wait("Minage en cours sur "+network);
-      this.httpClient.post(environment.server+"/api/mint/?keyfile="+miner+"&owner="+owner+"&sign="+sign+"&platform="+platform+"&network="+network,token).subscribe((r)=>{
+      this.httpClient.post(environment.server+"/api/mint/?storage_file="+storage_file+"&keyfile="+miner+"&owner="+owner+"&sign="+sign+"&platform="+platform+"&network="+network,token).subscribe((r)=>{
         this.wait();
         resolve(r);
       },(err)=>{
@@ -733,8 +728,63 @@ export class NetworkService {
     return this.httpClient.post(environment.server+"/api/extract_zip/",file);
   }
 
-  get_collections(owner: string,network="") {
+  get_collections(owners_or_collections: string,network="",detail=false) {
     if(network.length==0)network=this.network;
-    return this.httpClient.get(environment.server+"/api/collections/"+owner+"/?network="+network);
+    return this.httpClient.get<Collection[]>(environment.server+"/api/collections/"+owners_or_collections+"/?network="+network+"&detail="+detail);
+  }
+
+  create_collection(owner: string, new_collection: Collection) {
+    return this.httpClient.post(environment.server+"/api/create_collection/"+owner+"/?network="+this.network,new_collection);
+  }
+
+  get_minerpool() {
+    return this.httpClient.get(environment.server+"/api/minerpool/");
+  }
+
+  run_mintpool(limit: number=3,filter="") {
+    if(filter.length>0)filter="?filter="+filter
+    return this.httpClient.get(environment.server+"/api/async_mint/"+limit+"/"+filter);
+  }
+
+  cancel_mintpool_treatment(id: string) {
+    return this.httpClient.delete(environment.server+"/api/minerpool/"+id+"/");
+  }
+
+  edit_mintpool(ask_id:string,new_value:any) {
+    return this.httpClient.post(environment.server+"/api/minerpool/"+ask_id+"/",new_value);
+  }
+
+  //Utilisé pour afficher la liste des validateurs
+  get_validators() {
+    return this.httpClient.get<Validator[]>(environment.server+"/api/validators/");
+  }
+
+  subscribe_as_validator(ask_for="",network=""){
+    return this.httpClient.post<any>(environment.server+"/api/validators/",{"ask_for":ask_for,network:network});
+  }
+
+  set_operation_for_validator(validator_id: string, operation_id:string) {
+    return this.httpClient.put(environment.server+"/api/validators/"+validator_id+"/",{operation:operation_id});
+  }
+
+  scan_for_access(data:string,address:string) {
+    return this.httpClient.post(environment.server+"/api/scan_for_access/",{validator:decodeURIComponent(data),address:address});
+  }
+
+  _get(url: string, param: string) {
+    return this.httpClient.get<any>(url+"?"+param)
+  }
+
+  remove_validator(id:string) {
+    return this.httpClient.delete(environment.server+"/api/validators/"+id+"/");
+  }
+
+
+  getyaml(filename:string) {
+    return this.httpClient.get<string>(environment.server+"/api/getyaml/"+filename)
+  }
+
+  delete_ask(id: string) {
+    return this.httpClient.delete(environment.server+"/api/minerpool/"+id+"/");
   }
 }

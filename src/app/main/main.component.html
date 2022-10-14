@@ -28,6 +28,13 @@
     <button mat-menu-item [ngxScrollTo]="'contact'">
       <span class="menuitem">Contact</span>
     </button>
+
+    <button mat-menu-item (click)="open_theblog()" *ngIf="version=='beta'">
+      <span class="menuitem">Le blog</span>
+    </button>
+
+
+
   </mat-menu>
 </mat-toolbar>
 
@@ -343,7 +350,7 @@
     <div style="width: 80%;margin-left: 10%;color: white;position:absolute;display:block;bottom: 20px;font-variant-caps: all-petite-caps;"
          class="mat-subheading-1">
 
-      <span style="margin: 20px;">© NFluenT 2022. Tous droits réservés</span> ·
+      <span style="margin: 20px;">© NFluenT 2022. - v{{version}} - Tous droits réservés</span> ·
       <a href="/mentions_legales.html"
          class="mat-subheading-1"
          target="_blank"

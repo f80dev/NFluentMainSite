@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {showMessage} from "../../tools";
+import {getParams, showMessage} from "../../tools";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-theblog',
@@ -10,19 +11,35 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 export class TheblogComponent implements OnInit {
 
   addr="";
+  nfts_necessaires=['NFLUENTA-ccc051','NFLUENTA-4fcc6c'];
 
-  constructor(public toast:MatSnackBar) {
+  constructor(public toast:MatSnackBar,public routes:ActivatedRoute) {
+
   }
 
   ngOnInit(): void {
+    getParams(this.routes).then((params:any)=>{
+      if(params.hasOwnProperty("nfts"))this.nfts_necessaires=params["nfts"].split(",");
+    })
   }
 
-  authent($event: any) {
-    if(!$event.nftcheck){
-      showMessage(this,"Authentification réussie mais vous ne possédez pas les NFT requis");
-    } else {
-      this.addr=$event.addr;
+  authent(evt: {address:string,nftchecked:boolean,strong:boolean}) {
+    if(!evt.strong){
+      this.fail();
+    }else{
+      showMessage(this,"Ouverture du blog");
+      this.addr=evt.address
     }
+  }
+
+  open_store(){
+    open("https://tokenfactory.nfluent.io/cm?param=b3BlPU1haW5fZGV2bmV0JnRvb2xiYXI9ZmFsc2U%3D","store");
+  }
+
+  fail(){
+    showMessage(this,"Authentification réussie mais vous ne possédez pas les NFT requis. En savoir plus ?",4000,()=>{
+      this.open_store();
+    });
   }
 
   cancel() {

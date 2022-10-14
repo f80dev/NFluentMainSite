@@ -98,6 +98,12 @@ function analyse_params(params:string):any {
   return rc;
 }
 
+export function now(){
+  let rc=new Date().getTime();
+  return rc
+}
+
+
 
 export function getParams(routes:ActivatedRoute,local_setting_params="") {
   return new Promise((resolve, reject) => {
@@ -266,7 +272,7 @@ export function base64ToArrayBuffer(base64:string) : ArrayBuffer {
 export function $$(s: string, obj: any= null) {
   console.log("");
   if(environment.production)return;
-  if((s!=null && s.startsWith("!")) || localStorage.getItem("debug")=="1"){
+  if((s!=null && s.startsWith("!"))){
     //debugger
   }
   const lg = new Date().getHours() + ':' + new Date().getMinutes() + ' -> ' + s;
@@ -276,7 +282,7 @@ export function $$(s: string, obj: any= null) {
     obj = '';
   }
   console.log(lg + ' ' + obj);
-  if (lg.indexOf('!!') > -1  || localStorage.getItem("debug")=="2") {alert(lg); }
+  if (lg.indexOf('!!') > -1) {alert(lg); }
 }
 
 export function detect_network(addr:string) {

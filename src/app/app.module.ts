@@ -25,23 +25,25 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { TheblogComponent } from './theblog/theblog.component';
 import {AuthentComponent} from "./authent/authent.component";
 import {HttpClientModule} from "@angular/common/http";
-import {GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule} from "angularx-social-login";
-import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
+import {GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule} from "@abacritt/angularx-social-login";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 import { ScannerComponent } from './scanner/scanner.component';
 import {WebcamModule} from "ngx-webcam";
-
-
-
+import {ClipboardModule} from "@angular/cdk/clipboard";
+import {SocketIoConfig, SocketIoModule} from "ngx-socket-io";
+import {environment} from "../environments/environment";
 
 const routes: Routes = [
     { path: '', component: MainComponent ,pathMatch: 'full'},
   { path: 'store', component: StoreComponent },
   { path: 'blog', component: TheblogComponent },
+    { path: 'leblog', component: TheblogComponent },
   { path: 'theblog', component: TheblogComponent },
 
 ]
 
 export const GOOGLE_CLIENT_ID="167299914377-p8vuf2f6npqnigl5kpqrh34cqjd81eko.apps.googleusercontent.com"
+const config: SocketIoConfig = { url: environment.server, options: {} };
 
 @NgModule({
     declarations: [
@@ -74,9 +76,11 @@ export const GOOGLE_CLIENT_ID="167299914377-p8vuf2f6npqnigl5kpqrh34cqjd81eko.app
         MatInputModule,
         MatMenuModule,
         ScrollToModule.forRoot(),
+        SocketIoModule.forRoot(config),
         RouterModule.forRoot(routes),
         ReactiveFormsModule,
-        FormsModule
+        FormsModule,
+        ClipboardModule
     ],
   providers: [
       {provide: 'SocialAuthServiceConfig',

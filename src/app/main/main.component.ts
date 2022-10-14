@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormBuilder} from "@angular/forms";
+import {environment} from "../../environments/environment";
 declare var anime: any;
 
 @Component({
@@ -14,7 +15,7 @@ export class MainComponent implements AfterViewInit,OnInit {
   message: any="";
   subject="";
   email="";
-  version: string="0.1";
+  version: string="";
 
   constructor(
       public router:Router,
@@ -24,7 +25,11 @@ export class MainComponent implements AfterViewInit,OnInit {
 
   ngOnInit(): void {
     this.routes.queryParams.subscribe((param)=>{
-      this.version=param["version"];
+      if(param.hasOwnProperty("version")){
+        this.version=param["version"];
+      } else {
+        this.version=environment.version;
+      }
     })
     }
 
@@ -140,4 +145,8 @@ export class MainComponent implements AfterViewInit,OnInit {
     open_blog() {
         this.router.navigate(["blog"]);
     }
+
+  open_theblog() {
+    this.router.navigate(["theblog"]);
+  }
 }
