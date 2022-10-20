@@ -569,7 +569,6 @@ export class NetworkService {
 
 
   get_operations(ope="") {
-    if(ope.startsWith("http"))ope="b64:"+btoa(ope);
     return this.httpClient.get<Operation>(environment.server+"/api/operations/"+ope);
   }
 
@@ -786,5 +785,24 @@ export class NetworkService {
 
   delete_ask(id: string) {
     return this.httpClient.delete(environment.server+"/api/minerpool/"+id+"/");
+  }
+
+  open_gallery(id: string | undefined) {
+    let url="";
+    if(this.isElrond() && id){
+      let suffixe="/"+id;
+      if(id.split("-").length==2){
+        suffixe="/nfts/"+id;
+      }else {
+        if (!id.startsWith("erd")) suffixe = "/collections/" + id;
+      }
+      url="https://"+(this.isMain() ? "" : "devnet.")+"inspire.art"+suffixe;
+    }
+
+    open(url,"gallery")
+  }
+
+  access_code_checking(access_code: string, address: string) {
+    return this.httpClient.get(environment.server+"/api/access_code_checking/"+access_code+"/"+address+"/");
   }
 }

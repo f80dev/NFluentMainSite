@@ -4,5 +4,6 @@ export const environment = {
   server:"https://server.f80lab.com:4242",
   appname:"NFluent Web Site",
   appli:"https://nfluent.io",
+  tokenfactory:"https://tokenfactory.nfluent.io",
   wallet:"https://wallet.nfluent.io"
 };

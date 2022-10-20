@@ -4,10 +4,11 @@
 
 export const environment = {
   production: false,
-  version: "0.1.4",
+  version: "beta",
   server:"http://127.0.0.1:4242",
   appname:"NFluent Web Site",
   appli:"http://127.0.0.1:4200",
+  tokenfactory:"http://127.0.0.1:4201",
   wallet:"http://127.0.0.1:4200"
 };
 

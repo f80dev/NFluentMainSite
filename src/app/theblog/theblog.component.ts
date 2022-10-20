@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {getParams, showMessage} from "../../tools";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {ActivatedRoute} from "@angular/router";
+import {environment} from "../../environments/environment";
 
 @Component({
   selector: 'app-theblog',
@@ -33,7 +34,7 @@ export class TheblogComponent implements OnInit {
   }
 
   open_store(){
-    open("https://tokenfactory.nfluent.io/cm?param=b3BlPU1haW5fZGV2bmV0JnRvb2xiYXI9ZmFsc2U%3D","store");
+    open(environment.tokenfactory+"/cm?param=b3BlPU1haW5fZGV2bmV0JnRvb2xiYXI9ZmFsc2U%3D","store");
   }
 
   fail(){
