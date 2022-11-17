@@ -12,13 +12,19 @@
     <input matInput type="text" maxlength="8" [(ngModel)]="access_code" (ngModelChange)="connect('code')">
     <mat-hint>Ce code se trouve dans le mail reçu à la création de votre wallet</mat-hint>
   </mat-form-field>
+
+  <mat-form-field appearance="fill" style="width:300px;font-size: medium;" *ngIf="showPrivateKey">
+    <mat-label>Votre phrase secrete</mat-label>
+    <textarea matInput [(ngModel)]="private_key" (ngModelChange)="connect('private_key')"></textarea>
+    <mat-hint>Cette phrase vous a été envoyé dans le mail de création</mat-hint>
+  </mat-form-field>
   <br>
 
-  <asl-google-signin-button *ngIf="showGoogle" type="standard" size="large"
-                            title="Authentification simplifiée pour les utisateurs de gmail">
-    Via Google
-  </asl-google-signin-button>
-
+  <div style="display: inline-block;" *ngIf="showGoogle">
+    <asl-google-signin-button  type="standard" size="medium" style="display: inline-block;"
+                              title="Authentification simplifiée pour les utisateurs de gmail">
+    </asl-google-signin-button>
+  </div>
 
 <!--  <button type="button"  mat-raised-button mat-button (click)="connect('google')"-->
 <!--          title="Authentification simplifiée pour les utisateurs de gmail"-->
@@ -26,10 +32,9 @@
 <!--    Via Google-->
 <!--  </button>-->
 
-  <span *ngIf="showGoogle && showAddress">
+  <span *ngIf="showGoogle && showAddress" style="margin: 10px;">
     ou
   </span>
-
 
   <mat-form-field appearance="fill" style="min-width: 320px;width:60%;max-width: 500px;" *ngIf="showAddress">
     <mat-label>{{intro_message}}</mat-label>
@@ -38,12 +43,9 @@
     <mat-hint>{{explain_message}}</mat-hint>
   </mat-form-field>
 
-
-
   <br>
-
-
-  <app-scanner *ngIf="showWebcam" [size]="size"
+  <app-scanner *ngIf="showWebcam"
+               [size]="size"
                title="Montrer le QRcode de votre wallet à cette caméra"
                (flash)="on_flash($event)"
                (cancel)="cancel_webcam()"
@@ -65,13 +67,15 @@
   <div style="width: 100%;text-align: center">
     <div style="width: fit-content;display: inline-block" *ngIf="showNfluentWalletConnect">
       <img
+        *ngIf="nfluent_wallet_connect_qrcode.length>0"
         title="Flasher avec votre wallet nfluent"
         [cdkCopyToClipboard]="nfluent_wallet_connect_qrcode"
         [src]="nfluent_wallet_connect_qrcode"
         style="cursor: copy;margin: 10px;" [style.width]="size"><br>
       <small>{{title}}</small>
     </div>
-    <img [src]="qrcode" *ngIf="showWalletConnect"
+
+    <img [src]="qrcode" *ngIf="showWalletConnect && qrcode.length>0"
          title="Flasher avec un wallet compatible wallet connect"
          style="max-width: 150px;margin: 10px;" [style.width]="size">
   </div>
@@ -96,7 +100,7 @@
   </div>
 
 
-  <div id="cmdPanel" style="margin-left:10%;margin-top:5%;width: 80%;text-align: center;" *ngIf="(showAddress || showAccesCode)">
+  <div id="cmdPanel" style="margin-left:10%;margin-top:20px;width: 80%;text-align: center;" *ngIf="(showAddress || showAccesCode)">
     <button type="button" mat-raised-button mat-button
             title="Ne pas se connecter" *ngIf="showCancel"
             (click)="oncancel.emit()">
@@ -109,7 +113,5 @@
             (click)="validate()">
       Valider
     </button>
-
-
   </div>
 </div>

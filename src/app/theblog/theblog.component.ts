@@ -1,8 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import {getParams, showMessage} from "../../tools";
+import {getParams, showError, showMessage} from "../../tools";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {ActivatedRoute} from "@angular/router";
 import {environment} from "../../environments/environment";
+import * as fs from "fs";
+import {parse} from 'yaml'
+import {NetworkService} from "../network.service";
+
+interface Article {
+  title: string
+  visual: string
+  online: boolean
+  text: string
+}
 
 @Component({
   selector: 'app-theblog',
@@ -12,10 +22,13 @@ import {environment} from "../../environments/environment";
 export class TheblogComponent implements OnInit {
 
   addr="";
-  nfts_necessaires=['NFLUENTA-ccc051','NFLUENTA-4fcc6c'];
+  nfts_necessaires=['NFLUENTA-af9ddf'];
+  articles: Article[]=[];
 
-  constructor(public toast:MatSnackBar,public routes:ActivatedRoute) {
-
+  constructor(public toast:MatSnackBar,public routes:ActivatedRoute,public network:NetworkService) {
+    this.network.getyaml("http://./assets/articles.yaml").subscribe((result:any)=>{
+      this.articles=result.articles;
+    },(err)=>{showError(this,err)})
   }
 
   ngOnInit(): void {
@@ -34,7 +47,7 @@ export class TheblogComponent implements OnInit {
   }
 
   open_store(){
-    open(environment.tokenfactory+"/cm?param=b3BlPU1haW5fZGV2bmV0JnRvb2xiYXI9ZmFsc2U%3D","store");
+    open(environment.tokenfactory+"/cm?param=YWlyZHJvcD1mYWxzZSZ0b29sYmFyPWZhbHNlJm9wZT1uZmx1ZW50X2FjY2Vzc19jYXJk","store");
   }
 
   fail(){

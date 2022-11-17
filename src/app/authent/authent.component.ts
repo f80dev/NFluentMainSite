@@ -3,7 +3,7 @@
 import {WalletProvider} from "@elrondnetwork/erdjs-web-wallet-provider";
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {NetworkService} from "../network.service";
-import {$$, isLocal, showMessage} from "../../tools";
+import {$$, isLocal, showError, showMessage} from "../../tools";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {WalletConnectProvider} from "@elrondnetwork/erdjs-wallet-connect-provider/out";
 import {environment} from "../../environments/environment";
@@ -12,7 +12,7 @@ import {ActivatedRoute} from "@angular/router";
 import {WALLET_PROVIDER_DEVNET, WALLET_PROVIDER_MAINNET} from "@elrondnetwork/erdjs-web-wallet-provider/out/constants";
 import {NFT} from "../../nft";
 import {GoogleLoginProvider, SocialAuthService} from "@abacritt/angularx-social-login";
-import {Collection} from "../../operation";
+import {Collection, Operation} from "../../operation";
 import {Socket} from "ngx-socket-io";
 
 @Component({
@@ -24,10 +24,13 @@ export class AuthentComponent implements OnInit,OnDestroy {
 
   @Input() intro_message:string="Email / Adresse de blockchaine";
   @Input() network:string="elrond-devnet";
+  @Input() operation:string="";
+  @Input() validator_name:string="";
   @Input() checknft:string[]=[]; //Vérifie si l'utilisateur dispose d'un ou plusieurs NFT
   @Input() showCollections:boolean=true; //Vérifie si l'utilisateur dispose d'un ou plusieurs NFT
   @Input() explain_message:string="Adresse de votre wallet ou votre email si vous n'en avez pas encore";
   @Input() autoconnect_for_localhost=false;   //Connection automatique sur le localhost
+  @Input() prompt="Votre email / Adresse dans la blockchain";   //Connection automatique sur le localhost
 
   @Output('authent') onauthent: EventEmitter<{strong:boolean,nftchecked:boolean,address:string}>=new EventEmitter();
   @Output('invalid') oninvalid: EventEmitter<any>=new EventEmitter();
@@ -43,6 +46,7 @@ export class AuthentComponent implements OnInit,OnDestroy {
   @Input() showWalletConnect=false;
   @Input() showAddress=false;
   @Input() showNetwork=false;
+  @Input() showPrivateKey=false;
   @Input() showEmail=false;             //Code d'accès envoyé par email
   @Input() showNfluentWalletConnect=false;
   @Input() address: string="";
@@ -59,6 +63,8 @@ export class AuthentComponent implements OnInit,OnDestroy {
   autorized_users:string[]=[];        //Liste de l'ensemble des utilisateurs autorisé
   validator: string="";
   provider: WalletConnectProvider;
+  _operation: Operation | undefined;
+  private_key="";
 
 
   constructor(
@@ -69,18 +75,23 @@ export class AuthentComponent implements OnInit,OnDestroy {
     public socialAuthService: SocialAuthService,
     public toast:MatSnackBar
   ) {
+
     this.provider=new WalletConnectProvider(
       "https://bridge.walletconnect.org",
       {
         onClientLogin: ()=> {
           if(this.provider){
+            $$("Login");
             this.provider.getAddress().then((addr:string)=>{
               this.address=addr;
+              this.validate();
               this.strong=true;
-              if(this.provider)
+              if(this.provider){
                 this.provider.getSignature().then((sign:string)=>{
                   $$("signature="+sign);
                 })
+              }
+
             })
           }
         },
@@ -88,24 +99,28 @@ export class AuthentComponent implements OnInit,OnDestroy {
           $$("Déconnection");
           this.strong=false;
           this.onlogout.emit();
-        }
+        },
       }
     );
   }
+
 
   ngOnDestroy(): void {
     $$("Desenregistrement de "+this.validator);
         this.api.remove_validator(this.validator).subscribe(()=>{})
     }
 
+
+
   subscribe_as_validator(){
     $$("Le systeme d'authent demande le QRCode en mode wallet_connect")
-    this.api.subscribe_as_validator(this.checknft.join(","),this.network).subscribe((result:any)=>{
+    this.api.subscribe_as_validator(this.checknft.join(","),this.network,this.validator_name).subscribe((result:any)=>{
       //On inscrit le systeme à la reception de message
       this.validator=result.id;
       $$("Le validator est enregistré sour "+this.validator)
       this.autorized_users=result.addresses;
       this.socket.on(result.id,(data:any) => {
+        $$("Réception d'un message de la part du serveur",data);
         let user_to_validate=data.address;
         if(this.autorized_users.length==0 || this.autorized_users.indexOf(user_to_validate)>-1){
           this.onauthent.emit({address:user_to_validate,strong:true,nftchecked:true});
@@ -114,27 +129,25 @@ export class AuthentComponent implements OnInit,OnDestroy {
         }
       });
       this.nfluent_wallet_connect_qrcode=environment.server+"/api/qrcode/"+encodeURIComponent(result.access_code);
+      if(this.title=="" && this.showNfluentWalletConnect)this.title="Pointer ce QRcode avec votre 'NFluent Wallet'";
+    },(err)=>{
+      showError(this);
     })
   }
 
-  ngOnInit(): void {
-    window.onbeforeunload = () => this.ngOnDestroy();
 
+
+  refresh(){
+    $$("Refresh de l'écran");
     if(this.title=="" && this.showWalletConnect)this.title="Pointer ce QRcode avec un wallet compatible 'Wallet Connect'";
-    if(this.title=="" && this.showNfluentWalletConnect)this.title="Pointer ce QRcode avec votre 'NFluent Wallet'";
 
     if (this.provider) {
       if (this.showCollections && this.checknft && this.checknft.length > 0) {
         this.api.get_collections(this.checknft.join(","),this.network,true).subscribe((cols: Collection[]) => {
+          $$("Récupération des collections", cols);
           this.collections = cols;
         })
       }
-
-
-      if(this.showNfluentWalletConnect){
-        this.subscribe_as_validator();
-      }
-
 
       this.provider.init().then((b: boolean) => {
         if (this.provider) {
@@ -144,20 +157,46 @@ export class AuthentComponent implements OnInit,OnDestroy {
         }
       });
 
-
       if (isLocal(environment.appli) && this.showAccesCode && this.autoconnect_for_localhost) {
-        this.onauthent.emit({address: "herve",nftchecked:false,strong:true});
+        this.onauthent.emit({address: "erd16ck62egnvmushkfkut3yltux30cvp5aluy69u8p5hezkx89a2enqf8plt8",nftchecked:false,strong:true});
       }
     }
 
-    this.socialAuthService.authState.subscribe((socialUser) => {
-      this.strong=true;
-      this.onauthent.emit({
-        address: socialUser.email,
-        nftchecked:false,strong:true});
-    },(err)=>{
-      $$("Erreur de connexion",err);
-    });
+    if(this.showGoogle){
+      this.socialAuthService.authState.subscribe((socialUser) => {
+        this.strong=true;
+        this.onauthent.emit({
+          address: socialUser.email,
+          nftchecked:false,strong:true});
+      },(err)=>{
+        $$("Erreur de connexion",err);
+      });
+    }
+
+    this.subscribe_as_validator();
+  }
+
+
+
+  ngOnInit(): void {
+    window.onbeforeunload = () => this.ngOnDestroy();
+
+    if(this.operation.length>0){
+      $$("On utilise "+this.operation+" pour le paramétrage du module");
+      this.api.get_operations(this.operation).subscribe((ope)=> {
+        this._operation=ope;
+        this.showGoogle = ope.validate?.authentification.google || false;
+        this.showWebcam = ope.validate?.authentification.webcam || false;
+        this.showAddress = ope.validate?.authentification.address || false;
+        this.showNfluentWalletConnect = ope.validate?.authentification.nfluent_wallet_connect || false;
+        this.showWalletConnect=ope.validate?.authentification.wallet_connect || false;
+        this.showEmail = ope.validate?.authentification.email || false;
+        this.checknft=ope.validate?.filters.collections || [];
+        this.network=ope.network;
+        this.refresh();
+        }
+      )
+    } else this.refresh();
   }
 
 
@@ -175,18 +214,27 @@ export class AuthentComponent implements OnInit,OnDestroy {
     }
   }
 
+
   check_condition(nfts:NFT[]){
     $$("Vérification des conditions d'accès "+this.checknft)
     for(let elts of this.checknft) {
       for (let elt of elts.split(" & ")) {
-        let is_in = false;
         for (let nft of nfts) {
-          if (nft.collection && nft.collection.name) elt = elt.replace(nft.collection.name, "")
+          if(nft.collection && nft.collection.id == elt)return true;
+          if(elt == nft.address)return true;
+          //if (nft.collection && nft.collection.name) elt = elt.replace(nft.collection.name, "")
         }
-        if (elt.length == 0) return true;
+        //if (elt.length == 0) return true;
       }
     }
     return false;
+  }
+
+
+  success(){
+    this.onauthent.emit({address:this.address,nftchecked:true,strong:this.strong})
+    if(this._operation && this._operation.validate?.actions.success && this._operation.validate?.actions.success.redirect.length>0)
+      open(this._operation.validate?.actions.success.redirect);
   }
 
 
@@ -196,23 +244,24 @@ export class AuthentComponent implements OnInit,OnDestroy {
     } else {
       if(this.checknft.length>0){
         $$("Recherche des tokens "+this.checknft+" pour l'adresse "+this.address);
-        this.api.get_tokens_from("owner",this.address,1000,true,null,0,this.network).then((r:NFT[])=>{
-          if(this.check_condition(r)){
-            this.onauthent.emit({address:this.address,nftchecked:true,strong:this.strong})
+        this.api.get_tokens_from("owner",this.address,1000,true,null,0,this.network).then((r:any)=>{
+          if(this.check_condition(r.result)){
+            this.success();
           } else {
             this.onauthent.emit({address:this.address,nftchecked:false,strong:this.strong})
           }
         })
       } else {
-        this.onauthent.emit({address:this.address,nftchecked:true,strong:this.strong});
+        this.success();
       }
-
     }
   }
+
 
   update_address() {
 
   }
+
 
   connect(network: string) {
     if(network=="elrond"){
@@ -251,18 +300,21 @@ export class AuthentComponent implements OnInit,OnDestroy {
     // }
 
     if(network=="code"){
-      if(this.access_code=="4271"){
-        this.address="herve";
-        this.strong_connect();
-      } else {
-        if(this.access_code.length==8){
-          this.api.access_code_checking(this.access_code,this.address).subscribe(()=>{
-            this.strong_connect();
-          },(err:any)=>{
-            showMessage(this,'Code incorrect');
-          })
-        }
+      if(this.access_code.length==8){
+        this.api.access_code_checking(this.access_code,this.address).subscribe(()=>{
+          this.strong_connect();
+        },(err:any)=>{
+          showMessage(this,'Code incorrect');
+        })
       }
+    }
+
+    if(network=="private_key"){
+      this.api.check_private_key(this.private_key,this.address).subscribe(()=>{
+        this.strong_connect();
+      },()=>{
+        showMessage(this,'Phrase incorrecte');
+      })
     }
   }
 

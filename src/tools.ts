@@ -21,6 +21,19 @@ export function url_wallet(network:string) : string {
 }
 
 
+export function hashCode(s:string):number {
+  var hash = 0,
+    i, chr;
+  if (s.length === 0) return hash;
+  for (i = 0; i < s.length; i++) {
+    chr = s.charCodeAt(i);
+    hash = ((hash << 5) - hash) + chr;
+    hash |= 0; // Convert to 32bit integer
+  }
+  return hash;
+}
+
+
 export function b64DecodeUnicode(s:string):string {
   return decodeURIComponent(Array.prototype.map.call(atob(s), function(c) {
     return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
@@ -68,7 +81,7 @@ export function setParams(_d:any,prefix="") : string {
   let rc=[];
   for(let k of Object.keys(_d)){
     if(typeof(_d[k])=="object")_d[k]="b64:"+btoa(JSON.stringify(_d[k]));
-    rc.push(k+"="+_d[k]);
+    rc.push(k+"="+encodeURIComponent(_d[k]));
   }
   let url=encrypt(prefix+rc.join("&"));
   return encodeURIComponent(url);
@@ -81,7 +94,7 @@ function analyse_params(params:string):any {
   let rc:any={};
   for(let _param of _params) {
     let key = _param.split("=")[0];
-    let value: any = _param.split("=")[1];
+    let value: any = decodeURIComponent(_param.split("=")[1]);
 
     $$("Récupération de " + _param);
     if (value.startsWith("b64:")) {
@@ -109,7 +122,7 @@ export function getParams(routes:ActivatedRoute,local_setting_params="") {
   return new Promise((resolve, reject) => {
     routes.queryParams.subscribe((params:any) => {
       if(params.hasOwnProperty("param")){
-        let rc=analyse_params(params["param"]);
+        let rc=analyse_params(decodeURIComponent(params["param"]));
         if(local_setting_params.length>0)localStorage.setItem(local_setting_params,params["param"]);
         resolve(rc);
       } else {
@@ -226,6 +239,11 @@ export function showMessage(vm:any,s:string="",duration=4000,func:any= null,labe
 
 export function isLocal(domain:string) : boolean {
   return(domain.indexOf("localhost")>-1 || domain.indexOf("127.0.0.1")>-1);
+}
+
+
+export function normalize(s:string) : string {
+  return s.toLowerCase().replace(" ","").split(".")[0]
 }
 
 

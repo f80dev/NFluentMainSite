@@ -7,6 +7,7 @@ export interface Collection {
   owner : string | undefined
   price: number | undefined
   type: string | undefined
+  roles: any[] | undefined
   link: string | ""
 
   options: {
@@ -20,7 +21,7 @@ export interface Collection {
   }
 }
 
-interface Connexion {
+export interface Connexion {
   on_device: boolean | false
   address: boolean | false
   wallet_connect: boolean | false
@@ -40,6 +41,8 @@ export interface Source {
   collections: string[] | null
 }
 
+
+
 //Description de la structure d'une opération
 //Voir le fichier yaml commenté pour le détail des sections
 export interface Operation {
@@ -50,6 +53,7 @@ export interface Operation {
   version: string
   network: string
   metadatastorage: string
+  format: "yamlv1" | "yamlv2"
 
   collections:Collection[]
 
@@ -60,6 +64,16 @@ export interface Operation {
     style: any
   } | null
 
+  new_account: {
+    mail: string | ""
+    max_account_by_email: number
+    to_start: {
+      money: string
+      bank: string
+      amount: number
+    } | null
+  }
+
   data: {
     sources: Source[]
   }
@@ -68,7 +82,7 @@ export interface Operation {
     metadata_storage: string
     content_storage: string
     miner: string
-  }
+  } | null
 
   candymachine : {
     visible: boolean
@@ -199,12 +213,14 @@ export interface Operation {
       value: string | ""
       message: string | ""
     }]
+
     nft_target: {
       collection: string
       name: string
       miner: string
       dimensions: string
       royalties: number
+      configuration: string
       quality:number | 90
 
       permissions:{
@@ -215,7 +231,6 @@ export interface Operation {
     }
 
     price: number
-    configuration: string
     limit: number
 
     period:             {
@@ -238,11 +253,16 @@ export interface Operation {
   dispenser: {
     visible: boolean
     application: string
+    collections: string[]
+    authentification: Connexion
+    title: string
+    prompt: string
+    selfWalletConnection: boolean
+  } | null
 
-    collections:       {
-      name: string
-      limit: number
-    }[]
+  airdrop: {
+    visible: boolean
+    collections: string[]
   } | null
 
   lottery: {
@@ -263,6 +283,10 @@ export interface Operation {
     }
     authentification: Connexion
 
+    messages:{
+      title:string | "Flasher ce QRCode pour recevoir ce NFT"
+    } | undefined
+
     application: string | "$nfluent_appli$/contest"
     collections: [string]
     limits:any | null
@@ -272,8 +296,7 @@ export interface Operation {
       dtEnd: string | ""
       duration: number | 1
     }
-
-  }
+  } | null
 
 }
 
