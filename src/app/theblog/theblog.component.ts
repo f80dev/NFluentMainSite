@@ -10,6 +10,7 @@ interface Article {
   visual: string
   online: boolean
   url: string
+  color: string
   content: string
 }
 
