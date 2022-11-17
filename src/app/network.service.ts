@@ -798,7 +798,8 @@ export class NetworkService {
 
 
   getyaml(filename:string) {
-    return this.httpClient.get<any>(environment.server+"/api/getyaml/"+filename+"?format=json")
+    if(filename.startsWith("http"))filename="b64:"+btoa(filename);
+    return this.httpClient.get<any>(environment.server+"/api/getyaml/"+encodeURIComponent(filename)+"?format=json")
   }
 
   delete_ask(id: string) {

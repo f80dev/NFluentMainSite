@@ -1,26 +1,26 @@
 version: 1.0
 articles:
-  - title: titre de l'article 1
-    url:
-    image:
+  - title: NFT For Supply Chain
+    url: https://www.appdupe.com/blog/nft-for-supply-chain-management/
+    image: https://www.appdupe.com/blog/wp-content/uploads/2021/04/NFT-1.png
     online: True
-    text: "
+    content: "
      klmfdk gmkg dflmk glmdfkglmfdk glmfdk glmfdkg lmfdkg lmfdkg lmfdk glmfdkg lmfdkg lmfdkg dfjgkdshf jdsh fjhuier gdfhgu dfhgkjfx vcxjkv jkvbjdgf edsfuezh fuisufhsdiu hf disu
     "
 
-  - title: titre de l'article 2
-    url:
-    image:
+  - title: NFT For Supply Chain 2
+    url: https://www.appdupe.com/blog/nft-for-supply-chain-management/
+    image: https://www.appdupe.com/blog/wp-content/uploads/2021/04/NFT-for-Supply-Chain-Market.jpg
     online: True
-    text: "
+    content: "
      klmfdk gmkg dflmk glmdfkglmfdk glmfdk glmfdkg lmfdkg lmfdkg lmfdk glmfdkg lmfdkg lmfdkg dfjgkdshf jdsh fjhuier gdfhgu dfhgkjfx vcxjkv jkvbjdgf edsfuezh fuisufhsdiu hf disu
     "
 
-  - title: titre de l'article 2
-    url:
-    image:
+  - title: NFT For Supply Chain 3
+    url: https://www.appdupe.com/blog/nft-for-supply-chain-management/
+    image: https://res.cloudinary.com/jerrick/image/upload/f_jpg,fl_progressive,q_auto,w_1024/6193b296ba59a4001fe2828d.jpg
     online: True
-    text: "
+    content: "
      klmfdk gmkg dflmk glmdfkglmfdk glmfdk glmfdkg lmfdkg lmfdkg lmfdk glmfdkg lmfdkg lmfdkg dfjgkdshf jdsh fjhuier gdfhgu dfhgkjfx vcxjkv jkvbjdgf edsfuezh fuisufhsdiu hf disu
     "
 

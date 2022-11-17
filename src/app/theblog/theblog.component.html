@@ -33,7 +33,9 @@
 <!--	<div *ngIf="addr.length>0">-->
 
 		<app-reversebloc *ngFor="let article of articles" [icon]="article.visual" width="400px" height="300px">
-			{{article}}
+			<div [innerHTML]="article.content" style="width: 100%;">
+				<div style="position: absolute;display: block;color: white;">{{article.title}}</div>
+			</div>
 		</app-reversebloc>
 
 

@@ -3,15 +3,14 @@ import {getParams, showError, showMessage} from "../../tools";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {ActivatedRoute} from "@angular/router";
 import {environment} from "../../environments/environment";
-import * as fs from "fs";
-import {parse} from 'yaml'
 import {NetworkService} from "../network.service";
 
 interface Article {
   title: string
   visual: string
   online: boolean
-  text: string
+  url: string
+  content: string
 }
 
 @Component({
@@ -26,7 +25,7 @@ export class TheblogComponent implements OnInit {
   articles: Article[]=[];
 
   constructor(public toast:MatSnackBar,public routes:ActivatedRoute,public network:NetworkService) {
-    this.network.getyaml("http://./assets/articles.yaml").subscribe((result:any)=>{
+    this.network.getyaml("https://raw.githubusercontent.com/f80dev/NFluentMainSite/master/src/assets/articles.yaml").subscribe((result:any)=>{
       this.articles=result.articles;
     },(err)=>{showError(this,err)})
   }
