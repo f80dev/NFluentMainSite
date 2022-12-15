@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-reversebloc',
@@ -7,19 +7,32 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class ReverseblocComponent implements OnInit {
 
-  @Input() icon="";
-  @Input() title="";
-  @Input() w_icon="55px";
-  @Input() text="";
-  @Input() width="22%";
+  @Input() image="";
+  @Input() data:any={};
+  @Input() width="300px";
   @Input() minwidth="350px";
+  @Input() style:any={};
   @Input() maxwidth="450px";
-  @Input() height="270px";
+  @Input() height="300px";
+  @Input() margin="10px";
   @Input() reverse=false;
+
+  @Output() onreverse: EventEmitter<any>=new EventEmitter();
+  @Input() fontsize="large";
+  @Input() color="white";
+  @Input() title="";
+
+
 
   constructor() { }
 
   ngOnInit(): void {
   }
+
+
+  on_reverse(side=true){
+    this.onreverse.emit({data:this.data,side:true});
+  }
+
 
 }

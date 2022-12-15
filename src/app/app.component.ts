@@ -1,5 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
+import {getParams} from "../tools";
+import {NetworkService} from "./network.service";
 
 @Component({
   selector: 'app-root',
@@ -9,10 +11,13 @@ import {Router} from "@angular/router";
 export class AppComponent implements OnInit {
 
 
-  constructor() {
+  constructor(public routes:ActivatedRoute,public network:NetworkService) {
   }
 
   ngOnInit(): void {
+    getParams(this.routes).then((params:any)=>{
+      if(params.hasOwnProperty("server"))this.network.server_nfluent=params.server;
+    })
   }
 
 }

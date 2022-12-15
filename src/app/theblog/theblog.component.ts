@@ -26,16 +26,21 @@ export class TheblogComponent implements OnInit {
   articles: Article[]=[];
 
   constructor(public toast:MatSnackBar,public routes:ActivatedRoute,public network:NetworkService) {
-    this.network.getyaml("https://raw.githubusercontent.com/f80dev/NFluentMainSite/master/src/assets/articles.yaml").subscribe((result:any)=>{
-      this.articles=result.articles;
-    },(err)=>{showError(this,err)})
+
   }
 
   ngOnInit(): void {
     getParams(this.routes).then((params:any)=>{
+      this.network.getyaml("https://raw.githubusercontent.com/nfluentdev/LeBlogNFluent/main/articles.yaml").subscribe((result:any)=>{
+        this.articles=result.articles;
+      },(err)=>{showError(this,err)})
+
       if(params.hasOwnProperty("nfts"))this.nfts_necessaires=params["nfts"].split(",");
+      if(params.hasOwnProperty("addr"))this.addr=params["addr"];
     })
   }
+
+
 
   authent(evt: {address:string,nftchecked:boolean,strong:boolean}) {
     if(!evt.strong){
@@ -63,5 +68,9 @@ export class TheblogComponent implements OnInit {
   disconnect(){
     showMessage(this,"Deconnexion");
     this.addr="";
+  }
+
+  open_article(article: Article) {
+    open(article.url,"article");
   }
 }

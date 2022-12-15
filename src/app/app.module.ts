@@ -32,6 +32,8 @@ import {WebcamModule} from "ngx-webcam";
 import {ClipboardModule} from "@angular/cdk/clipboard";
 import {SocketIoConfig, SocketIoModule} from "ngx-socket-io";
 import {environment} from "../environments/environment";
+import {NetworkService} from "./network.service";
+import {InputComponent} from "./input/input.component";
 
 const routes: Routes = [
     { path: '', component: MainComponent ,pathMatch: 'full'},
@@ -52,6 +54,7 @@ const config: SocketIoConfig = { url: environment.server, options: {} };
         BlocComponent,
         StepsComponent,
         SectionComponent,
+        InputComponent,
         TeamComponent,
         ParagrapheComponent,
         ReverseblocComponent,
@@ -96,4 +99,10 @@ const config: SocketIoConfig = { url: environment.server, options: {} };
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+    constructor(public network:NetworkService) {
+        setTimeout(()=>{
+            config.url=this.network.server_nfluent;
+        },10000);
+    }
+}

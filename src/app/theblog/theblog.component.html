@@ -1,25 +1,28 @@
 <div style="width: 100%;text-align: center;">
-	<div *ngIf="false && addr.length==0">
-		<h2>L'accès au blog est réservé aux visiteurs authentifiés</h2>
+	<div class="mat-display-1" style="margin: 10px;">Le blog</div>
+	<div *ngIf="addr.length==0">
+		<h3>L'accès au blog est réservé aux visiteurs authentifiés</h3>
 
 		<!--				[showDynamicToken]="false"-->
 		<!--				[showWebcam]="false"-->
 		<!--				[showNetwork]="false"-->
 		<!--				[showWalletConnect]="false"-->
 		<!--				[showNfluentWalletConnect]="true"-->
-<!--		network="elrond-devnet"-->
+		<!--		network="elrond-devnet"-->
 		<!--				[checknft]="nfts_necessaires"-->
 
-		<app-authent
-			operation="nfluent_access_card"
-			[size]="'600px'"
-			style="margin-top: 10px;"
-			explain_message="Veuillez connecter votre wallet pour vérifier le NFT d'accès"
+<!--		nfluent_server="https://server.f80lab.com:4242"-->
 
-			(cancel)="cancel()"
-			(disconnect)="disconnect()"
-			(invalid)="fail()"
-			(authent)="authent($event)"></app-authent>
+		<app-authent
+				operation="nfluent_access_card"
+				[size]="'400px'"
+				[directShowQRCode]="true"
+				style="margin-top: 10px;"
+				explain_message="Veuillez connecter votre wallet pour vérifier le NFT d'accès"
+				(cancel)="cancel()"
+				(disconnect)="disconnect()"
+				(invalid)="fail()"
+				(authent)="authent($event)"></app-authent>
 		<br><br>
 
 		<button type="button" mat-raised-button mat-button color="primary"
@@ -30,14 +33,22 @@
 	</div>
 
 
-<!--	<div *ngIf="addr.length>0">-->
+	<div *ngIf="addr.length>0">
+		<app-reversebloc *ngFor="let article of articles"
+		                 [image]="article.visual"
+		                 [color]="article.color"
+		                 fontsize="large"
+		                 [title]="article.title"
+		                 width="400px" height="300px">
+			<div [innerHTML]="article.content" style="width: 100%;height:80%;">
 
-		<app-reversebloc *ngFor="let article of articles" [icon]="article.visual" width="400px" height="300px">
-			<div [innerHTML]="article.content" style="width: 100%;height:100%;">
-				<div style="position: absolute;display: block;left:3%;top:3%;" [style.color]="article.color">{{article.title}}</div>
 			</div>
+			<button mat-raised-button mat-button aria-label="Prestashop" (click)="open_article(article)" color="primary">
+				Voir en entier
+			</button>
+
 		</app-reversebloc>
 
 
-<!--	</div>-->
+	</div>
 </div>

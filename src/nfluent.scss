@@ -126,6 +126,17 @@ $nfluent-theme: mat.define-light-theme((
         typography: $nfluent-typography
 ));
 
+$nfluent-dark-theme: mat.define-dark-theme((
+        color: (
+                primary:$nfluent-primary-color,
+                secondary:#ffffff,
+                accent: $nfluent-accent-color,
+                warn: $nfluent-warn-color
+        ),
+        typography: $nfluent-typography
+));
+
+
 
 ul {
   list-style: none; /* Remove default bullets */
@@ -151,16 +162,6 @@ ul li::before {
   display: block;
   background-color: #00e726 !important;
 }
-
-$nfluent-dark-theme: mat.define-dark-theme((
-        color: (
-                primary:$nfluent-primary-color,
-                secondary:#ffffff,
-                accent: $nfluent-accent-color,
-                warn: $nfluent-warn-color
-        ),
-        typography: $nfluent-typography
-));
 
 
 

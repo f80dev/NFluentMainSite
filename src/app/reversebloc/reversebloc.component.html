@@ -1,19 +1,14 @@
-<div class="surbloc" [style.width]="width" [style.height]="height">
-
-<div class="flip-card-inner"  >
-  <div class="flip-card-front" >
-    <img [src]="'/assets/'+icon+'.svg'" [style.width]="w_icon"
-         style="position:absolute;left:30px;top:30px;">
-    <br>
-
-    <div class="mat-display-1" style="position: absolute;left:30px;top:110px;">{{title}}</div>
-
-  </div>
-  <div class="flip-card-back">
-    <div class="mat-subheading-2" style="margin: 15px">
+<div class="surbloc" [style.width]="width" [style.height]="height" [style.margin]="margin" (mouseenter)="on_reverse(true)" (mouseleave)="on_reverse(false)">
+  <div class="flip-card-inner">
+    <div class="flip-card-front" [ngStyle]="style">
+      <div style="display: block;position: absolute;left: 5px;top:5px;z-index: 1;"
+           *ngIf="title.length>0"
+           [style.font-size]="fontsize" [style.color]="color">{{title}}</div>
+      <img [src]="image"
+           style="width:100%;height:100%;object-fit: cover;">
+    </div>
+    <div class="flip-card-back" [ngStyle]="style">
       <ng-content></ng-content>
     </div>
-
   </div>
-</div>
 </div>
