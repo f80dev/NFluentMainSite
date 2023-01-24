@@ -2,6 +2,8 @@ import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormBuilder} from "@angular/forms";
 import {environment} from "../../environments/environment";
+import {NetworkService} from "../network.service";
+import {showMessage} from "../../tools";
 declare var anime: any;
 
 @Component({
@@ -19,9 +21,10 @@ export class MainComponent implements AfterViewInit,OnInit {
 
   constructor(
       public router:Router,
+      public network:NetworkService,
       public routes:ActivatedRoute,
       private formBuilder: FormBuilder
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.routes.queryParams.subscribe((param)=>{
@@ -129,6 +132,8 @@ export class MainComponent implements AfterViewInit,OnInit {
     });
   }
 
+
+
   ngAfterViewInit(): void {
     this.play();
   }
@@ -137,9 +142,12 @@ export class MainComponent implements AfterViewInit,OnInit {
     this.router.navigate(["/main"],{fragment: idsection});
   }
 
-
   send_message() {
-
+    this.network.send_mail_to_contact(this.email,this.message,this.subject,this.name).subscribe(()=>{
+      showMessage(this,"Message sended");
+      this.message="";
+      this.subject="";
+    })
   }
 
     open_blog() {

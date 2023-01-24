@@ -11,3 +11,4 @@ xcopy ..\NFTCalvi\src\operation.ts src\
 xcopy ..\NFTCalvi\src\create.ts src\
 xcopy ..\NFTCalvi\src\tools.ts src\
 xcopy ..\NFTCalvi\src\nft.ts src\
+xcopy ..\NFTCalvi\src\nfluent.scss src\

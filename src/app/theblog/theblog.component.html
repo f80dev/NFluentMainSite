@@ -13,9 +13,19 @@
 
 <!--		nfluent_server="https://server.f80lab.com:4242"-->
 
+		<button type="button" mat-raised-button mat-button color="primary"
+		        (click)="open_store()">
+			Obtenir un NFT
+		</button>
+
+		<br>
+
+		<br>
+
 		<app-authent
 				operation="nfluent_access_card"
 				[size]="'400px'"
+				validator_name="leblognfluent"
 				[directShowQRCode]="true"
 				style="margin-top: 10px;"
 				explain_message="Veuillez connecter votre wallet pour vérifier le NFT d'accès"
@@ -23,12 +33,10 @@
 				(disconnect)="disconnect()"
 				(invalid)="fail()"
 				(authent)="authent($event)"></app-authent>
+		Si vous posséder déjà le NFT d'accès<br>
 		<br><br>
 
-		<button type="button" mat-raised-button mat-button color="primary"
-		        (click)="open_store()">
-			Obtenir un NFT
-		</button>
+
 
 	</div>
 

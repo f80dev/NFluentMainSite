@@ -2,7 +2,7 @@
 
 		<img [src]="photo" class="image-cropper">
 
-		<div class="mat-display-2">
+		<div class="mat-headline-4">
 			{{firstname}}<br>{{lastname}}
 		</div>
 		<div style="min-height:60px;">
@@ -11,13 +11,15 @@
 
 		<hr class="color-accent" style="width: 30%;">
 		<br>
-		<div style="height: fit-content;width: 80%;display:inline-block;margin-top: 15px;font-variant-caps: all-petite-caps" class="mat-subheading-2">
+		<div style="height: fit-content;width: 80%;display:inline-block;margin-top: 15px;font-variant-caps: all-petite-caps" class="mat-headline-6">
 			{{refs}}
 		</div>
 
 		<br><br>
 		<a *ngIf="linkedin.length>0" [href]="linkedin" target="linkedin">
-			<img src="assets/linkedin-icon-logo-png-transparent.png" style="width: 80px;" class="colorize-primary">
+			<img src="assets/linkedin-icon-logo-png-transparent.png"
+			     style="width: 80px;"
+			     class="colorize-primary">
 		</a>
 
 </div>

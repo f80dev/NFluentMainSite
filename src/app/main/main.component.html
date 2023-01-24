@@ -6,7 +6,7 @@
     <mat-icon>more_vert</mat-icon>
   </button>
 
-  <mat-menu #menu="matMenu" class="mat-headline">
+  <mat-menu #menu="matMenu" class="mat-headline-5">
     <button mat-menu-item [ngxScrollTo]="'convictions'">
       <span class="menuitem">Convictions</span>
     </button>
@@ -44,14 +44,14 @@
 <!-- TODO: introduire un changement de direction sur la largeur avec reverse-->
 <div class="flex-container orientation_logo" style="height: fit-content;background-color: #EFE5F8">
   <div class="flex-item" style="text-align: right;margin-right:10rem;">
-    <div class="mat-display-4" style="display: inline-block;  margin-top: 10rem;position: relative;width: fit-content;margin-left: 15%;">
+    <div class="mat-headline-3" style="display: inline-block;  margin-top: 10rem;position: relative;width: fit-content;margin-left: 15%;">
       NFLUENT<br>
       The agency dedicated to<br>
       non-fungible tokens.
       <div class="greenline"></div>
     </div>
 
-    <div class="mat-subheading-1" style="margin-top: 3rem;margin-bottom: 4rem;">
+    <div class="mat-headline-6" style="margin-top: 3rem;margin-bottom: 4rem;">
       From design to implementation,<br>
       we bring your NFT projects to life.
     </div>
@@ -84,7 +84,6 @@
       <app-conviction title="Sustainable">Use carbon-neutral blockchain technology.</app-conviction>
     </div>
   </app-section>
-
 
   <app-section title="What can you do with NFLUENT?" id="youcando">
     <div style="align-items: stretch;width:100%;flex-wrap: wrap;justify-content: center;">
@@ -159,12 +158,12 @@
   <div style="width:100vw;height: fit-content;text-align: left;padding-left: 10rem;" class="backgradient">
 
     <br><br><br>
-    <div class="color-accent mat-display-4" style="margin-bottom: 5px;">
+    <div class="color-accent mat-headline-4" style="margin-bottom: 5px;">
       <br>
       We believe<br>
     </div>
 
-    <div style="color:white" class="mat-display-4">
+    <div style="color:white" class="mat-headline-4">
       in NFTs<br>that make sense
     </div>
 
@@ -180,53 +179,61 @@
   <app-section title="The extented NFT" id="extendednft"
                subtitle="NFluenT is implementing innovative customized functionalities on basic NFTs to create X-NFTs.">
 
-    <div class="bloc-container">
-      <app-reversebloc title="Core attributes" icon="innovate">
+    <div class="bloc-container mat-headline-6">
+      <app-reversebloc title="Core attributes" icon="/assets/innovate.svg"
+                       color="#670FBF" border_color="#00D51D">
         Name and visuals<br>
         Scarcity, price<br>
         Benefits
       </app-reversebloc>
 
-      <app-reversebloc title="Resale" icon="create">
-        Resellers authorized/blocked<br>
-        Secondary market control<br>
-        Uninhibiting first-time buyer
+      <app-reversebloc title="Resale" icon="/assets/create.svg"
+                       color="#670FBF" border_color="#00D51D">
+
+          Resellers authorized/blocked<br>
+          Secondary market control<br>
+          Uninhibiting first-time buyer
 
       </app-reversebloc>
 
-      <app-reversebloc title="Price control" icon="control">
+      <app-reversebloc title="Price control" icon="/assets/control.svg"
+                       color="#670FBF" border_color="#00D51D">
         Initial price setup<br>
         Price cap<br>
         Resell markup
       </app-reversebloc>
 
-      <app-reversebloc title="Royalties" icon="royalties">
+      <app-reversebloc title="Royalties" icon="/assets/royalties.svg"
+                       color="#670FBF" border_color="#00D51D">
         Revenue granted to Creator<br>
         Revenue granted to Producer<br>
         Donation to nonprofits
-
       </app-reversebloc>
 
-      <app-reversebloc title="Auction" icon="auction">
+      <app-reversebloc title="Auction" icon="/assets/auction.svg"
+                       color="#670FBF" border_color="#00D51D">
         Market-defined price<br>
         Floor price<br>
         Time limited auction
       </app-reversebloc>
 
 
-      <app-reversebloc title="Benefits" icon="benefits">
+      <app-reversebloc title="Benefits" icon="/assets/benefits.svg"
+                       color="#670FBF" border_color="#00D51D">
         Discount on NFTs purchasing<br>
         IRL benefits (printout, ticketing…)<br>
         Access to virtual events
       </app-reversebloc>
 
-      <app-reversebloc title="Governance" icon="governance">
+      <app-reversebloc title="Governance" icon="/assets/governance.svg"
+                       color="#670FBF" border_color="#00D51D">
         DAO<br>
         Vote<br>
         Participative decision
       </app-reversebloc>
 
-      <app-reversebloc title="Certificates" icon="certificates">
+      <app-reversebloc title="Certificates" icon="/assets/certificates.svg"
+                       color="#670FBF" border_color="#00D51D">
         Digital art property<br>
         Authenticity certificate<br>
         Property deed (patent, trademark, phycical asset)
@@ -283,7 +290,7 @@
               linkedin="https://www.linkedin.com/in/thomas-laffourcade/"
               photo="assets/persona_Thomas.png">
 
-      <div class="mat-subheading-2">
+      <div class="mat-headline-6">
         CEO<br>
         co-founder
       </div>
@@ -294,7 +301,7 @@
               linkedin="https://www.linkedin.com/in/hhoareau/"
               photo="assets/persona_hervé.png">
 
-      <div class="mat-subheading-2">
+      <div class="mat-headline-6">
         CTO<br>
         co-founder
       </div>
@@ -305,35 +312,36 @@
 
   <app-section title="Contacts" id="contact" bgcolor="#EFE5F8">
     <form [formGroup]="checkoutForm" (ngSubmit)="send_message()">
-    <mat-form-field appearance="legacy" class="input-form">
+    <mat-form-field class="input-form">
       <mat-label>Name</mat-label>
       <input matInput type="text"  >
     </mat-form-field>
     <br>
 
-    <mat-form-field appearance="legacy" class="input-form">
+    <mat-form-field class="input-form">
       <mat-label>Email</mat-label>
       <input matInput type="text"  >
 
     </mat-form-field>
     <br>
 
-    <mat-form-field appearance="legacy" class="input-form">
+    <mat-form-field class="input-form">
       <mat-label>Subject</mat-label>
       <input matInput type="text"  >
 
     </mat-form-field>
     <br>
 
-    <mat-form-field appearance="legacy" class="input-form">
+    <mat-form-field class="input-form">
       <mat-label>Your message</mat-label>
       <textarea matInput style="font-size: medium">
       </textarea>
     </mat-form-field>
     <br><br>
 
-      <button mat-button mat-raised-button type="submit" color="primary" style="padding: 10px;" (click)="send_message()">
-        <mat-icon>send</mat-icon>&nbsp;&nbsp;Send
+      <button mat-button mat-raised-button type="submit" color="primary"
+              style="padding: 30px;" (click)="send_message()">
+        <mat-icon style="font-size: x-large;">send</mat-icon>&nbsp;&nbsp;SEND
       </button>
     </form>
 
@@ -348,11 +356,11 @@
     <img src="./assets/logo-nfluent-white.svg" style="width: 300px;margin-top: 250px;">
 
     <div style="width: 80%;margin-left: 10%;color: white;position:absolute;display:block;bottom: 20px;font-variant-caps: all-petite-caps;"
-         class="mat-subheading-1">
+         class="mat-headline-5">
 
       <span style="margin: 20px;">© NFluenT 2022. - v{{version}} - Tous droits réservés</span> ·
       <a href="/mentions_legales.html"
-         class="mat-subheading-1"
+         class="mat-headline-5"
          target="_blank"
          style="color: white;margin: 20px;">
         Mentions légales
@@ -360,7 +368,7 @@
 
       <span (click)="open_blog()"
          *ngIf="version=='beta'"
-         class="mat-subheading-1"
+         class="mat-headline-5"
          target="_blank"
          style="color: white;margin: 20px;cursor: pointer;">
         NFT news

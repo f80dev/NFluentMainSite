@@ -9,20 +9,17 @@ export const NFT_STORAGE_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiO
 
 export const NFLUENT_WALLET="https://wallet.nfluent.io";
 
+export const DEFAULT_DATABASE="db-server-nfluent";
+
 export const QUOTA=800000
 
 export const NETWORKS=[
-  "solana-devnet",
-  "solana-mainnet",
-  "polygon-mainnet",
-  "polygon-devnet",
   "elrond-devnet",
   "elrond-mainnet",
-  "db-cloud-nfluent",
-  "db-server-nfluent",
-  "db-web3-nfluent",
-  "prestashop",
-  "file"
+  "polygon-mainnet",
+  "polygon-devnet",
+  "solana-devenet",
+  "solana-mainnet"
 ]
 
 export const PLATFORMS=[
@@ -31,7 +28,9 @@ export const PLATFORMS=[
   {label:"Infura (IPFS)",value:"infura"},
   {label:"nFluent Server",value:"nfluent"},
   {label:"nFluent Local Server",value:"nfluent_local"},
-  {label:"La configuration",value:"infile"}
+  {label:"La configuration",value:"infile"},
+  {label:"Github",value:"github-nfluent-storage"},
+  {label:"MongoDB",value:"mongodb"}
 ]
 
 //Voir https://console.cloud.google.com/apis/credentials/oauthclient/1047581333959-f7rub1f23lkhuts4ig50pabhv3cakf6u.apps.googleusercontent.com?project=nfluenttokenfactory

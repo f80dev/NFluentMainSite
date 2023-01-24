@@ -34,6 +34,8 @@ import {SocketIoConfig, SocketIoModule} from "ngx-socket-io";
 import {environment} from "../environments/environment";
 import {NetworkService} from "./network.service";
 import {InputComponent} from "./input/input.component";
+import {MatOptionModule} from "@angular/material/core";
+import {MatSelectModule} from "@angular/material/select";
 
 const routes: Routes = [
     { path: '', component: MainComponent ,pathMatch: 'full'},
@@ -83,7 +85,9 @@ const config: SocketIoConfig = { url: environment.server, options: {} };
         RouterModule.forRoot(routes),
         ReactiveFormsModule,
         FormsModule,
-        ClipboardModule
+        ClipboardModule,
+        MatOptionModule,
+        MatSelectModule
     ],
   providers: [
       {provide: 'SocialAuthServiceConfig',

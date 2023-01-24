@@ -4,9 +4,8 @@ import {Router} from "@angular/router";
 import {$$, CryptoKey, isLocal} from "../tools";
 import {WalletConnectProvider} from "@elrondnetwork/erdjs-wallet-connect-provider/out";
 import {NetworkService} from "./network.service";
-import {Collection, Operation} from "../operation";
+import {Collection} from "../operation";
 import {Subject} from "rxjs";
-import {PublicKey} from "@solana/web3.js";
 import {environment} from "../environments/environment";
 
 
@@ -33,6 +32,7 @@ export class UserService {
   email: string="";
   name:string="";
   balance: number=0;
+  nfts_to_mint: any[]=[]
 
   constructor(
     private httpClient : HttpClient,
@@ -43,7 +43,12 @@ export class UserService {
   }
 
   isConnected(strong:boolean=false) {
-    return this.connected(strong);
+    let rc=(this.addr && this.addr.length>0) || this.email.length>0;
+    if(isLocal(environment.appli)){
+      this.strong=true;
+      rc=true;
+    }
+    return rc;
   }
 
 
@@ -55,38 +60,42 @@ export class UserService {
   }
 
   get_collection(){
+    //Retourne l'ensemble des collections disponibles
     return new Promise((resolve, reject) => {
       this.network.get_collections(this.addr, this.network.network, false).subscribe((cols: any) => {
         this.collections = cols;
         resolve(cols);
-      });
+      },(err:any)=>{reject(err);});
     });
   }
 
 
   init(addr:string,route=""){
     return new Promise((resolve, reject) => {
-      if(addr.length>0){
-        this.addr=addr
+      if(addr.length>0 && addr!="undefined"){
         if(addr.indexOf("@")>-1){
           this.email=addr;
         }else{
-          this.network.getBalance(addr,this.network.network).subscribe((r:any)=>{
-            this.balance=r[0].balance;
+          this.network.get_account(addr,this.network.network).subscribe((r:any)=>{
+            this.balance=r.amount;
+            this.key={
+              balance: r.balance,
+              encrypt: "",
+              explorer: "",
+              name: r.name,
+              privatekey: r.private_key,
+              address: r.address,
+              qrcode: "",
+              unity: r.unity
+            }
+            this.addr=r.address;
+            this.get_collection().then(()=>{
+              this.httpClient.get(this.network.server_nfluent+"/api/perms/"+this.addr+"/?route="+route).subscribe((p:any)=>{this.profil = p;},(err)=>{$$("!probleme de récupération des permissions");reject(err);});
+              this.addr_change.next(r.address);
+              resolve(r.address);
+            });
           })
         }
-
-        this.get_collection().then(()=>{
-          this.httpClient.get(this.network.server_nfluent+"/api/perms/"+this.addr+"/?route="+route).subscribe((r:any)=>{
-            this.profil = r;
-            r.address=addr;
-            this.addr_change.next(addr);
-            resolve(r);
-          },(err)=>{
-            $$("!probleme de récupération des permissions")
-            reject(err);
-          });
-        });
       }
     });
   }
@@ -105,13 +114,6 @@ export class UserService {
     let data="SaveKeyValue@"+this.str_to_hex("")
   }
 
-
-  connected(strong:boolean=false) {
-    let rc=(this.addr && this.addr.length>0) || this.email.length>0;
-    if(isLocal(environment.appli))this.strong=true;
-    if(strong)rc=rc && this.strong;
-    return rc;
-  }
 
 
   logout() {
@@ -179,7 +181,7 @@ export class UserService {
     // });
   }
 
-  find_collection(sel_collection: string) {
+  find_collection(sel_collection: string | undefined) {
     if(!sel_collection)return null;
     for(let col of this.collections)
       if(col.id==sel_collection)return col;

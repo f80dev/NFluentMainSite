@@ -8,7 +8,7 @@ export const environment = {
   server:"http://127.0.0.1:4242",
   appname:"NFluent Web Site",
   appli:"http://127.0.0.1:4200",
-  tokenfactory:"http://127.0.0.1:4201",
+  tokenfactory:"http://127.0.0.1:4200",
   wallet:"http://127.0.0.1:4200"
 };
 

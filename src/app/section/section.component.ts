@@ -12,7 +12,6 @@ export class SectionComponent implements OnInit {
   @Input() bgcolor="white";
 
 
-
   constructor(
 
   ) { }

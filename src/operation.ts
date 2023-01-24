@@ -65,10 +65,14 @@ export interface Operation {
   network: string
   metadatastorage: string
   format: "yamlv1" | "yamlv2"
+  warning: string | ""                //Message sur l'opération elle-même (problème de syntaxe par exemple ou solde insuffisant)
 
   collections:Collection[]
 
-  database: any | null
+  database: {
+    connexion: string
+    dbname: string
+  } | null
   accounts: any | null
 
   branding: {
@@ -282,6 +286,8 @@ export interface Operation {
     application: string
     collections: string[]
     authentification: Connexion
+
+    mailing_list: boolean | true
 
     messages: Messages
 

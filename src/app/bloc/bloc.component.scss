@@ -6,10 +6,11 @@ $accent-palette: map.get(mat.get-color-config(nfluent.$nfluent-theme), 'accent')
 $primary-palette: map.get(mat.get-color-config(nfluent.$nfluent-theme), 'primary');
 
 .bloc-container {
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
   align-items: stretch;
   width:100vw;
+  display: flex;
   flex-wrap: wrap;
   justify-content: center;
   flex-direction: row;

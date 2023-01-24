@@ -16,7 +16,7 @@ $accent-palette: map.get(mat.get-color-config(nfluent.$nfluent-theme), 'accent')
 .ovalbox {
     display:inline-block;
     border: solid 5px #00e726;
-    padding: 20px;
+    padding: 25px;
     width: 250px;
     border-radius: 30px;
     height: fit-content;
