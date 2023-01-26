@@ -34,7 +34,6 @@ export class TheblogComponent implements OnInit {
       this.network.getyaml("https://raw.githubusercontent.com/nfluentdev/LeBlogNFluent/main/articles.yaml").subscribe((result:any)=>{
         this.articles=result.articles;
       },(err)=>{showError(this,err)})
-
       if(params.hasOwnProperty("nfts"))this.nfts_necessaires=params["nfts"].split(",");
       if(params.hasOwnProperty("addr"))this.addr=params["addr"];
     })
