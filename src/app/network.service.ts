@@ -140,8 +140,8 @@ export class NetworkService implements OnInit {
     });
   }
 
-  encrypte_key(name:string) {
-    return this.httpClient.get(this.server_nfluent+"/api/encrypt_key/"+name)
+  encrypte_key(name:string,network:string) {
+    return this.httpClient.get(this.server_nfluent+"/api/encrypt_key/"+name+"/"+network+"/")
   }
 
 
@@ -801,6 +801,10 @@ export class NetworkService implements OnInit {
     return this.httpClient.put(this.server_nfluent+"/api/validators/"+validator_id+"/",{operation:operation_id});
   }
 
+  send_message_to_validator(validator_id: string, message:string) {
+    return this.httpClient.post(this.server_nfluent+"/api/send_to_validator/"+validator_id+"/",{message:message});
+  }
+
   scan_for_access(data:string,address:string) {
     return this.httpClient.post(this.server_nfluent+"/api/scan_for_access/",{validator:decodeURIComponent(data),address:address});
   }
@@ -818,6 +822,22 @@ export class NetworkService implements OnInit {
   delete_ask(id: string) {
     return this.httpClient.delete(this.server_nfluent+"/api/minerpool/"+id+"/");
   }
+
+  getExplorer(addr:string | undefined,_type="address") : string {
+    if(this.isElrond())
+      return "https://"+(this.isMain() ? "" : "devnet-")+"explorer.multiversx.com/"+_type+"/"+addr;
+
+    if(this.isPolygon())
+      return "https://"+(this.isMain() ? "" : "devnet-")+"polyscan.net/"+_type+"/"+addr;
+
+    return ""
+  }
+
+  open_explorer(addr: string,_type : "address" | "transactions" ="address") {
+    let url=this.getExplorer(addr,_type)
+    open(url,"explorer");
+  }
+
 
   open_gallery(id: string | undefined) {
     let url="";
@@ -883,4 +903,6 @@ export class NetworkService implements OnInit {
       if(this.network.indexOf("devnet")>-1)return true;
       return false;
   }
+
+
 }

@@ -4,6 +4,7 @@ xcopy ..\NFTCalvi\src\app\network.service.ts src\app\
 xcopy ..\NFTCalvi\src\app\reversebloc\*.* src\app\reversebloc\
 xcopy ..\NFTCalvi\src\app\user.service.ts src\app\
 xcopy ..\NFTCalvi\src\app\operation.service.ts src\app\
+xcopy ..\NFTCalvi\src\app\device.service.ts src\app\
 xcopy ..\NFTCalvi\src\app\hourglass\*.*  src\app\hourglass\
 xcopy ..\NFTCalvi\src\app\scanner\*.*  src\app\scanner\
 xcopy ..\NFTCalvi\src\definitions.ts src\

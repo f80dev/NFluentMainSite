@@ -168,9 +168,6 @@ export function toStringify(obj:any) {
   );
 }
 
-export function getExplorer(addr: string | undefined,network="solana-devnet") {
-  return "https://solscan.io/account/"+addr+"?cluster="+network.replace("solana-","");
-}
 
 export function syntaxHighlight(json:any) {
   if (typeof json != 'string') {

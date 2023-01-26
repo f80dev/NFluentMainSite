@@ -36,6 +36,8 @@ import {NetworkService} from "./network.service";
 import {InputComponent} from "./input/input.component";
 import {MatOptionModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
+import {DeviceService} from "./device.service";
+import {MatSliderModule} from "@angular/material/slider";
 
 const routes: Routes = [
     { path: '', component: MainComponent ,pathMatch: 'full'},
@@ -68,6 +70,7 @@ const config: SocketIoConfig = { url: environment.server, options: {} };
     ],
     imports: [
         BrowserModule,
+        MatSliderModule,
         MatSnackBarModule,
         HttpClientModule,
         WebcamModule,
@@ -90,6 +93,7 @@ const config: SocketIoConfig = { url: environment.server, options: {} };
         MatSelectModule
     ],
   providers: [
+      DeviceService,
       {provide: 'SocialAuthServiceConfig',
           useValue: {
               autoLogin: false,
@@ -103,6 +107,7 @@ const config: SocketIoConfig = { url: environment.server, options: {} };
   ],
   bootstrap: [AppComponent]
 })
+
 export class AppModule {
     constructor(public network:NetworkService) {
         setTimeout(()=>{

@@ -33,6 +33,7 @@ export class UserService {
   name:string="";
   balance: number=0;
   nfts_to_mint: any[]=[]
+  advance_mode:boolean=false;
 
   constructor(
     private httpClient : HttpClient,

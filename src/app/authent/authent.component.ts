@@ -15,6 +15,9 @@ import {SocialAuthService} from "@abacritt/angularx-social-login";
 import {Collection, Operation} from "../../operation";
 import {Socket} from "ngx-socket-io";
 import {ADDR_ADMIN} from "../../definitions";
+import {map} from "rxjs/operators";
+import {retry} from "rxjs";
+import {DeviceService} from "../device.service";
 
 
 @Component({
@@ -70,6 +73,8 @@ export class AuthentComponent implements OnInit,OnDestroy {
   provider: WalletConnectProvider;
   _operation: Operation | undefined;
   private_key="";
+  enabled_webcam: boolean=false;
+  qrcode_enabled: boolean=true;
 
 
   constructor(
@@ -77,6 +82,7 @@ export class AuthentComponent implements OnInit,OnDestroy {
     public _location:Location,
     public routes:ActivatedRoute,
     public socket:Socket,
+    public device:DeviceService,
     public socialAuthService: SocialAuthService,
     public toast:MatSnackBar
   ) {
@@ -111,8 +117,8 @@ export class AuthentComponent implements OnInit,OnDestroy {
 
   ngOnDestroy(): void {
     $$("Désenregistrement de "+this.validator);
-        this.api.remove_validator(this.validator).subscribe(()=>{})
-    }
+    this.api.remove_validator(this.validator).subscribe(()=>{})
+  }
 
 
   subscribe_as_validator(){
@@ -124,8 +130,21 @@ export class AuthentComponent implements OnInit,OnDestroy {
         this.validator=result.id;
         $$("Le validator est enregistré sour "+this.validator)
         this.autorized_users=result.addresses;
-        $$("Le validateur s'inscrit à la réception des événements")
+
+        this.socket.on("connect",(() => {
+          this.qrcode_enabled=true;
+          $$("Le validateur est connecté");
+        }))
+        this.socket.on("disconnect",(() => {
+          this.qrcode_enabled=false;
+          $$("Le validateur est déconnecté");
+        }))
+
+        $$("Le validateur s'inscrit à la réception des événements "+result.id)
         this.socket.on(result.id,(data:any) => {
+          if(data.hasOwnProperty("message")){
+            if(data.message=="stop")this.showNfluentWalletConnect=false;
+          }
           $$("Réception d'un message de la part du serveur",data);
           let user_to_validate=data.address;
           if(this.autorized_users.length==0 || this.autorized_users.indexOf(user_to_validate)>-1){

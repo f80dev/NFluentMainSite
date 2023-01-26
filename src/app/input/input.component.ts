@@ -15,6 +15,9 @@ export class InputComponent implements OnChanges,OnInit {
   @Input() cancel_button:string="";
 
   @Input() maxlength:string=""
+  @Input() width:string="100%";
+  @Input() maxwidth:string="100%";
+
 
   @Input() options:any[]=[];
   @Input() value_field="";          //Value_field permet de ne mettre dans la value de la liste qu'un seul champ d'un dictionnaire
@@ -35,6 +38,10 @@ export class InputComponent implements OnChanges,OnInit {
   showHelp: boolean=false;
   @Input() cols: number=0;
   @Input() rows: number=0;
+
+  @Input() max: number=0;
+  @Input() min: number=0;
+  @Input() step: number=1;
 
   constructor() { }
 
