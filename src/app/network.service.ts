@@ -590,7 +590,9 @@ export class NetworkService implements OnInit {
 
 
   get_operations(ope="") {
-    return this.httpClient.get<Operation>(this.server_nfluent+"/api/operations/"+ope);
+    let url=this.server_nfluent+"/api/operations/";
+    if(ope.length>0)url=url+"?ope="+encodeURIComponent(ope)
+    return this.httpClient.get<Operation>(url);
   }
 
   upload_operation(filename:string, content:any) {
@@ -739,10 +741,12 @@ export class NetworkService implements OnInit {
   }
 
 
-  mint(token:NFT, miner:string, owner:string,operation:string,sign=false, platform:string="nftstorage", network="",storage_file=""){
+  mint(token:NFT, miner:string, owner:string,operation:string,sign=false, platform:string="nftstorage", network="",storage_file="",encrypt_nft=false){
     return new Promise((resolve, reject) => {
       this.wait("Minage en cours sur "+network);
-      this.httpClient.post(this.server_nfluent+"/api/mint/?storage_file="+storage_file+"&keyfile="+miner+"&owner="+owner+"&sign="+sign+"&platform="+platform+"&network="+network+"&operation="+operation,token).subscribe((r)=>{
+      let param="storage_file="+storage_file+"&keyfile="+miner+"&owner="+owner+"&sign="+sign+"&platform="+platform+"&network="+network+"&operation="+operation
+      param=param+"&encrypt_nft="+encrypt_nft;
+      this.httpClient.post(this.server_nfluent+"/api/mint/?"+param,token).subscribe((r)=>{
         this.wait();
         resolve(r);
       },(err)=>{
@@ -892,11 +896,11 @@ export class NetworkService implements OnInit {
   }
 
   get_account(addr: string, network: string) {
-    return this.httpClient.get(this.server_nfluent+"/api/account/"+addr+"/?network="+network).pipe(retry(1),timeout(2000));
+    return this._get("account/"+addr,"network="+network);
   }
 
   rescue_wallet(email: string,database_server:string,network:string) {
-      return this.httpClient.get(this.server_nfluent+"/api/rescue_wallet/"+email+"/?db="+database_server+"&network="+network).pipe(retry(1),timeout(2000));
+      return this._get("rescue_wallet/"+email,"db="+database_server+"&network="+network);
   }
 
   isDevnet() {
@@ -905,4 +909,11 @@ export class NetworkService implements OnInit {
   }
 
 
+  search_images(query: string,remove_background=false) {
+    return this._get("search_images/","query="+query+"&remove_background="+remove_background);
+  }
+
+  remove_background(content: string) {
+    return this.httpClient.post<any>(this.server_nfluent+"/api/remove_background/",content);
+  }
 }

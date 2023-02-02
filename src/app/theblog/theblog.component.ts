@@ -51,7 +51,7 @@ export class TheblogComponent implements OnInit {
   }
 
   open_store(){
-    open(environment.tokenfactory+"/cm?param=YWlyZHJvcD1mYWxzZSZ0b29sYmFyPWZhbHNlJm9wZT1uZmx1ZW50X2FjY2Vzc19jYXJk","store");
+    open(environment.tokenfactory+"/cm?param=YWlyZHJvcD1mYWxzZSZ0b29sYmFyPWZhbHNlJm9wZT1iNjQlM0FhSFIwY0hNNkx5OXlZWGN1WjJsMGFIVmlkWE5sY21OdmJuUmxiblF1WTI5dEwyNW1iSFZsYm5Sa1pYWXZkRzlyWlc1bWIzSm5aUzl0WVdsdUwyNW1iSFZsYm5SZllXTmpaWE56WDJOaGNtUXVlV0Z0YkElM0QlM0QmdmlzdWFsPWI2NCUzQWJuVnNiQSUzRCUzRCZjbGFpbT1iNjQlM0FiblZzYkElM0QlM0QmYXBwbmFtZT1iNjQlM0FiblZzYkElM0QlM0Q%3D","store");
   }
 
   fail(){

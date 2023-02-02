@@ -9,6 +9,8 @@ export const NFT_STORAGE_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiO
 
 export const NFLUENT_WALLET="https://wallet.nfluent.io";
 
+export const MAX_FILE_SIZE=10000      //En Ko
+
 export const DEFAULT_DATABASE="db-server-nfluent";
 
 export const QUOTA=800000

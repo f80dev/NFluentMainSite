@@ -12,7 +12,7 @@ import {ActivatedRoute} from "@angular/router";
 import {WALLET_PROVIDER_DEVNET, WALLET_PROVIDER_MAINNET} from "@elrondnetwork/erdjs-web-wallet-provider/out/constants";
 import {NFT} from "../../nft";
 import {SocialAuthService} from "@abacritt/angularx-social-login";
-import {Collection, Operation} from "../../operation";
+import {Collection, get_in, Operation} from "../../operation";
 import {Socket} from "ngx-socket-io";
 import {ADDR_ADMIN} from "../../definitions";
 import {map} from "rxjs/operators";
@@ -41,7 +41,6 @@ export class AuthentComponent implements OnInit,OnDestroy {
   @Output('invalid') oninvalid: EventEmitter<any>=new EventEmitter();
   @Output('cancel') oncancel: EventEmitter<any>=new EventEmitter();
   @Output('disconnect') onlogout: EventEmitter<any>=new EventEmitter();
-
 
   @Input() showAccesCode=false;         //Code secret d'accès (réservé)
   @Input() showCancel=false;         //Code secret d'accès (réservé)
@@ -122,6 +121,9 @@ export class AuthentComponent implements OnInit,OnDestroy {
 
 
   subscribe_as_validator(){
+    if(this.validator_name.length==0)$$("Le système n'a pas de nom de validateur");
+    if(this.checknft.length==0)$$("Le système n'a pas de NFT à vérifier");
+
     if(this.checknft.length>0 && this.validator_name.length>0){
       $$("Le systeme d'authent demande le QRCode en mode wallet_connect")
 
@@ -160,6 +162,11 @@ export class AuthentComponent implements OnInit,OnDestroy {
       },(err)=>{
         showError(this);
       })
+    } else {
+      if(this.checknft.length==0){
+        this.onauthent.emit({address:"anyone",strong:true,nftchecked:true})
+      }
+
     }
   }
 
@@ -222,7 +229,21 @@ export class AuthentComponent implements OnInit,OnDestroy {
         this.showNfluentWalletConnect = ope.validate?.authentification.nfluent_wallet_connect || false;
         this.showWalletConnect=ope.validate?.authentification.wallet_connect || false;
         this.showEmail = ope.validate?.authentification.email || false;
-        this.checknft=ope.validate?.filters.collections || [];
+        this.checknft=get_in(ope,"validate.filters.collections",get_in(ope,"validate.collections",[]))
+        if(this.checknft.length==0){
+          //Recherche de collection dans les sources
+          for(let src of ope.data.sources){
+            this.checknft=get_in(src,"collection",get_in(src,"filter.collection",[]))
+            if(this.checknft.length>0)break
+          }
+          if(this.checknft.length==0){
+            //Recherche de collection dans le lazy_mining
+            for(let network of get_in(ope,"lazy_mining.networks",[])){
+              this.checknft=get_in(network,"collection",[])
+              if(this.checknft.length>0)break;
+            }
+          }
+        }
         this.network=ope.network;
         this.refresh();
         }
