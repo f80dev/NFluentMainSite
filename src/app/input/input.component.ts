@@ -42,6 +42,7 @@ export class InputComponent implements OnChanges,OnInit {
   @Input() max: number=0;
   @Input() min: number=0;
   @Input() step: number=1;
+  @Input() multiselect: boolean = false;
 
   constructor() { }
 
@@ -85,9 +86,8 @@ export class InputComponent implements OnChanges,OnInit {
   }
 
   ngOnInit(): void {
-    if(this.options.length>0){
-      this.value_type="list";
-    }
+    if(this.options.length>0){this.value_type="list";}
+    if(this.rows>0 && this.cols==0)this.cols=10;
   }
 
   on_cancel() {

@@ -56,6 +56,7 @@ export function encodeUnicode(str:string) {
 
 
 export function encrypt(s:string) : string {
+  //TODO fonction a terminer
   return btoa(s);
 }
 
@@ -115,8 +116,9 @@ function analyse_params(params:string):any {
   return rc;
 }
 
-export function now(){
+export function now(format="number") : number | string {
   let rc=new Date().getTime();
+  if(format=="hex")return rc.toString(16);
   return rc
 }
 
@@ -154,9 +156,7 @@ export function getParams(routes:ActivatedRoute,local_setting_params="") {
 }
 
 export function decrypt(s:string | any) : string {
-  if(s)
-    return atob(s);
-
+  if(s)return atob(s);
   return "";
 }
 
@@ -303,6 +303,7 @@ export function $$(s: string, obj: any= null) {
   console.log(lg + ' ' + obj);
   if (lg.indexOf('!!') > -1) {alert(lg); }
 }
+
 
 export function copyAchievements(clp:Clipboard,to_copy:string) {
   return new Promise((resolve, reject) => {

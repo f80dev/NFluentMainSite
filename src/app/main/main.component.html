@@ -33,6 +33,9 @@
       <span class="menuitem">Le blog</span>
     </button>
 
+    <button mat-menu-item (click)="open_create()" *ngIf="version=='beta'">
+      <span class="menuitem">Créer vos NFTs</span>
+    </button>
 
 
   </mat-menu>

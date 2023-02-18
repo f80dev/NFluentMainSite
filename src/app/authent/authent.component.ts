@@ -15,8 +15,6 @@ import {SocialAuthService} from "@abacritt/angularx-social-login";
 import {Collection, get_in, Operation} from "../../operation";
 import {Socket} from "ngx-socket-io";
 import {ADDR_ADMIN} from "../../definitions";
-import {map} from "rxjs/operators";
-import {retry} from "rxjs";
 import {DeviceService} from "../device.service";
 
 
@@ -41,6 +39,7 @@ export class AuthentComponent implements OnInit,OnDestroy {
   @Output('invalid') oninvalid: EventEmitter<any>=new EventEmitter();
   @Output('cancel') oncancel: EventEmitter<any>=new EventEmitter();
   @Output('disconnect') onlogout: EventEmitter<any>=new EventEmitter();
+
 
   @Input() showAccesCode=false;         //Code secret d'accès (réservé)
   @Input() showCancel=false;         //Code secret d'accès (réservé)
@@ -162,11 +161,6 @@ export class AuthentComponent implements OnInit,OnDestroy {
       },(err)=>{
         showError(this);
       })
-    } else {
-      if(this.checknft.length==0){
-        this.onauthent.emit({address:"anyone",strong:true,nftchecked:true})
-      }
-
     }
   }
 

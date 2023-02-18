@@ -157,4 +157,8 @@ export class MainComponent implements AfterViewInit,OnInit {
   open_theblog() {
     this.router.navigate(["theblog"]);
   }
+
+  open_create() {
+    this.router.navigate(["create"]);
+  }
 }

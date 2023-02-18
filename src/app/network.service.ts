@@ -2,10 +2,7 @@ import {Injectable, OnInit} from '@angular/core';
 import {
   clusterApiUrl,
   Connection,
-  LAMPORTS_PER_SOL,
   PublicKey,
-  RpcResponseAndContext, SignatureResult,
-  TransactionSignature
 } from "@solana/web3.js";
 import {TOKEN_PROGRAM_ID} from "@solana/spl-token";
 import * as SPLToken from "@solana/spl-token";
@@ -17,41 +14,49 @@ import {catchError, fromEvent, retry, Subject, throwError, timeout, TimeoutError
 import {Collection, Operation} from "../operation";
 import {NFT, SolanaToken, SplTokenInfo, Validator} from "../nft";
 import {Configuration, Layer} from "../create";
-import {NETWORKS} from "../definitions";
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class NetworkService implements OnInit {
-
+  unity_conversion: any={};
   private _network:string="";
   private _connection: Connection=new Connection(clusterApiUrl("devnet"), 'confirmed');
   waiting: string="";
   complement: string | undefined ="";
   fiat_unity: string="$";
   version: string="0.1";
+
   network_change=new Subject<string>();
+  config_loaded=new Subject<any>();
+
   server_nfluent: string=environment.server;
   online: boolean=false;
   keys:CryptoKey[]=[];
+  config:any;
 
   constructor(
-    private httpClient : HttpClient
+      private httpClient : HttpClient
   ) {
-
+    this.info_server().subscribe((r:any)=>{
+      this.config=r;
+      this.config_loaded.next(r);
+    })
+    fromEvent(window,"online").subscribe(()=>{this.online=true;})
+    fromEvent(window,"offline").subscribe(()=>{this.online=false;})
   }
 
   ngOnInit(): void {
-        fromEvent(window,"online").subscribe(()=>{this.online=true;})
-        fromEvent(window,"offline").subscribe(()=>{this.online=false;})
-    }
 
 
-  init_keys(network="elrond-devnet",with_balance=false) {
+  }
+
+
+  init_keys(network="elrond-devnet",with_balance=false,access_code:string="",operation_id:string="") {
     return new Promise((resolve, reject) => {
       this.wait("Chargement des clés");
-      this.httpClient.get<CryptoKey[]>(this.server_nfluent + "/api/keys/?network=" + network + "&with_private=true&with_balance="+with_balance).subscribe((r: CryptoKey[]) => {
+      this.httpClient.get<CryptoKey[]>(this.server_nfluent + "/api/keys/?access_code="+access_code+"&network=" + network + "&with_private=true&with_balance="+with_balance+"&operation="+operation_id,).subscribe((r: CryptoKey[]) => {
         this.keys = r;
         this.wait();
         resolve(r);
@@ -140,21 +145,23 @@ export class NetworkService implements OnInit {
     });
   }
 
-  encrypte_key(name:string,network:string) {
-    return this.httpClient.get(this.server_nfluent+"/api/encrypt_key/"+name+"/"+network+"/")
+  encrypte_key(name:string,network:string,privateKey="") {
+    let body={}
+    if(privateKey!="")body={secret_key:privateKey}
+    return this.httpClient.post(this.server_nfluent+"/api/encrypt_key/"+name+"/"+network+"/",body)
   }
 
 
   get_tokens(pubkey: PublicKey,f:Function) {
     return new Promise((resolve, reject) => {
       f(pubkey, {programId: TOKEN_PROGRAM_ID})
-        .then((r:any) => {
-          let rc = [];
-          for (let t of r.value) {
-            rc.push(t);
-          }
-          resolve(rc);
-        }).catch((err:Error)=>{reject(err)});
+          .then((r:any) => {
+            let rc = [];
+            for (let t of r.value) {
+              rc.push(t);
+            }
+            resolve(rc);
+          }).catch((err:Error)=>{reject(err)});
     });
   };
 
@@ -237,7 +244,7 @@ export class NetworkService implements OnInit {
     });
   }
 
-  unity_conversion: any={};
+
 
 
   get_price(unity="egld"){
@@ -500,7 +507,9 @@ export class NetworkService implements OnInit {
     return this.httpClient.post(this.server_nfluent+"/api/layers/?preview="+preview,  _l);
   }
 
-  get_collection(limit: number,
+
+
+  get_url_collection(limit: number,
                  file_format:string,
                  ext="webp",
                  size="200,200",
@@ -510,15 +519,13 @@ export class NetworkService implements OnInit {
                  data={},
                  attributes:any=[],
                  platform="nftstorage") {
-    let url=this.server_nfluent+"/api/collection/?seed="+seed+"&image="+ext+"&name="+file_format+"&size=" + size+"&format="+target+"&limit="+limit+"&quality="+quality+"&platform="+platform;
 
+    let url=this.server_nfluent+"/api/collection/?seed="+seed+"&image="+ext+"&name="+file_format+"&size=" + size+"&format="+target+"&limit="+limit+"&quality="+quality+"&platform="+platform;
     url=url+"&data="+btoa(encodeURIComponent(JSON.stringify(data)));
     url=url+"&attributes="+btoa(encodeURIComponent(JSON.stringify(attributes)));
 
-    return this.httpClient.get(
-      url,
-      { headers: new HttpHeaders({ timeout: `${200000}` }) }
-    );
+    return url;
+
   }
 
   update_layer(l:Layer, limit=100) {
@@ -542,12 +549,12 @@ export class NetworkService implements OnInit {
     return this._get("/reset_collection/");
   }
 
-  save_config_on_server(body:Configuration,with_file=false) {
-    return this.httpClient.post(this.server_nfluent+"/api/configs/?with_file="+with_file,body);
+  save_config_on_server(body:Configuration,with_file=false,user="") {
+    return this.httpClient.post(this.server_nfluent+"/api/configs/?with_file="+with_file+"&user="+user,body);
   }
 
-  load_config(url:string) {
-    return this.httpClient.get<Configuration>(this.server_nfluent+"/api/configs/b64"+btoa(url)+"/?format=json");
+  load_config(url:string,user:string="") {
+    return this.httpClient.get<Configuration>(this.server_nfluent+"/api/configs/b64"+btoa(url)+"/?format=json&user="+user);
   }
 
   list_config() {
@@ -589,9 +596,10 @@ export class NetworkService implements OnInit {
   }
 
 
-  get_operations(ope="") {
-    let url=this.server_nfluent+"/api/operations/";
-    if(ope.length>0)url=url+"?ope="+encodeURIComponent(ope)
+  get_operations(ope="",user="") {
+    let url=this.server_nfluent+"/api/operations/?";
+    if(ope.length>0)url=url+"ope="+encodeURIComponent(ope)
+    if(user.length>0)url=url+"&user="+user;
     return this.httpClient.get<Operation>(url);
   }
 
@@ -650,7 +658,7 @@ export class NetworkService implements OnInit {
     return this._get("/getyaml/faqs/","dir=./flaskr/static");
   }
 
-  del_config(id_config:string) {
+  del_config(id_config:string,user:string="") {
     return this.httpClient.delete(this.server_nfluent+"/api/configs/"+id_config+"/");
   }
 
@@ -674,7 +682,7 @@ export class NetworkService implements OnInit {
     if(network.length==0)network=this.network;
     let body={token_id:mint_addr,dest:to_addr,miner:owner,mail_content:mail_content}
     return this.httpClient.post(
-      this.server_nfluent+"/api/transfer/"+encodeURIComponent(mint_addr)+"/"+encodeURIComponent(to_addr)+"/"+encodeURIComponent(owner)+"/?network="+network, body
+        this.server_nfluent+"/api/transfer/"+encodeURIComponent(mint_addr)+"/"+encodeURIComponent(to_addr)+"/"+encodeURIComponent(owner)+"/?network="+network, body
     );
   }
 
@@ -716,7 +724,7 @@ export class NetworkService implements OnInit {
   }
 
   add_user_for_nft(body:any) {
-    return this.httpClient.post(this.server_nfluent+"/api/add_user_for_nft/",body);
+    return this.httpClient.post(this.server_nfluent+"/api/add_task_to_mintpool/",body);
   }
 
   is_beta() {
@@ -900,12 +908,12 @@ export class NetworkService implements OnInit {
   }
 
   rescue_wallet(email: string,database_server:string,network:string) {
-      return this._get("rescue_wallet/"+email,"db="+database_server+"&network="+network);
+    return this._get("rescue_wallet/"+email,"db="+database_server+"&network="+network);
   }
 
   isDevnet() {
-      if(this.network.indexOf("devnet")>-1)return true;
-      return false;
+    if(this.network.indexOf("devnet")>-1)return true;
+    return false;
   }
 
 
@@ -915,5 +923,17 @@ export class NetworkService implements OnInit {
 
   remove_background(content: string) {
     return this.httpClient.post<any>(this.server_nfluent+"/api/remove_background/",content);
+  }
+
+  registration(email: string) {
+    return this._get("registration/"+email+"/");
+  }
+
+  delete_account(access_code: string) {
+    return this.httpClient.delete(this.server_nfluent+"/api/delete_account/"+access_code+"/")
+  }
+
+  update_access_code(access_code: string, new_password: string) {
+    return this.httpClient.post(this.server_nfluent+"/api/update_password/"+access_code+"/",{access_code:new_password});
   }
 }

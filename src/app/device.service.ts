@@ -15,7 +15,7 @@ export class DeviceService {
   width: number=window.innerWidth;
   large=true;
   isHandset$: Observable<boolean>;
-
+  smallScreen:Observable<boolean>;
 
   constructor(
       breakpointObserver: BreakpointObserver,
@@ -24,9 +24,9 @@ export class DeviceService {
     this.modele="desktop";
     if(platform.IOS)this.modele="ios";
     if(platform.ANDROID)this.modele="android";
-    this.isHandset$=breakpointObserver.observe(Breakpoints.Handset+Breakpoints.HandsetPortrait).pipe(map((result:any) => result.matches), shareReplay());
+    this.isHandset$=breakpointObserver.observe(Breakpoints.Handset+Breakpoints.Tablet+Breakpoints.Small).pipe(map((result:any) => result.matches), shareReplay());
+    this.smallScreen=breakpointObserver.observe(Breakpoints.Tablet).pipe(map((result:any) => result.matches), shareReplay());
   }
-
 
   resize(w:number) {
     this.width=w;

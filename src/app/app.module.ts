@@ -38,14 +38,16 @@ import {MatOptionModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
 import {DeviceService} from "./device.service";
 import {MatSliderModule} from "@angular/material/slider";
+import { CreatorComponent } from './creator/creator.component';
+import { SafePipe } from './safe.pipe';
 
 const routes: Routes = [
     { path: '', component: MainComponent ,pathMatch: 'full'},
-  { path: 'store', component: StoreComponent },
-  { path: 'blog', component: TheblogComponent },
+    { path: 'store', component: StoreComponent },
+    { path: 'blog', component: TheblogComponent },
     { path: 'leblog', component: TheblogComponent },
-  { path: 'theblog', component: TheblogComponent },
-
+    { path: 'create', component: CreatorComponent },
+    { path: 'theblog', component: TheblogComponent },
 ]
 
 export const GOOGLE_CLIENT_ID="167299914377-p8vuf2f6npqnigl5kpqrh34cqjd81eko.apps.googleusercontent.com"
@@ -66,7 +68,9 @@ const config: SocketIoConfig = { url: environment.server, options: {} };
         StoreComponent,
         TheblogComponent,
         AuthentComponent,
-        ScannerComponent
+        ScannerComponent,
+        CreatorComponent,
+        SafePipe
     ],
     imports: [
         BrowserModule,
