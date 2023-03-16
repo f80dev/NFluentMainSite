@@ -40,6 +40,17 @@ import {DeviceService} from "./device.service";
 import {MatSliderModule} from "@angular/material/slider";
 import { CreatorComponent } from './creator/creator.component';
 import { SafePipe } from './safe.pipe';
+import { TokendocComponent } from './tokendoc/tokendoc.component';
+import { UploadFileComponent } from './upload-file/upload-file.component';
+import { AdminComponent } from './admin/admin.component';
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import { PromptComponent } from './prompt/prompt.component';
+import {MAT_DIALOG_DATA, MatDialogModule} from "@angular/material/dialog";
+import {FileDragNDropDirective} from "./file-drag-ndrop.directive";
+import {HourglassComponent} from "./hourglass/hourglass.component";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatProgressBarModule} from "@angular/material/progress-bar";
+import {MatStepperModule} from "@angular/material/stepper";
 
 const routes: Routes = [
     { path: '', component: MainComponent ,pathMatch: 'full'},
@@ -47,6 +58,8 @@ const routes: Routes = [
     { path: 'blog', component: TheblogComponent },
     { path: 'leblog', component: TheblogComponent },
     { path: 'create', component: CreatorComponent },
+    { path: 'tokendoc', component: TokendocComponent },
+    { path: 'admin', component: AdminComponent },
     { path: 'theblog', component: TheblogComponent },
 ]
 
@@ -70,14 +83,23 @@ const config: SocketIoConfig = { url: environment.server, options: {} };
         AuthentComponent,
         ScannerComponent,
         CreatorComponent,
-        SafePipe
+        SafePipe,
+        TokendocComponent,
+        UploadFileComponent,
+        AdminComponent,
+        PromptComponent,
+        FileDragNDropDirective,
+        HourglassComponent
     ],
     imports: [
         BrowserModule,
         MatSliderModule,
+        MatDialogModule,
         MatSnackBarModule,
         HttpClientModule,
         WebcamModule,
+        MatProgressSpinnerModule,
+        MatCheckboxModule,
         BrowserAnimationsModule,
         MatButtonModule,
         MatExpansionModule,
@@ -94,10 +116,14 @@ const config: SocketIoConfig = { url: environment.server, options: {} };
         FormsModule,
         ClipboardModule,
         MatOptionModule,
-        MatSelectModule
+        MatSelectModule,
+        MatCheckboxModule,
+        MatProgressBarModule,
+        MatStepperModule
     ],
   providers: [
       DeviceService,
+      {provide: MAT_DIALOG_DATA, useValue: {hasBackdrop: false}},
       {provide: 'SocialAuthServiceConfig',
           useValue: {
               autoLogin: false,

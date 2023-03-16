@@ -1,0 +1,93 @@
+<div class="mainform">
+	<div class="mat-headline-4">Tokeniser des documents</div>
+	<app-hourglass [message]="message"></app-hourglass>
+	<br>
+	<div style="max-width: 600px;display: inline-block;text-align: center;">
+		<br><br>
+		<mat-vertical-stepper [linear]="false" #stepper [animationDuration]="'100'" >
+			<mat-step>
+				<ng-template matStepLabel>Charger un document</ng-template>
+
+				<app-upload-file (uploaded)="onFileSelected($event)"
+				                 *ngIf="!document"
+				                 [maxsize]="10000000">
+					<div style="width: 150px">Ajouter un document</div>
+				</app-upload-file>
+
+
+				<div *ngIf="document">
+					<small>Document à tokenizer:</small><br>
+					<div class="mat-headline-6 color-primary">{{document.filename}}</div>
+					<br>
+					<button mat-raised-button *ngIf="document"
+					        (click)="raz_document()">
+						Changer de document
+					</button>
+				</div>
+
+			</mat-step>
+
+			<mat-step *ngIf="document">
+				<ng-template matStepLabel>Construire le certificat (NFT)</ng-template>
+				Couverture du certificat<br>
+				<app-upload-file (uploaded)="onFileSelected($event)"
+				                 *ngIf="visual"
+				                 [zone]="true" width="300px" height="300px"
+				                 [visual]="visual"
+				                 icon="edit"
+				                 [maxsize]="10000000">
+				</app-upload-file>
+				<br>
+				<mat-checkbox [value]="joinDoc" (change)="upload_document($event)">Joindre le document au NFT</mat-checkbox>
+
+			</mat-step>
+
+			<mat-step *ngIf="document">
+				<ng-template matStepLabel>Signature</ng-template>
+				<table>
+					<tr>
+						<td>
+							<app-input label="Identifiez vous par"
+							           style="margin:50px"
+							           *ngIf="document" value_field="value"
+							           [options]="identity_types"
+							           [value]="identity_type"
+							           (valueChange)="update_identity($event)">
+							</app-input>
+						</td>
+						<td>
+							<app-input [label]="identity_type"
+							           [value]="identity"
+							           *ngIf="identity_type?.length>0"
+							           (valueChange)="identity=$event"></app-input>
+						</td>
+					</tr>
+				</table>
+			</mat-step>
+
+		</mat-vertical-stepper>
+
+
+
+
+		<div *ngIf="address.length>0 && identity.length>0">
+
+			<br>
+
+			<!--&gt;			<app-input label="Adresse de reception du certificat (NFT)"-->
+			<!--			           *ngIf="identity.length>0"-->
+			<!--			           [value]="address" (valueChange)="address=$event"></app-input>-->
+
+
+			<button mat-raised-button color="primary"
+			        (click)="send('cb')">
+				Tokenizer !
+			</button>
+		</div>
+
+		<br>
+
+	</div>
+
+
+</div>

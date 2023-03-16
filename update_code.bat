@@ -1,5 +1,7 @@
 xcopy ..\NFTCalvi\src\app\authent\*.* src\app\authent\
 xcopy ..\NFTCalvi\src\app\input\*.* src\app\input\
+xcopy ..\NFTCalvi\src\app\prompt\*.* src\app\prompt\
+xcopy ..\NFTCalvi\src\app\upload-file\*.* src\app\upload-file\
 xcopy ..\NFTCalvi\src\app\network.service.ts src\app\
 xcopy ..\NFTCalvi\src\app\reversebloc\*.* src\app\reversebloc\
 xcopy ..\NFTCalvi\src\app\user.service.ts src\app\

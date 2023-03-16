@@ -14,6 +14,18 @@ body {
   margin: 0;
 }
 
+.mainform {
+  width:100%;
+  padding: 1%;
+  text-align: center;
+  color: black;
+}
+
+mat-expansion-panel-header {
+  @extend .mat-headline-6;
+  @extend .color-primary;
+}
+
 /* What can you do with NFLUENT ? */
 
 

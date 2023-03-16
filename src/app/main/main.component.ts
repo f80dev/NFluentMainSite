@@ -161,4 +161,8 @@ export class MainComponent implements AfterViewInit,OnInit {
   open_create() {
     this.router.navigate(["create"]);
   }
+
+  open_tokendoc() {
+    this.router.navigate(["tokendoc"]);
+  }
 }
