@@ -98,7 +98,6 @@ export interface NFT {
   } | undefined
 }
 
-
 export interface SolanaToken {
   mint:string,
   network: string

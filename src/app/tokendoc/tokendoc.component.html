@@ -1,87 +1,141 @@
 <div class="mainform">
-	<div class="mat-headline-4">Tokeniser des documents</div>
-	<app-hourglass [message]="message"></app-hourglass>
+	<div class="mat-headline-4">{{appname}}</div>
+	<div class="mat-body-2" style="margin-top:-50px;">{{claim}}</div>
 	<br>
-	<div style="max-width: 600px;display: inline-block;text-align: center;">
+
+	<div *ngIf="network.isDevnet()" class="mat-body-2"
+	     style="position: fixed;display: block;right: 10px;top:10px;opacity: 0.5;text-align: right;">
+		Version test<br>
+		{{network.network}}
+	</div>
+
+	<app-hourglass [message]="message"></app-hourglass>
+	<div *ngIf="message.length>0 && preview.length>0"
+	     style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;justify-items: center;">
+		<img *ngFor="let image of preview" [src]="image" style="width: 100px;height:100px;">
+	</div>
+	<br>
+	<div style="max-width: 350px;display: inline-block;text-align: center;" *ngIf="message.length==0">
 		<br><br>
-		<mat-vertical-stepper [linear]="false" #stepper [animationDuration]="'100'" >
+		<mat-vertical-stepper [linear]="false" #stepper [animationDuration]="'100'" *ngIf="url_wallet.length+url_explorer.length==0">
 			<mat-step>
-				<ng-template matStepLabel>Charger un document</ng-template>
+				<ng-template matStepLabel>Charger un ou plusieurs documents</ng-template>
 
-				<app-upload-file (uploaded)="onFileSelected($event)"
-				                 *ngIf="!document"
-				                 [maxsize]="10000000">
-					<div style="width: 150px">Ajouter un document</div>
-				</app-upload-file>
+				<div *ngIf="!show_scanner" style="display: flex;width: 100%;">
+					<div style="width:150px;display: inline-block;">
+						<app-upload-file (uploaded)="onFileSelected($event)" [zone]="true"
+						                 [maxsize]="10000000">
+							Importer
+						</app-upload-file>
+					</div>
 
-
-				<div *ngIf="document">
-					<small>Document à tokenizer:</small><br>
-					<div class="mat-headline-6 color-primary">{{document.filename}}</div>
-					<br>
-					<button mat-raised-button *ngIf="document"
-					        (click)="raz_document()">
-						Changer de document
+					<button mat-raised-button
+					        (click)="show_scanner=true">
+						Scanner
 					</button>
+				</div>
+
+				<div *ngIf="show_scanner">
+					<button mat-raised-button (click)="show_scanner=false">
+						Arrêter
+					</button>
+					<br>
+					<app-scanner caption="Pointer vers le document à scanner"
+					             [showCapture]="true"
+					             (capture)="capture($event)">
+					</app-scanner>
+				</div>
+
+
+				<div *ngIf="documents.length>0">
+					<br>
+					<div class="mat-subtitle-1 color-primary" *ngFor="let document of documents" style="display: flex;align-items: center;">
+						<mat-icon (click)="raz_document(document)">delete</mat-icon>
+						<mat-icon *ngIf="document.url.length>0" (click)="open_doc(document)">link</mat-icon>
+						{{document.filename}}
+					</div>
 				</div>
 
 			</mat-step>
 
-			<mat-step *ngIf="document">
+			<mat-step *ngIf="documents.length>0">
 				<ng-template matStepLabel>Construire le certificat (NFT)</ng-template>
-				Couverture du certificat<br>
+				<br>
+
+				<app-input label="Nombre maximum de copropriétaires"
+				           [min]="1" [value]="max_supply"
+				           value_type="number" *ngIf="isSemiFungible()"
+				           help="Ce nombre correpond au nombre de parts disponibles" (valueChange)="max_supply=$event">
+				</app-input>
+
+				<br>
+				Visuel des tokens<br>
 				<app-upload-file (uploaded)="onFileSelected($event)"
-				                 *ngIf="visual"
+				                 *ngIf="visual" style="display: inline-block;"
 				                 [zone]="true" width="300px" height="300px"
 				                 [visual]="visual"
 				                 icon="edit"
 				                 [maxsize]="10000000">
 				</app-upload-file>
 				<br>
-				<mat-checkbox [value]="joinDoc" (change)="upload_document($event)">Joindre le document au NFT</mat-checkbox>
-
+				<mat-checkbox [value]="joinDoc" (change)="upload_document($event)">
+					Joindre les documents au NFT
+				</mat-checkbox>
 			</mat-step>
 
-			<mat-step *ngIf="document">
-				<ng-template matStepLabel>Signature</ng-template>
-				<table>
-					<tr>
-						<td>
-							<app-input label="Identifiez vous par"
-							           style="margin:50px"
-							           *ngIf="document" value_field="value"
-							           [options]="identity_types"
-							           [value]="identity_type"
-							           (valueChange)="update_identity($event)">
-							</app-input>
-						</td>
-						<td>
-							<app-input [label]="identity_type"
-							           [value]="identity"
-							           *ngIf="identity_type?.length>0"
-							           (valueChange)="identity=$event"></app-input>
-						</td>
-					</tr>
-				</table>
+			<mat-step *ngIf="documents.length>0">
+				<ng-template matStepLabel>Informations complémentaires</ng-template>
+				<br>
+				<app-input value_type="memo" [value]="infos" (valueChange)="infos=$event" [cols]="10" [rows]="3" maxlength="200"
+				           label="Informations complémaires (texte libre)"
+				           help="Informations ajoutée dans le NFTs">
+				</app-input>
+			</mat-step>
+
+
+			<mat-step *ngIf="documents.length>0 && advanced_mode" >
+				<ng-template matStepLabel>Signatures complémentaire</ng-template>
+
+				<div style="width: 100%;display: flex;flex-wrap: wrap;margin-top: 20px;">
+					<app-input label="Identifiez vous par"
+					           width="200px"
+					           *ngIf="documents.length>0" value_field="value"
+					           [options]="identity_types"
+					           [value]="identity_type"
+					           (valueChange)="update_identity($event)">
+					</app-input>
+					<app-input [label]="identity_type"
+					           [value]="identity" width="200px"
+					           *ngIf="identity_type?.length>0"
+					           (valueChange)="identity=$event">
+					</app-input>
+				</div>
+
 			</mat-step>
 
 		</mat-vertical-stepper>
 
+		<br>
+		<br>
+		<br>
+		<button mat-raised-button color="primary"
+		        *ngIf="documents.length>0 && url_wallet.length==0 && url_explorer.length==0 && network.network.length>0"
+		        (click)="send('cb')">
+			Tokenizer !
+		</button>
+
+		<button mat-raised-button (click)="restart()" *ngIf="url_explorer.length==0 && url_wallet.length==0">
+			Effacer
+		</button>
 
 
-
-		<div *ngIf="address.length>0 && identity.length>0">
-
-			<br>
-
-			<!--&gt;			<app-input label="Adresse de reception du certificat (NFT)"-->
-			<!--			           *ngIf="identity.length>0"-->
-			<!--			           [value]="address" (valueChange)="address=$event"></app-input>-->
-
+		<div *ngIf="url_explorer.length>0 && url_wallet.length>0" class="mat-body-2">
+			<a [href]="url_wallet" target="_blank" style="margin: 10px;">Voir le wallet NFLUENT</a>
+			<a [href]="url_explorer" target="_blank" style="margin: 10px;">Voir le NFT</a><br><br>
 
 			<button mat-raised-button color="primary"
-			        (click)="send('cb')">
-				Tokenizer !
+			        (click)="restart()">
+				Nouveau Certificat
 			</button>
 		</div>
 

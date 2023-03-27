@@ -1,7 +1,14 @@
-mat-step {
-    max-width: 600px;
-    width: 90%;
-    min-height: 200px;
+mat-vertical-stepper {
+    margin: -35px;
+    max-width: 120%;
 }
+
+mat-step {
+    text-align: center;
+}
+
+
+
+
 
 

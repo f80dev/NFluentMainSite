@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start local": "ng serve --port 4202 --live-reload",
+    "start local 4202": "ng serve --port 4202 --live-reload",
+    "start local": "ng serve --port 4200 --live-reload",
     "start debug": "ng serve --configuration debug --live-reload",
     "build": "ng build",
     "deploy": "ng build --aot --output-hashing=all --configuration production && gh-pages -d ./docs --repo https://github.com/f80dev/WebSiteNFluent.git -f -t true -b gh-pages -m \"update from gh-pages\"",

@@ -1,6 +1,5 @@
 
-<div appFileDragNDrop (filesChangeEmiter)="import($event)"
-     [ngStyle]="style_border" [style.width]="width">
+<div appFileDragNDrop (filesChangeEmiter)="import($event)" [ngStyle]="style_border" [style.width]="width">
 
   <input #csvInput
          type="file"
@@ -10,16 +9,14 @@
          (change)="import($event)"
          [accept]="extensions"/>
 
-  <button mat-icon-button
-          style="display:block;position: absolute;left:0;top:0;"
-          *ngIf="icon.length>0"
-          (click)="csvInput.click()">
-    <mat-icon color="accent" *ngIf="!icon.startsWith('http')">{{icon}}</mat-icon>
+  <div *ngIf="icon.length>0" style="cursor: pointer;">
+    <mat-icon (click)="csvInput.click()"  color="accent" *ngIf="!icon.startsWith('http')">{{icon}}</mat-icon>
     <img style="width:50px;height:50px;" *ngIf="icon.startsWith('http')" [src]="icon">
-  </button>
+  </div>
+
 
   <button mat-raised-button
-          style="display:block;position: absolute;left:20%;top:40%;"
+          style="display:block;position: absolute;left:0;top:0;min-width:100px;margin:0;padding:0;"
           *ngIf="icon.length==0"
           [title]="title"
           (click)="csvInput.click()">

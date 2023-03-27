@@ -51,16 +51,17 @@ import {HourglassComponent} from "./hourglass/hourglass.component";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatStepperModule} from "@angular/material/stepper";
+import { TokendocVerifyComponent } from './tokendoc-verify/tokendoc-verify.component';
 
 const routes: Routes = [
     { path: '', component: MainComponent ,pathMatch: 'full'},
     { path: 'store', component: StoreComponent },
     { path: 'blog', component: TheblogComponent },
     { path: 'leblog', component: TheblogComponent },
-    { path: 'create', component: CreatorComponent },
-    { path: 'tokendoc', component: TokendocComponent },
-    { path: 'admin', component: AdminComponent },
-    { path: 'theblog', component: TheblogComponent },
+    { path: 'create', component: CreatorComponent,pathMatch: 'full' },
+    { path: 'tokendoc', component: TokendocComponent,pathMatch: 'full' },
+    { path: 'admin', component: AdminComponent,pathMatch: 'full' },
+    { path: 'theblog', component: TheblogComponent,pathMatch: 'full' },
 ]
 
 export const GOOGLE_CLIENT_ID="167299914377-p8vuf2f6npqnigl5kpqrh34cqjd81eko.apps.googleusercontent.com"
@@ -89,7 +90,8 @@ const config: SocketIoConfig = { url: environment.server, options: {} };
         AdminComponent,
         PromptComponent,
         FileDragNDropDirective,
-        HourglassComponent
+        HourglassComponent,
+        TokendocVerifyComponent
     ],
     imports: [
         BrowserModule,
