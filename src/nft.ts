@@ -83,9 +83,10 @@ export interface NFT {
   royalties:number
   owner:string | undefined
   miner:CryptoKey
+  balance: number
   marketplace: {
     price: number
-    quantity: number
+    supply: number
   } | undefined
   files:any[]
   solana: any | undefined

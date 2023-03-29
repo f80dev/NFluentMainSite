@@ -66,6 +66,6 @@ export class ScannerComponent implements OnInit,OnDestroy {
   }
 
   capture() {
-    this.ontouch.emit({data:"data:image/jpg;base64,"+btoa(this.image.data)})
+    this.ontouch.emit({data:"data:image/jpeg;base64,"+btoa(this.image.data)})
   }
 }
