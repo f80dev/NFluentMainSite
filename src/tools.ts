@@ -36,13 +36,13 @@ export function url_wallet(network:string) : string {
 }
 
 export function get_nfluent_wallet_url(address:string,network:string,domain_appli:string=NFLUENT_WALLET,take_photo=false,) : string {
-  let domain=domain_appli.split('//')[0]+domain_appli.split("//")[1].split("/")[0]
-  let url=domain+"/?"+setParams({
+  let url=domain_appli+"/?"+setParams({
     toolbar:false,
     address:address,
     takePhoto:take_photo,
     network:network
   })
+  url=url.replace("//?","/?");
   return url;
 }
 
@@ -120,7 +120,7 @@ export function setParams(_d:any,prefix="",param_name="p") : string {
 }
 
 
-function analyse_params(params:string):any {
+export function analyse_params(params:string):any {
   let _params=decrypt(decodeURIComponent(params)).split("&");
   $$("Les paramètres à analyser sont "+_params);
   let rc:any={};
@@ -145,6 +145,7 @@ function analyse_params(params:string):any {
 
 export function now(format="number") : number | string {
   let rc=new Date().getTime();
+  if(format=="date")return new Date().toString();
   if(format=="hex")return rc.toString(16);
   return rc
 }
@@ -224,7 +225,7 @@ export function getParams(routes:ActivatedRoute,local_setting_params="",force_tr
         $$("!Impossible d'analyser les parametres de l'url");
         reject(err);
       })
-    },200);
+    },400);
   });
 }
 
@@ -401,7 +402,7 @@ export function canTransfer(nft:NFT,by_addr:string) : boolean {
   //canMint
   //Détermine si un NFT peut être transférer d'une blockchain à une autre
   if(nft.address && (nft.address.startsWith("db_") || nft.address.startsWith("file_"))){
-    if(nft.marketplace?.quantity==0)return false;
+    if(nft.balances[by_addr]==0)return false;
     if(nft.miner.address!="" && nft.miner.address!=by_addr)return false;
     return true;
   } else {

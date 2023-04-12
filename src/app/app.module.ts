@@ -52,6 +52,8 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatStepperModule} from "@angular/material/stepper";
 import { TokendocVerifyComponent } from './tokendoc-verify/tokendoc-verify.component';
+import {NftliveComponent} from "./nftlive/nftlive.component";
+import {GALLERY_CONFIG, GalleryModule} from 'ng-gallery';
 
 const routes: Routes = [
     { path: '', component: MainComponent ,pathMatch: 'full'},
@@ -59,7 +61,8 @@ const routes: Routes = [
     { path: 'blog', component: TheblogComponent },
     { path: 'leblog', component: TheblogComponent },
     { path: 'create', component: CreatorComponent,pathMatch: 'full' },
-    { path: 'tokendoc', component: TokendocComponent,pathMatch: 'full' },
+    { path: 'nftlive', component: NftliveComponent,pathMatch: 'full' },
+    { path: 'tokendoc', component: TokendocComponent},
     { path: 'admin', component: AdminComponent,pathMatch: 'full' },
     { path: 'theblog', component: TheblogComponent,pathMatch: 'full' },
 ]
@@ -71,6 +74,7 @@ const config: SocketIoConfig = { url: environment.server, options: {} };
     declarations: [
         AppComponent,
         MainComponent,
+        NftliveComponent,
         BlocComponent,
         StepsComponent,
         SectionComponent,
@@ -98,6 +102,7 @@ const config: SocketIoConfig = { url: environment.server, options: {} };
         MatSliderModule,
         MatDialogModule,
         MatSnackBarModule,
+        GalleryModule,
         HttpClientModule,
         WebcamModule,
         MatProgressSpinnerModule,
@@ -135,7 +140,14 @@ const config: SocketIoConfig = { url: environment.server, options: {} };
                       provider: new GoogleLoginProvider(GOOGLE_CLIENT_ID),
                   }
               ],
-          } as SocialAuthServiceConfig}
+          } as SocialAuthServiceConfig},
+      {
+          provide: GALLERY_CONFIG,
+          useValue: {
+              dots: true,
+              imageSize: 'cover'
+          }
+      }
   ],
   bootstrap: [AppComponent]
 })

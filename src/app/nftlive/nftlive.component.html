@@ -1,0 +1,73 @@
+<div class="mainform" style="text-align: center;">
+	<div class="mat-headline-4">{{appname}}</div>
+	<div class="mat-body-2" style="margin-top:-50px;">{{claim}}</div>
+	<br><br>
+	<app-hourglass [message]="message"></app-hourglass>
+	<br>
+
+	<app-upload-file (uploaded)="onFileSelected($event)"
+	                 *ngIf="message=='' && !photo"
+	                 [zone]="true" style="display: inline-block;"
+	                 title="Importer un document depuis votre ordinateur / smartphone"
+	                 [maxsize]="10000000">
+		Importer
+	</app-upload-file>
+	<br>
+
+
+
+	<div style="display: inline-block;width:200px;height: 200px;position: relative;" class="mat-elevation-z2" *ngIf="photo && visuels.length==0" >
+		<img [src]="photo.file"
+		     style="width:100%;height:100%;object-fit: cover;">
+	</div>
+
+	<br>
+
+	<div style="max-width: 350px;display: inline-block;margin-top: 20px;" *ngIf="photo && message=='' && visuels.length==0">
+
+		<app-input value_type="text" maxlength="50"
+		           label="Titre du NFT" [value]="name" (valueChange)="name=$event">
+		</app-input>
+		<br>
+
+		<app-input value_type="memo" [value]="infos" (valueChange)="infos=$event;"
+		           [cols]="10" [rows]="3" maxlength="200"
+		           label="Informations complémaires (texte libre)"
+		           help="Informations ajoutée dans le NFTs">
+		</app-input>
+		<br><br>
+
+		<button mat-raised-button color="primary"
+		        (click)="preview()">
+			Voir les NFTs
+		</button>
+	</div>
+
+	<div *ngIf="visuels.length>0 && message==''">
+
+		<gallery
+				style="width: 350px;height:450px;display: inline-block;" (indexChange)="sel_visuel=$event"
+				[items]="visuels"></gallery>
+
+		<br><br>
+
+		<app-input label="destinataire" maxwidth="300px"
+		           [value]="dests" (valueChange)="dests=$event" value_type="text"></app-input>
+
+
+		<br><br>
+
+
+		<button mat-raised-button color="primary"
+		        [disabled]="message.length>0"
+		        (click)="mint()">
+			Miner
+		</button>
+
+		<button mat-raised-button (click)="restart()">
+			Effacer
+		</button>
+
+	</div>
+
+</div>

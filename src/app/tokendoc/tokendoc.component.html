@@ -1,37 +1,45 @@
-<div class="mainform">
+<div class="mainform" style="overflow: hidden;text-align: center;">
 	<div class="mat-headline-4">{{appname}}</div>
 	<div class="mat-body-2" style="margin-top:-50px;">{{claim}}</div>
-	<br>
+	<br><br>
 
-	<div *ngIf="network.isDevnet()" class="mat-body-2"
-	     style="position: fixed;display: block;right: 10px;top:10px;opacity: 0.5;text-align: right;">
+	<div *ngIf="network.isDevnet() && collection" class="mat-body-2"
+	     style="position: absolute;display: block;right: 5px;bottom: 0px;line-height:90%;opacity: 0.3;text-align: right;font-size: xx-small;">
 		Version test<br>
-		{{network.network}}
+		network: {{network.network}}<br>
+		stockage : {{stockage}} / {{stockage_document}}<br>
+		Compte: {{miner.address}} / {{collection.id}}
 	</div>
 
-	<app-hourglass [message]="message"></app-hourglass>
-	<div *ngIf="message.length>0 && preview.length>0"
-	     style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;justify-items: center;">
-		<img *ngFor="let image of preview" [src]="image" style="width: 100px;height:100px;">
-	</div>
+	<app-hourglass anim="./assets/engrenage.gif" [message]="message"></app-hourglass>
+
 	<br>
-	<div style="max-width: 350px;display: inline-block;text-align: center;" *ngIf="message.length==0">
+	<div style="display: inline-block;text-align: center;" *ngIf="message.length==0 && !show_login">
 		<br><br>
-		<mat-vertical-stepper [linear]="false" #stepper [animationDuration]="'100'" *ngIf="url_wallet.length+url_explorer.length==0">
+		<mat-vertical-stepper [linear]="false" #stepper
+		                      [animationDuration]="'100'" *ngIf="url_wallet.length+url_explorer.length==0">
 			<mat-step>
 				<ng-template matStepLabel>Charger un ou plusieurs documents</ng-template>
 
-				<div *ngIf="!show_scanner" style="display: flex;width: 100%;">
+				<div *ngIf="!show_scanner" style="display: flex;max-width:500px;width: 100%;align-items: flex-start;">
 					<div style="width:150px;display: inline-block;">
 						<app-upload-file (uploaded)="onFileSelected($event)" [zone]="true"
+						                 title="Importer un document depuis votre ordinateur / smartphone"
 						                 [maxsize]="10000000">
 							Importer
 						</app-upload-file>
 					</div>
 
-					<button mat-raised-button
+					<button mat-raised-button style="margin-top: 0;"
+					        title="Prendre en photo / scanner un document"
 					        (click)="show_scanner=true">
 						Scanner
+					</button>
+
+					<button mat-raised-button style="margin-top: 0;"
+					        title="Attacher un document via son adresse internet (url)"
+					        (click)="attach_document()">
+						Attacher
 					</button>
 				</div>
 
@@ -47,14 +55,23 @@
 				</div>
 
 
-				<div *ngIf="documents.length>0">
-					<br>
-					<div class="mat-subtitle-1 color-primary" *ngFor="let document of documents" style="display: flex;align-items: center;">
+				<div *ngIf="documents.length>0" style="text-align: left;font-size: small;margin-top: 20px;">
+					Documents attachés:<br>
+					<div class="mat-subtitle-1 color-primary"
+					     *ngFor="let document of documents" style="display: flex;align-items: center;"
+					     [title]="document.signature+'\n'+document.url">
 						<mat-icon (click)="raz_document(document)">delete</mat-icon>
 						<mat-icon *ngIf="document.url.length>0" (click)="open_doc(document)">link</mat-icon>
-						{{document.filename}}
+						<span style="margin-left: 5px;font-size: small;">{{document.filename}}</span>
 					</div>
+
+					<br>
+					<mat-checkbox [(ngModel)]="joinDoc" (change)="upload_document()">
+						Joindre les documents au NFT
+					</mat-checkbox>
+
 				</div>
+
 
 			</mat-step>
 
@@ -62,31 +79,52 @@
 				<ng-template matStepLabel>Construire le certificat (NFT)</ng-template>
 				<br>
 
+				<app-input label="Dimension du visuel" [min]="150" [max]="600"
+				           [value]="nft_size" (valueChange)="nft_size=$event" value_type="slider">
+				</app-input>
+
 				<app-input label="Nombre maximum de copropriétaires"
-				           [min]="1" [value]="max_supply"
-				           value_type="number" *ngIf="isSemiFungible()"
+				           [min]="1" [max]="50" [value]="max_supply"
+				           value_type="slider" *ngIf="isSemiFungible()"
 				           help="Ce nombre correpond au nombre de parts disponibles" (valueChange)="max_supply=$event">
 				</app-input>
 
 				<br>
-				Visuel des tokens<br>
-				<app-upload-file (uploaded)="onFileSelected($event)"
-				                 *ngIf="visual" style="display: inline-block;"
-				                 [zone]="true" width="300px" height="300px"
-				                 [visual]="visual"
-				                 icon="edit"
+
+				<div *ngIf="visuels.length>0 "
+				     style="width: 90%;display: flex;flex-wrap: wrap;justify-content: center;justify-items: center;">
+					<img *ngFor="let image of visuels"
+					     (click)="sel_visuel=image"
+					     (dblclick)="open_image(image)"
+					     style="margin: 20px"
+					     [style.opacity]="sel_visuel==image ? 1.0 : 0.4"
+					     [style.width]="visuel_size" [style.height]="visuel_size"
+					     [src]="image">
+				</div>
+				<app-hourglass [message]="message_preview" fontsize="10px"></app-hourglass>
+				<br>
+
+				<br>
+				<app-upload-file (uploaded)="select_visual($event)"
+				                 style="display: inline-block;padding: 10px;" width="150px"
 				                 [maxsize]="10000000">
+					Changer d'image
 				</app-upload-file>
 				<br>
-				<mat-checkbox [value]="joinDoc" (change)="upload_document($event)">
-					Joindre les documents au NFT
-				</mat-checkbox>
+
 			</mat-step>
 
 			<mat-step *ngIf="documents.length>0">
 				<ng-template matStepLabel>Informations complémentaires</ng-template>
 				<br>
-				<app-input value_type="memo" [value]="infos" (valueChange)="infos=$event" [cols]="10" [rows]="3" maxlength="200"
+
+				<app-input value_type="text" maxlength="50"
+				           (focusout)="update_preview()"
+				           label="Titre du NFT" [value]="name" (valueChange)="name=$event">
+				</app-input>
+				<br>
+
+				<app-input value_type="memo" [value]="infos" (valueChange)="infos=$event;save_local()" [cols]="10" [rows]="3" maxlength="200"
 				           label="Informations complémaires (texte libre)"
 				           help="Informations ajoutée dans le NFTs">
 				</app-input>
@@ -118,28 +156,59 @@
 		<br>
 		<br>
 		<br>
-		<button mat-raised-button color="primary"
-		        *ngIf="documents.length>0 && url_wallet.length==0 && url_explorer.length==0 && network.network.length>0"
-		        (click)="send('cb')">
-			Tokenizer !
-		</button>
 
-		<button mat-raised-button (click)="restart()" *ngIf="url_explorer.length==0 && url_wallet.length==0">
-			Effacer
-		</button>
 
+		<div *ngIf="documents.length>0 && url_wallet.length==0 && url_explorer.length==0 && network.network.length>0">
+			<button mat-raised-button color="primary"
+			        [disabled]="message_preview.length>0"
+			        (click)="send('cb')">
+				Tokenizer !
+			</button>
+
+			<button mat-raised-button (click)="restart()">
+				Effacer
+			</button>
+
+
+		</div>
 
 		<div *ngIf="url_explorer.length>0 && url_wallet.length>0" class="mat-body-2">
-			<a [href]="url_wallet" target="_blank" style="margin: 10px;">Voir le wallet NFLUENT</a>
-			<a [href]="url_explorer" target="_blank" style="margin: 10px;">Voir le NFT</a><br><br>
+			<a [href]="url_wallet" target="walletNFluent" style="margin: 10px;">Wallet NFLUENT</a>
+			<a [href]="url_gallery" target="Gallery" style="margin: 10px;">Voir le NFT</a><br><br>
 
-			<button mat-raised-button color="primary"
-			        (click)="restart()">
+			<button mat-raised-button color="primary" (click)="restart(true)">
 				Nouveau Certificat
 			</button>
 		</div>
 
 		<br>
+
+	</div>
+
+	<br>
+	<div style="display: inline-block;text-align: center;width:350px" *ngIf="message.length==0">
+		<app-authent
+				*ngIf="show_login"
+				size="300px"
+				validator_name="leblognfluent"
+				[showGoogle]="true"
+				[showCancel]="true"
+				[showEmail]="true"
+				[showNfluentWalletConnect]="true"
+				style="margin-top: 10px;"
+				(cancel)="cancel()"
+				(disconnect)="disconnect()"
+				(invalid)="fail()"
+				(authent)="login($event)"></app-authent>
+
+
+<!--		<button mat-raised-button (click)="show_login=true" *ngIf="!show_login">-->
+<!--			Se connecter-->
+<!--		</button>-->
+
+		<button mat-raised-button (click)="show_login=false" *ngIf="show_login">
+			Annuler
+		</button>
 
 	</div>
 

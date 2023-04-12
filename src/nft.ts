@@ -75,6 +75,7 @@ export interface NFT {
     value: string
   }[]
   name:string
+  balances:any | {}
   tags:string | ""
   description:string
   visual:string
@@ -83,11 +84,9 @@ export interface NFT {
   royalties:number
   owner:string | undefined
   miner:CryptoKey
-  balance: number
-  marketplace: {
-    price: number
-    supply: number
-  } | undefined
+  price: number
+  supply: number
+  type: string
   files:any[]
   solana: any | undefined
   message: string | undefined

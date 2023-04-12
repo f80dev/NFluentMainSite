@@ -16,7 +16,7 @@
     <button mat-menu-item [ngxScrollTo]="'howitwork'">
       <span class="menuitem">How does it work</span>
     </button>
-   <button mat-menu-item [ngxScrollTo]="'extendednft'">
+    <button mat-menu-item [ngxScrollTo]="'extendednft'">
       <span class="menuitem">Extended NFT</span>
     </button>
     <button mat-menu-item [ngxScrollTo]="'services'">
@@ -37,8 +37,12 @@
       <span class="menuitem">Créer vos NFTs</span>
     </button>
 
-  <button mat-menu-item (click)="open_tokendoc()" *ngIf="version=='beta'">
+    <button mat-menu-item (click)="open_tokendoc()" *ngIf="version=='beta'">
       <span class="menuitem">Tokenisez des documents</span>
+    </button>
+
+    <button mat-menu-item (click)="open_nftlive()" *ngIf="version=='beta'">
+      <span class="menuitem">Transformez des photos en NFT</span>
     </button>
 
 
@@ -197,9 +201,9 @@
       <app-reversebloc title="Resale" icon="/assets/create.svg"
                        color="#670FBF" border_color="#00D51D">
 
-          Resellers authorized/blocked<br>
-          Secondary market control<br>
-          Uninhibiting first-time buyer
+        Resellers authorized/blocked<br>
+        Secondary market control<br>
+        Uninhibiting first-time buyer
 
       </app-reversebloc>
 
@@ -284,11 +288,11 @@
   </app-section>
 
 
-<!--  <app-section *ngIf="version=='beta'" title="Obtenir des NFTs" id="candymachine">-->
-<!--    <img src="https://server.f80lab.com:4242/api/qrcode/?code=https%3A%2F%2Ftokenfactory.nfluent.io%2Fcm%3Fparam%3Db3BlPXdlYnNpdGVfbmZsdWVudCZ0b29sYmFyPWZhbHNl&scale=6">-->
-<!--    <br>-->
-<!--    <a href="https://tokenfactory.nfluent.io/cm?param=b3BlPXdlYnNpdGVfbmZsdWVudCZ0b29sYmFyPWZhbHNl" target="mint">Ouvrir ce lien</a>-->
-<!--  </app-section>-->
+  <!--  <app-section *ngIf="version=='beta'" title="Obtenir des NFTs" id="candymachine">-->
+  <!--    <img src="https://server.f80lab.com:4242/api/qrcode/?code=https%3A%2F%2Ftokenfactory.nfluent.io%2Fcm%3Fparam%3Db3BlPXdlYnNpdGVfbmZsdWVudCZ0b29sYmFyPWZhbHNl&scale=6">-->
+  <!--    <br>-->
+  <!--    <a href="https://tokenfactory.nfluent.io/cm?param=b3BlPXdlYnNpdGVfbmZsdWVudCZ0b29sYmFyPWZhbHNl" target="mint">Ouvrir ce lien</a>-->
+  <!--  </app-section>-->
 
 
 
@@ -356,10 +360,10 @@
       </a> ·
 
       <span (click)="open_blog()"
-         *ngIf="version=='beta'"
-         class="mat-headline-5"
-         target="_blank"
-         style="color: white;margin: 20px;cursor: pointer;">
+            *ngIf="version=='beta'"
+            class="mat-headline-5"
+            target="_blank"
+            style="color: white;margin: 20px;cursor: pointer;">
         NFT news
       </span>
 

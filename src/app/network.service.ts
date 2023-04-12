@@ -69,8 +69,6 @@ export class NetworkService implements OnInit {
 
 
 
-
-
     init_keys(network="elrond-devnet",with_balance=false,access_code:string="",operation_id:string="") {
         return new Promise((resolve, reject) => {
             this.wait("Chargement des clés");
@@ -191,7 +189,7 @@ export class NetworkService implements OnInit {
     set network(network_name: string) {
         this._network = network_name;
         //this._connection=new Connection(clusterApiUrl(network_name), 'confirmed');
-        this.init_keys(network_name).then(()=>{
+        this.init_keys(network_name,true).then(()=>{
             this.network_change.next(network_name);
         })
     }
@@ -753,8 +751,8 @@ export class NetworkService implements OnInit {
         return this.httpClient.get<string>(this.server_nfluent+"/api/check_access_code/"+access_code+"?format=base64");
     }
 
-    get_nft(address: string, network: string) {
-        return this.httpClient.get<any>(this.server_nfluent+"/api/nfts/"+address+"?network="+network);
+    get_nft(address: string, network: string,owner:string="") {
+        return this.httpClient.get<any>(this.server_nfluent+"/api/nfts/"+address+"?network="+network+"&account="+owner);
     }
 
     add_user_for_nft(body:any) {
@@ -871,12 +869,12 @@ export class NetworkService implements OnInit {
 
     getExplorer(addr:string | undefined,_type="address") : string {
         if(this.isElrond())
-            return "https://"+(this.isMain() ? "" : "devnet-")+"explorer.multiversx.com/"+_type+"/"+addr;
+            return "https://"+(this.isMain() ? "" : "devnet.")+"xspotlight.com/"+addr;
         if(this.isPolygon()){
             if(this.isMain()){
                 return "https://polygonscan.com/"+_type+"/"+addr;
             }else{
-                return "https://polygon.testnets-nftically.com/marketplace?search="+addr
+                return "https://polygon.testnets-nftically.com/marketplace?search="+addr+"&chain[]=80001"
                 //return "https://mumbai.polygonscan.com/"+_type+"/"+addr;
             }
         }
@@ -965,5 +963,9 @@ export class NetworkService implements OnInit {
 
     check_network(router: Router) {
         if(!this.online)router.navigate(["pagenotfound"],{queryParams:{message:"Connexion au serveur impossible"}});
+    }
+
+    hashcode(doc: any[]) {
+        return this._post("hashcode/","",{docs:doc});
     }
 }

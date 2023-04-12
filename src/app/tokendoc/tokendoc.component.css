@@ -7,6 +7,14 @@ mat-step {
     text-align: center;
 }
 
+mat-icon {
+    margin: 5px;
+}
+
+button {
+    margin: 10px;
+    min-width: 100px !important;
+}
 
 
 
