@@ -1,28 +1,24 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AuthentComponent } from './authent.component';
+import { FaqsComponent } from './faqs.component';
 import {HttpClientModule} from "@angular/common/http";
 import {RouterTestingModule} from "@angular/router/testing";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 
-import {GOOGLE_CLIENT_ID} from "../../definitions";
-
-describe('AuthentComponent', () => {
-  let component: AuthentComponent;
-  let fixture: ComponentFixture<AuthentComponent>;
+describe('FaqsComponent', () => {
+  let component: FaqsComponent;
+  let fixture: ComponentFixture<FaqsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AuthentComponent ],
-      imports: [HttpClientModule,RouterTestingModule,MatSnackBarModule],
-      providers:[
-      ]
+      declarations: [ FaqsComponent ],
+      imports: [HttpClientModule,RouterTestingModule,MatSnackBarModule]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AuthentComponent);
+    fixture = TestBed.createComponent(FaqsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

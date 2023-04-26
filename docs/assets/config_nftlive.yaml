@@ -20,14 +20,29 @@ layers:
   - params: {}
     name: text_logo
     elements:
-      - image: "https://nfluent.io/assets/certificat authenticite_black.svg"
+      - image: "https://nfluent.io/assets/polaroid.svg"
         type: image/svg
+        name: polaroid
 
-      - image: "https://nfluent.io/assets/certificat authenticite_white.svg"
+      - image: "https://nfluent.io/assets/cadre.svg"
         type: image/svg
+        name: cadre
 
-      - image: "https://nfluent.io/assets/certificat authenticite_green.svg"
+      - image: "https://nfluent.io/assets/cadre_rond_flou.svg"
         type: image/svg
+        name: rond_flou
+
+      - image: "https://nfluent.io/assets/simple_blanc.svg"
+        type: image/svg
+        name: rond_flou
+
+      - image: "https://nfluent.io/assets/cadre_rond.svg"
+        type: image/svg
+        name: rond
+
+      - image: "https://nfluent.io/assets/simple.svg"
+        type: image/svg
+        name: simple
 
     text: ""
     unique: false
@@ -38,6 +53,8 @@ layers:
     translation: 0,0
     scale: 1,1
     margin: 0,0
+
+
 limit: 1
 help: ""
 max_items: 11

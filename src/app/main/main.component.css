@@ -25,9 +25,7 @@ input {
   align-content: flex-start;
 }
 
-.flex-item {
-  flex: 50%;
-}
+
 
 button {
   font-size: xx-large;

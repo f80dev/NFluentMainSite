@@ -1,0 +1,11 @@
+<div class="mainform">
+	<h4>Welcome to the NFluent Support</h4>
+
+	<app-input label="Your name" [value]="name"></app-input><br>
+	<app-input label="Your email" [value]="email"></app-input><br>
+	<app-input label="The subject" [value]="subject"></app-input><br>
+	<app-input label="The application" [value]="appli" [options]="applis"></app-input><br>
+
+	<app-input label="Your message" [cols]="20" [rows]="5" [value]="message" (validate)="send_message()"></app-input><br>
+
+</div>

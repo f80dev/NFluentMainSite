@@ -4,7 +4,6 @@ import {
     showMessage,
     CryptoKey,newCryptoKey,
     getParams,
-
     get_nfluent_wallet_url, $$, now
 } from "../../tools";
 import {NFT} from "../../nft";
@@ -14,6 +13,15 @@ import {_prompt} from "../prompt/prompt.component";
 import {environment} from "../../environments/environment";
 import {wait_message} from "../hourglass/hourglass.component";
 import {MatDialog} from "@angular/material/dialog";
+import {GalleryState, ImageItem} from "ng-gallery";
+import {init_visuels} from "../../tools_web";
+import {StyleManagerService} from "../style-manager.service";
+import {UserService} from "../user.service";
+
+import {Transaction, TokenTransfer, TransactionPayload, Address} from "@multiversx/sdk-core/out";
+import {WalletConnectV2Provider} from "@multiversx/sdk-wallet-connect-provider/out";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {_ask_for_paiement} from "../ask-for-payment/ask-for-payment.component";
 
 export interface Document {
     url: string;
@@ -35,8 +43,7 @@ export class TokendocComponent implements OnInit {
     identity: string = "";
     address:string=""       //Peut être une adresse de blockchain ou un email
     documents: Document[]=[];
-    sel_visuel:any;
-
+    sel_visuel: GalleryState | undefined;
     collection:Collection | undefined;
     miner:CryptoKey=newCryptoKey();
     visual="";
@@ -46,6 +53,7 @@ export class TokendocComponent implements OnInit {
     url_wallet: string="";
     url_explorer:string="";
     url_gallery:string="";
+    config:string=environment.appli + "/assets/"+environment.tokendoc.start_config
     infos: string="";
     advanced_mode: boolean=false;
     max_supply: number=1;
@@ -53,17 +61,21 @@ export class TokendocComponent implements OnInit {
     stockage_document:string="github-nfluentdev-storage-main";
     appname: string=environment.tokendoc.appname;
     claim:string=environment.tokendoc.claim;
-    visuels: string[]=[];
+    visuels: any[]=[];
     message_preview="";
     show_login: boolean=false;
-    user: any={};
     name: string="Certificat de propriété";
     visuel_size="200px";
-    nft_size: number=200;
-
+    nft_size: number=400;
+    price: number = environment.tokendoc.cost_in_crypto;
+    fiat_price:number=  environment.tokendoc.cost_in_fiat;
+    money:{name:string,supply:number,id:string} | undefined;
 
     constructor(public network:NetworkService,
                 public dialog:MatDialog,
+                public user:UserService,
+                public toast:MatSnackBar,
+                public theme:StyleManagerService,
                 public routes:ActivatedRoute) {
 
     }
@@ -73,10 +85,15 @@ export class TokendocComponent implements OnInit {
     async read_param(){
         let params:any=await getParams(this.routes);
         $$("Lecture des parametres ",params)
+
         if(params.hasOwnProperty("advanced_mode"))this.advanced_mode=(params.advanced_mode=='true');
         this.miner=newCryptoKey("","","")
-        this.miner.encrypt=params.miner || environment.tokendoc.miner_key;
+        this.miner.encrypt=(params.miner || environment.tokendoc.miner_key);
+        if(this.miner.encrypt)this.miner.encrypt=this.miner.encrypt.trim()
         this.identity=params.identity || "";
+        if(params.price)this.price=params.price
+        if(params.fiat_price)this.fiat_price=params.fiat_price
+
         this.stockage=params.stockage || environment.tokendoc.stockage;
         this.appname=params.appname || environment.tokendoc.appname;
         this.claim=params.claim || environment.tokendoc.claim;
@@ -85,6 +102,7 @@ export class TokendocComponent implements OnInit {
         this.infos=localStorage.getItem("infos") || "";
 
         this.network.network=params.network || environment.tokendoc.network;
+        this.network.get_token(params.money || "egld").subscribe((money)=>{this.money=money});
         this.network.get_collections(params.collection || environment.tokendoc.collection).subscribe((cols:any)=>{
             if(cols.length==0){
                 $$("La collection en parametre n'est pas disponible");
@@ -101,15 +119,14 @@ export class TokendocComponent implements OnInit {
             this.upload_document();
             this.eval_signatures();
         }
+
+        this.eval_preview(environment.tokendoc.visual,true);
     }
 
 
     ngOnInit() {
-        setTimeout(()=>{
-            this.read_param();
-            this.visuels=[environment.tokendoc.visual];
-            this.eval_preview(this.visuels[0]);
-        },500);
+        this.theme.setStyle("theme","nfluent-dark-theme.css")
+        this.read_param();
     }
 
 
@@ -121,21 +138,19 @@ export class TokendocComponent implements OnInit {
 
 
 
-
     save_local(){
         localStorage.setItem("infos",this.infos);
         localStorage.setItem("max_supply",this.max_supply.toString());
+        localStorage.setItem("title",this.name);
 
-        for(let document of this.documents){
+        for(let document of this.documents)
             if(document.file.length>10000)return;
-        }
 
-        for(let visuel of this.visuels){
+        for(let visuel of this.visuels)
             if(visuel.length>10000)return;
-        }
 
         localStorage.setItem("documents",JSON.stringify(this.documents));
-        if(this.visuels.length>0)localStorage.setItem("visuels",this.visuels[0]);
+        if(this.visuels.length>0)localStorage.setItem("visual",this.visual);
     }
 
 
@@ -148,8 +163,8 @@ export class TokendocComponent implements OnInit {
         this.eval_signatures();
 
         if($event.file.startsWith("data:image")){
-            this.visuels=[$event.file];
-            this.eval_preview($event.file);
+            this.config=environment.appli + "/assets/config_certificat_photo.yaml"
+            this.eval_preview($event.file,true);
         }
 
         this.save_local();
@@ -160,74 +175,105 @@ export class TokendocComponent implements OnInit {
     async send(cb: string) {
         $$("minage sur le réseau "+this.network.network)
         if(this.miner){
-            let _default=localStorage.getItem("last_dest") || "";
-            let address=await _prompt(this,"Adresse de réception du NFT",_default,"","text","Envoyer","Annuler",false);
-            if(address){
-                localStorage.setItem("last_dest",address);
-                wait_message(this,"Mise en ligne du visuel du certificat");
-                this.network.upload(this.sel_visuel,this.stockage).subscribe(async (image:any)=>{
-                    wait_message(this,"Création du compte sur "+this.network.network);
-                    this.network.create_account(
-                        this.network.network,
-                        address,
-                        environment.appli+"/assets/wallet_access.html",
-                        environment.appli+"/assets/existing_account_wallet_access.html"
-                    ).subscribe(async (account:any)=>{
-                        wait_message(this,"Fabrication du NFT");
-                        let files=this.documents.map((x:any)=>{return x["url"]});
-                        let attributes=[]
-                        if(this.identity){
-                            attributes.push({trait_type:this.identity_type,value:this.identity})
-                        }
-                        for(let doc of this.documents){
-                            if(doc.filename.length>0){
-                                attributes.push({trait_type:doc.filename,value:doc.signature})
-                            }else{
-                                attributes.push({trait_type:doc.url,value:doc.signature})
-                            }
-                        }
+            if(this.price>0 || this.fiat_price>0){
+                try{
+                    let rep:any=await _ask_for_paiement(this,
+                        environment.merchant.wallet.token,
+                        this.price,this.fiat_price,
+                        environment.merchant,
+                        this.user.wallet_provider,
+                        "Frais de minage du certificat",
+                        "Choisissez un mode de paiement",
+                        "")
 
-
-                        let owner=account.address
-                        let nft:NFT={
-                            balances: undefined,
-                            type: "SemiFungible",
-                            address: undefined,
-                            attributes: attributes,
-                            collection: this.collection,
-                            creators: [{address:this.miner.address,share:100,verified:true}],
-                            description: this.infos,
-                            files: files,
-                            links: undefined,
-                            supply:this.max_supply,
-                            price: 0,
-                            message: undefined,
-                            miner: this.miner,
-                            name: this.name,
-                            network: this.network.network,
-                            owner: owner,
-                            royalties: 0,
-                            solana: undefined,
-                            style: undefined,
-                            symbol: "NFluenTCertif",
-                            tags: "Certificat",
-                            visual: image.url
-                        }
-                        $$("Minage du NFT attribué a "+account.address)
-                        let minage:any=await this.network.mint(nft,this.miner,owner,"",false,this.stockage,this.network.network)
-                        wait_message(this)
-                        if(minage.error==""){
-                            localStorage.removeItem("document");
-                            showMessage(this,"Consulter votre mail")
-                            this.url_wallet=get_nfluent_wallet_url(owner,this.network.network,environment.wallet);
-                            this.url_explorer=minage.link_mint;
-                            this.url_gallery=minage.link_gallery;
-                        } else {
-                            showMessage(this,"Probleme technique "+minage.error)
-                        }
-                    })
-                })
+                    if(rep){
+                        this.user.wallet_provider=rep.data.provider;
+                        this.user.buy_method=rep.buy_method;
+                        this.run_mining(rep.address);
+                    }
+                } catch(e){
+                    showMessage(this,"Paiement annulé")
+                    return;
+                }
             }
+
+
+        }
+    }
+
+
+    async run_mining(addr:string){
+        let miner_addr=this.miner.address
+        let address=localStorage.getItem("last_dest") || addr || this.user.profil.email;
+        if(!this.user.isConnected())
+            address=await _prompt(this,"Adresse de réception du NFT",address,"","text","Envoyer","Annuler",false);
+        if(address){
+            localStorage.setItem("last_dest",address);
+            wait_message(this,"Mise en ligne du visuel du certificat");
+            let src_image=this.visuels[this.sel_visuel!.currIndex!].data.src;
+            this.network.upload(src_image,this.stockage).subscribe(async (image:any)=>{
+                wait_message(this,"Création du compte sur "+this.network.network);
+                this.network.create_account(
+                    this.network.network,
+                    address,
+                    environment.appli+"/assets/wallet_access.html",
+                    environment.appli+"/assets/existing_account_wallet_access.html"
+                ).subscribe(async (account:any)=>{
+                    wait_message(this,"Fabrication du NFT pour "+account.url_explorer);
+                    let files=this.documents.map((x:any)=>{return x["url"]});
+                    let attributes=[]
+                    if(this.identity){
+                        attributes.push({trait_type:this.identity_type,value:this.identity})
+                    }
+                    for(let doc of this.documents){
+                        if(doc.filename.length>0){
+                            attributes.push({trait_type:doc.filename,value:doc.signature})
+                        }else{
+                            attributes.push({trait_type:doc.url,value:doc.signature})
+                        }
+                    }
+
+
+                    let owner=account.address
+                    let nft:NFT={
+                        type: "SemiFungible",
+                        address: undefined,
+                        attributes: attributes,
+                        collection: this.collection,
+                        creators: [{address:this.miner.address,share:100,verified:true}],
+                        description: this.infos,
+                        files: files,
+                        links: undefined,
+                        supply:this.max_supply,
+                        price: 0,
+                        message: undefined,
+                        miner: this.miner,
+                        name: this.name,
+                        network: this.network.network,
+                        owner: owner,
+                        royalties: 0,
+                        solana: undefined,
+                        style: undefined,
+                        symbol: "NFluenTCertif",
+                        tags: "Certificat",
+                        visual: image.url,
+                        balances: {},
+                    }
+                    nft["balances"][miner_addr]=this.max_supply
+                    $$("Minage du NFT attribué a "+account.address)
+                    let minage:any=await this.network.mint(nft,this.miner,owner,"",false,this.stockage,this.network.network)
+                    wait_message(this)
+                    if(minage.error==""){
+                        localStorage.removeItem("document");
+                        showMessage(this,"Consulter votre mail")
+                        this.url_wallet=get_nfluent_wallet_url(owner,this.network.network,environment.wallet);
+                        this.url_explorer=minage.link_mint;
+                        this.url_gallery=minage.link_gallery;
+                    } else {
+                        showMessage(this,"Probleme technique "+minage.error)
+                    }
+                })
+            })
         }
     }
 
@@ -237,8 +283,6 @@ export class TokendocComponent implements OnInit {
         this.visual="";
         this.save_local();
     }
-
-
 
 
     async upload_document() {
@@ -273,14 +317,17 @@ export class TokendocComponent implements OnInit {
 
     }
 
+
     restart(force=false) {
         _prompt(this,"Effacer et recommencer ?","","","oui/non","Recommencer","Continuer",true,null,force).then((rep)=>{
             if(rep=="yes"){
                 this.url_wallet='';
                 this.url_explorer='';
                 this.documents=[];
-                this.visuels=[environment.tokendoc.visual];
-                this.eval_preview(this.visuels[0]);
+                this.sel_visuel=undefined;
+                this.config=environment.appli + "/assets/"+environment.tokendoc.start_config
+                this.visuels=[];
+                this.eval_preview();
             }
         })
     }
@@ -311,7 +358,7 @@ export class TokendocComponent implements OnInit {
 
     capture($event: any) {
         this.show_scanner=false;
-        let filename="capture_"+now("str")+".jpg"
+        let filename="capt_"+now("hex")+".jpg"
         this.onFileSelected({
             url:"",
             file:$event.data,
@@ -321,37 +368,35 @@ export class TokendocComponent implements OnInit {
         });
     }
 
-    eval_preview(visual:string="") {
-        let url_config = environment.appli + "/assets/config_certificat_photo.yaml";
-        this.message_preview="Preview en cours de construction";
+    eval_preview(visual:string="",force=false) : boolean {
         if(visual.length>0)this.visual=visual;
+        if(!force && this.name==localStorage.getItem("title"))return true;
 
+        $$("Mise a jour des visuels avec "+visual)
+        this.save_local();
+
+        this.message_preview="Preview en cours de construction";
         this.network.send_photo_for_nftlive(
-            10, url_config,this.nft_size.toString(),
-            80,
-            "",
-            [
-                {name: "__title__",value: this.name},
-                {name: "__dtMining__",value:now("date")}
-            ], {photo: this.visual}, "base64").subscribe(async (visuels: any) => {
+            10,this.config, this.nft_size.toString(), 80,"",
+            [{name: "title",value: this.name}, {name: "dtMining",value:now("date")}],
+            {photo: this.visual}, "base64").subscribe(async (visuels: any) => {
                 this.message_preview="";
-                this.visuels = visuels.images;
-                let size=(350/this.visuels.length)
-                if(size<100)size=100;
-                this.visuel_size=size+"px";
-                if(!this.sel_visuel)this.sel_visuel=visuels.images[0];
+                this.visuels=init_visuels(visuels.images)
+                if(!this.sel_visuel && this.visuels.length>0)this.sel_visuel=this.visuels[0];
         },()=>{
             this.message_preview="";
         })
+        return true;
     }
 
     select_visual($event: any) {
-        this.visuels=[$event.file];
-        this.eval_preview($event.file);
+        this.config=environment.appli + "/assets/config_certificat_photo.yaml"
+        this.eval_preview($event.file,true);
     }
 
     login(event:any) {
-        this.user=event;
+        this.user.init_wallet_provider(event.provider,event.address)
+        this.show_login=false;
     }
 
     disconnect() {

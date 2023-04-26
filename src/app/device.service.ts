@@ -25,7 +25,7 @@ export class DeviceService {
     if(platform.IOS)this.modele="ios";
     if(platform.ANDROID)this.modele="android";
     this.isHandset$=breakpointObserver.observe(Breakpoints.Handset+Breakpoints.Tablet+Breakpoints.Small).pipe(map((result:any) => result.matches), shareReplay());
-    this.smallScreen=breakpointObserver.observe(Breakpoints.Tablet).pipe(map((result:any) => result.matches), shareReplay());
+    this.smallScreen=breakpointObserver.observe(Breakpoints.TabletPortrait+Breakpoints.Small+Breakpoints.Medium+Breakpoints.HandsetPortrait).pipe(map((result:any) => result.matches), shareReplay());
   }
 
   resize(w:number) {

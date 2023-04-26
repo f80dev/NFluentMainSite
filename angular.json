@@ -34,8 +34,13 @@
               "src/styles.scss",
               {
                 "input": "src/nfluent.scss",
-                "inject": true,
+                "inject": false,
                 "bundleName": "nfluent-theme"
+              },
+              {
+                "input": "src/nfluent-dark.scss",
+                "inject": false,
+                "bundleName": "nfluent-dark-theme"
               }
             ],
             "scripts": []

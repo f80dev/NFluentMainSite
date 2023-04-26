@@ -23,7 +23,6 @@ import {AppComponent} from "./app.component";
 import {ScrollToModule} from "@nicky-lenaers/ngx-scroll-to";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { TheblogComponent } from './theblog/theblog.component';
-import {AuthentComponent} from "./authent/authent.component";
 import {HttpClientModule} from "@angular/common/http";
 import {GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule} from "@abacritt/angularx-social-login";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
@@ -54,11 +53,20 @@ import {MatStepperModule} from "@angular/material/stepper";
 import { TokendocVerifyComponent } from './tokendoc-verify/tokendoc-verify.component';
 import {NftliveComponent} from "./nftlive/nftlive.component";
 import {GALLERY_CONFIG, GalleryModule} from 'ng-gallery';
+import {StyleManagerService} from "./style-manager.service";
+import { FaqsComponent } from './faqs/faqs.component';
+import {AuthentComponent} from "./authent/authent.component";
+import { PaymentComponent } from './payment/payment.component';
+import { AskForPaymentComponent } from './ask-for-payment/ask-for-payment.component';
+import { SupportComponent } from './support/support.component';
+import {MatCardModule} from "@angular/material/card";
+import {GooglePayButtonModule} from "@google-pay/button-angular";
 
 const routes: Routes = [
     { path: '', component: MainComponent ,pathMatch: 'full'},
     { path: 'store', component: StoreComponent },
     { path: 'blog', component: TheblogComponent },
+    { path: 'support', component: SupportComponent },
     { path: 'leblog', component: TheblogComponent },
     { path: 'create', component: CreatorComponent,pathMatch: 'full' },
     { path: 'nftlive', component: NftliveComponent,pathMatch: 'full' },
@@ -79,13 +87,13 @@ const config: SocketIoConfig = { url: environment.server, options: {} };
         StepsComponent,
         SectionComponent,
         InputComponent,
+        AuthentComponent,
         TeamComponent,
         ParagrapheComponent,
         ReverseblocComponent,
         ConvictionComponent,
         StoreComponent,
         TheblogComponent,
-        AuthentComponent,
         ScannerComponent,
         CreatorComponent,
         SafePipe,
@@ -95,7 +103,11 @@ const config: SocketIoConfig = { url: environment.server, options: {} };
         PromptComponent,
         FileDragNDropDirective,
         HourglassComponent,
-        TokendocVerifyComponent
+        TokendocVerifyComponent,
+        FaqsComponent,
+        PaymentComponent,
+        AskForPaymentComponent,
+        SupportComponent
     ],
     imports: [
         BrowserModule,
@@ -126,10 +138,12 @@ const config: SocketIoConfig = { url: environment.server, options: {} };
         MatSelectModule,
         MatCheckboxModule,
         MatProgressBarModule,
-        MatStepperModule
+        MatStepperModule,
+        MatCardModule,
+        GooglePayButtonModule
     ],
   providers: [
-      DeviceService,
+      DeviceService,StyleManagerService,
       {provide: MAT_DIALOG_DATA, useValue: {hasBackdrop: false}},
       {provide: 'SocialAuthServiceConfig',
           useValue: {

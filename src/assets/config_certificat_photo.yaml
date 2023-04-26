@@ -20,11 +20,11 @@ layers:
   - params: {}
     name: text_logo
     elements:
-      - image: "https://nfluent.io/assets/certificat authenticite_black.svg"
+      - image: "https://nfluent.io/assets/certificat_authenticite_black.svg"
         type: image/svg
-      - image: "https://nfluent.io/assets/certificat authenticite_white.svg"
+      - image: "https://nfluent.io/assets/certificat_authenticite_white.svg"
         type: image/svg
-      - image: "https://nfluent.io/assets/certificat authenticite_green.svg"
+      - image: "https://nfluent.io/assets/certificat_authenticite_green.svg"
         type: image/svg
     text: ""
     unique: false

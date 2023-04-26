@@ -4,6 +4,8 @@ import {FormBuilder} from "@angular/forms";
 import {environment} from "../../environments/environment";
 import {NetworkService} from "../network.service";
 import {showMessage} from "../../tools";
+import {DeviceService} from "../device.service";
+import {StyleManagerService} from "../style-manager.service";
 declare var anime: any;
 
 @Component({
@@ -23,10 +25,15 @@ export class MainComponent implements AfterViewInit,OnInit {
       public router:Router,
       public network:NetworkService,
       public routes:ActivatedRoute,
-      private formBuilder: FormBuilder
-  ) {}
+      private formBuilder: FormBuilder,
+      public device:DeviceService,
+      public theme:StyleManagerService
+  ) {
+
+  }
 
   ngOnInit(): void {
+    this.theme.setStyle("theme","nfluent-theme.css")
     this.routes.queryParams.subscribe((param)=>{
       if(param.hasOwnProperty("version")){
         this.version=param["version"];
@@ -160,8 +167,7 @@ export class MainComponent implements AfterViewInit,OnInit {
 
   open_create() {
     let encrypt_param="dG9vbGJhcj1mYWxzZSZ0aXRsZV9mb3JtPUclQzMlQTluJUMzJUE5cmF0ZXVyJTIwZGUlMjB2aXN1ZWxzJTIwTkZUcyZjbGFpbT1GYWJyaXF1ZXIlMjB2b3MlMjBzJUMzJUE5cmllcyUyME5GVCUyMGVuJTIwcXVlbHF1ZXMlMjBtaW51dGVzJnZpc3VhbD1odHRwcyUzQSUyRiUyRmNkbi5waXhhYmF5LmNvbSUyRnBob3RvJTJGMjAxOCUyRjAyJTJGMDYlMkYyMiUyRjQzJTJGcGFpbnRpbmctMzEzNTg3NV85NjBfNzIwLmpwZyZhcHBuYW1lPVRva2VuRm9yZ2UlMjBEZXNpZ24mbmV0d29ya3M9YjY0JTNBVzEwJTNEJnN0b2NrYWdlPWI2NCUzQVd5SnVablJ6ZEc5eVlXZGxJbDAlM0Qmc3RvY2thZ2VfZG9jdW1lbnQ9YjY0JTNBV3lKbmFYUm9kV0l0Ym1ac2RXVnVkR1JsZGkxemRHOXlZV2RsTFcxaGFXNGlYUSUzRCUzRA%3D%3D"
-    //open("https://tokenforge.nfluent.io/creator?p="+encrypt_param)
-    open("http://localhost:4201/creator?p="+encrypt_param)
+    open("https://tokenforge.nfluent.io/creator?p="+encrypt_param)
   }
 
   open_tokendoc() {
