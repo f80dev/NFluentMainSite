@@ -75,18 +75,23 @@ export class NetworkService implements OnInit {
     }
 
 
-    init_keys(network="elrond-devnet",with_balance=false,access_code:string="",operation_id:string="") {
+    init_keys(with_balance=false,access_code:string="",operation_id:string="") {
         return new Promise((resolve, reject) => {
             this.wait("Chargement des clés");
-            this.httpClient.get<CryptoKey[]>(this.server_nfluent + "/api/keys/?access_code="+access_code+"&network=" + network + "&with_private=true&with_balance="+with_balance+"&operation="+operation_id,).subscribe((r: CryptoKey[]) => {
-                this.keys = r;
-                this.wait();
-                resolve(r);
-            },(err:any)=>{
-                this.wait("!Probléme de chargement");
-                $$("Probleme de chargement");
+            if(this.network){
+                this.httpClient.get<CryptoKey[]>(this.server_nfluent + "/api/keys/?access_code="+access_code+"&network=" + this.network + "&with_private=true&with_balance="+with_balance+"&operation="+operation_id,).subscribe((r: CryptoKey[]) => {
+                    this.keys = r;
+                    this.wait();
+                    resolve(r);
+                },(err:any)=>{
+                    this.wait("!Probléme de chargement");
+                    $$("Probleme de chargement");
+                    reject();
+                });
+            } else {
                 reject();
-            });
+            }
+
         });
     }
 
@@ -186,8 +191,8 @@ export class NetworkService implements OnInit {
     //     });
     // };
 
-    get_token(addr:string){
-        return this._get("tokens/"+addr+"/","network="+this.network);
+    get_token(addr:string,network:string){
+        return this._get("tokens/"+addr+"/","network="+network);
     }
 
     get network(): string {
@@ -195,12 +200,22 @@ export class NetworkService implements OnInit {
     }
 
     set network(network_name: string) {
-        this._network = network_name;
-        if(this.isMain())this.chain_id="T"; else this.chain_id="D";
-        //this._connection=new Connection(clusterApiUrl(network_name), 'confirmed');
-        this.init_keys(network_name,true).then(()=>{
-            this.network_change.next(network_name);
-        })
+        this.init_network(network_name)
+    }
+
+    init_network(network:string) : Promise<any>{
+        return new Promise((resolve) => {
+            if(this._network==network && this.keys.length>0){
+                resolve(this.keys)
+            } else {
+                this._network=network;
+                if(this.isMain())this.chain_id="T"; else this.chain_id="D";
+                this.init_keys(true).then(()=>{
+                    this.network_change.next(network);
+                    resolve(this.keys);
+                }).catch(()=>{resolve(null)})
+            }
+        });
     }
 
     get connection(): Connection {
@@ -364,7 +379,13 @@ export class NetworkService implements OnInit {
 
 
     isMain() {
-        return this._network.indexOf("mainnet")>-1;
+        if(this._network){
+            return this._network.indexOf("mainnet")>-1;
+        }else{
+            return false;
+        }
+
+
     }
 
 
@@ -565,11 +586,11 @@ export class NetworkService implements OnInit {
     }
 
     //recoit un objet aux propriétés filename & content
-    upload(file: any ,platform:string="nftstorage",type="image/png",convert=""){
+    upload(file: any ,platform:string="nftstorage",type="image/png",convert="",api_key=""){
         if(platform!="nfluent"){
-            return this.httpClient.post(this.server_nfluent+"/api/upload/?convert="+convert+"&platform="+platform+"&type="+type,file);
+            return this.httpClient.post(this.server_nfluent+"/api/upload/?convert="+convert+"&platform="+platform+"&type="+type+"&api_key="+api_key,file);
         }else{
-            return this.httpClient.post(environment.server+"/api/upload/?convert="+convert+"&platform="+platform+"&type="+type,file);
+            return this.httpClient.post(environment.server+"/api/upload/?convert="+convert+"&platform="+platform+"&type="+type+"&api_key="+api_key,file);
         }
     }
 
@@ -805,19 +826,21 @@ export class NetworkService implements OnInit {
         body["quality"]=quality
         body["dynamic_fields"]=dynamic_fields
         body["format"]=format
-        return this.httpClient.post(this.server_nfluent+"/api/send_photo_for_nftlive/",body)
+        return this._post("send_photo_for_nftlive/","",body,60000)
     }
 
 
-    mint(token:NFT, miner:CryptoKey, owner:string,operation:string,sign=false, platform:string="nftstorage", network="",storage_file="",encrypt_nft=false){
+    mint(token:NFT, miner:CryptoKey, owner:string,operation:string,sign=false,
+         platform:string="nftstorage", network="",
+         storage_file="",encrypt_nft=false) : Promise<any> {
         return new Promise((resolve, reject) => {
-            let param="storage_file="+storage_file+"&keyfile="+miner+"&owner="+owner+"&sign="+sign+"&platform="+platform+"&network="+network+"&operation="+operation
+            let param="storage_file="+storage_file+"&keyfile="+miner.encrypt+"&owner="+owner+"&sign="+sign+"&platform="+platform+"&network="+network+"&operation="+operation
             param=param+"&encrypt_nft="+encrypt_nft;
             this.httpClient.post(this.server_nfluent+"/api/mint/?"+param,{nft:token,miner:miner}).subscribe((r)=>{
                 resolve(r);
             },(err)=>{
                 this.wait();
-                reject(err);
+                resolve(err);
             })
         });
     }
@@ -827,7 +850,14 @@ export class NetworkService implements OnInit {
     }
 
     extract_zip(file:any) {
-        return this.httpClient.post(this.server_nfluent+"/api/extract_zip/",file);
+        return this._post("extract_zip/","",file);
+    }
+
+
+    refund(_from:CryptoKey,dest:string,token_id: string="egld",amount:number=1.0,comment="",network="elrond-devnet") {
+        //@bp.route('/refund/<address>/<amount>/<token>/',methods=["POST"])
+        let body={bank:_from,data:comment,network:network}
+        return this._post("refund/"+dest+"/"+amount+"/"+token_id+"/","",body,120000);
     }
 
     get_collections(owners_or_collections: string,network="",detail=false) {
@@ -836,8 +866,8 @@ export class NetworkService implements OnInit {
         return this.httpClient.get<Collection[]>(url);
     }
 
-    create_collection(new_collection: Collection) {
-        return this.httpClient.post(this.server_nfluent+"/api/create_collection/?network="+this.network,new_collection);
+    create_collection(new_collection: Collection,simulation=false) {
+        return this.httpClient.post(this.server_nfluent+"/api/create_collection/?network="+this.network+"&simulation="+simulation,new_collection);
     }
 
     get_minerpool() {
@@ -924,10 +954,7 @@ export class NetworkService implements OnInit {
     getBalance(addr:string,network:string,token_id="") {
         let params="with_balance=true&network="+network;
         if(token_id.length>0)params=params+"&token_id="+token_id;
-        let keys:any=this._get("keys/"+addr+"/",params);
-        for(let k of keys){
-            if(k["address"]==addr)return k["balance"]
-        }
+        return this._get("keys/"+addr+"/",params)
     }
 
 
@@ -953,6 +980,10 @@ export class NetworkService implements OnInit {
         return this.httpClient.post<NFT[]>(this.server_nfluent+"/api/upload_batch/",content);
     }
 
+    upload_excel_file(content:any) {
+        return this.httpClient.post<any[]>(this.server_nfluent+"/api/upload_excel/",content);
+    }
+
     get_account(addr: string, network: string) {
         return this._get("accounts/"+addr,"network="+network);
     }
@@ -962,6 +993,7 @@ export class NetworkService implements OnInit {
     }
 
     isDevnet() {
+        if(!this.network)return false;
         if(this.network.indexOf("devnet")>-1)return true;
         return false;
     }
@@ -1020,13 +1052,22 @@ export class NetworkService implements OnInit {
         return this._post("create_zip/","",body);
     }
 
-    send_bill(dest: string, subject: string="Votre facture",label="",message="",model="mail_facture.html") {
+    send_bill(dest: string,amount:string,
+              subject: string="Votre facture",
+              reference="",
+              message="",
+              description="",
+              contact="support@nfluent.io",
+              model="mail_facture.html") {
         let body={
             dest:dest,
-            label: label,
+            reference: reference,
             message: message,
             subject:subject,
-            model:model
+            model:model,
+            amount:amount,
+            contact:contact,
+            description:description
         }
         return this._post("send_bill/","",body,200000);
     }

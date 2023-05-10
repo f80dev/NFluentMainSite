@@ -19,7 +19,7 @@ export const environment = {
     claim:"Tokenisez vos documents en quelques clics",
     visual: "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8cGFwZXJ8ZW58MHx8MHx8&auto=format&fit=crop&w=300&q=60",
     stockage_document: "infura",
-    stockage:"nftstorage",
+    stockage:"github-nfluentdev-storage-main",
     start_config: "config_certificat.yaml",
 
     cost_in_fiat: 1,
@@ -41,7 +41,8 @@ export const environment = {
           token:"NFLUCOIN-4921ed",
           address:"erd1gkd6f8wm79v3fsyyklp2qkhq0eek28cnr4jhj9h87zwqxwdz7uwstdzj3m",
           network:"elrond-devnet",
-          unity: "NfluCoin"
+          unity: "NfluCoin",
+          bank : "nfluent: Z0FBQUFBQmtXblgwRGxBQ21NdXFVdHFIVlZNcUN3elpKc2xmem5WNHFrZVRYSEhXZWdJSGZzeENQY2xFY0N6a0dUaDM3SU5zYjRIQmpLak12ZWxRZkJrNU4tMmtaTkVOZlhIbF9NTlNoV1FkYlUtakxyR0cyQXRJNk9JcmpUWm5rSnNJSEZTS3dMV3NGSmgtZ1lsZG5OYkJVOEZ5UU"
         }
   }
 

@@ -3,13 +3,18 @@ mat-step {
 }
 
 mat-icon {
-    margin: 5px;
+    margin: 2px;
 }
 
-button {
-    margin: 10px;
+mat-raised-button {
     min-width: 100px !important;
 }
+
+mat-button {
+    margin: 10px;
+}
+
+
 
 
 

@@ -4,7 +4,7 @@
 	<br>
 
 	<div class="background-component"
-	     style="min-height: 80vh;max-width: 500px;width:90%;display: inline-block;text-align: center;color: white;">
+	     style="min-height: 80vh;max-width: 500px;width:90%;display: inline-block;text-align: center;color: white;position: relative;">
 
 		<app-hourglass anim="./assets/engrenage.gif"
 		               [message]="message"
@@ -17,14 +17,14 @@
 				<mat-step>
 					<ng-template matStepLabel>Charger un ou plusieurs documents</ng-template>
 
-					<div *ngIf="!show_scanner" style="display: flex;align-items: flex-start;margin-left:-20px;">
-						<div style="width:100px;display: inline-block;">
-							<app-upload-file (uploaded)="onFileSelected($event)" [zone]="true" width="100px" height="36px"
-							                 title="Importer un document depuis votre ordinateur / smartphone"
-							                 [maxsize]="10000000">
-								Importer
-							</app-upload-file>
-						</div>
+					<div *ngIf="!show_scanner" style="display: flex;margin-left:-20px;">
+
+						<app-upload-file (uploaded)="onFileSelected($event)" [zone]="true" width="120px" height="38px"
+						                 title="Importer un document depuis votre ordinateur / smartphone"
+						                 [maxsize]="10000000">
+							Importer
+						</app-upload-file>
+
 
 						<button mat-raised-button style="margin-top: 0;"
 						        title="Prendre en photo / scanner un document"
@@ -90,7 +90,8 @@
 					<br><br>
 
 					<gallery *ngIf="visuels.length>0"
-					         style="width: 320px;height:410px;display: inline-block;" (indexChange)="sel_visuel=$event" [thumbHeight]="90"
+					         style="width: 320px;height:410px;display: inline-block;"
+					         (indexChange)="select_visuel($event)" [thumbHeight]="90"
 					         [items]="visuels"></gallery>
 
 					<app-hourglass [message]="message_preview" fontsize="10px"></app-hourglass>
@@ -110,15 +111,11 @@
 				<mat-step *ngIf="documents.length>0">
 					<ng-template matStepLabel>Informations complémentaires</ng-template>
 
-					<app-input label="Dimension du visuel" [min]="150" [max]="600" color_value="white"
-					           [value]="nft_size" (valueChange)="nft_size=$event" value_type="slider">
-					</app-input>
-
-					<br>
-
-					<app-input value_type="memo" [value]="infos" (valueChange)="infos=$event;save_local()" [cols]="10" [rows]="3" maxlength="200"
+					<br><br>
+					<app-input value_type="memo" [value]="infos" (valueChange)="infos=$event;save_local()"
+					           [cols]="10" [rows]="3" maxlength="200"
 					           label="Informations complémaires (texte libre)"
-					           help="Informations ajoutée dans le NFTs">
+					           help="Informations non confidentielles, ajoutées dans le NFT">
 					</app-input>
 
 
@@ -126,6 +123,13 @@
 					<mat-checkbox [(ngModel)]="joinDoc" (change)="upload_document()">
 						Joindre les documents au NFT
 					</mat-checkbox>
+					<br><br>
+					<app-input label="Dimension du visuel" [min]="150" [max]="600" color_value="white"
+					           [value]="nft_size" (valueChange)="nft_size=$event" value_type="slider">
+					</app-input>
+
+					<br>
+
 
 				</mat-step>
 
@@ -163,7 +167,7 @@
 			<div *ngIf="documents.length>0 && url_wallet.length==0 && url_explorer.length==0 && network.network.length>0">
 				<button mat-raised-button color="primary"
 				        *ngIf="this.sel_visuel"
-				        [title]="'Coût : '+price+' '+money!.name"
+				        [title]="'pour '+price+' '+merchant!.wallet!.unity+' ou '+fiat_price+' '+merchant!.currency"
 				        [disabled]="message_preview.length>0"
 				        (click)="send('cb')">
 					Tokenizer !
@@ -188,6 +192,7 @@
 		</div>
 
 		<br>
+
 		<div style="display: inline-block;text-align: center;" *ngIf="message.length==0">
 			<app-authent
 					*ngIf="show_login"
@@ -197,24 +202,24 @@
 					[showExtensionWallet]="true"
 					style="margin-top: 10px;"
 					(cancel)="cancel()"
+					[showCancel]="true"
 					(disconnect)="disconnect()"
 					(invalid)="fail()"
 					(authent)="login($event)"></app-authent>
 		</div>
+
+
+		<div style="position: absolute;display:block;z-index:10;top:-5px;right:5px;color:#a4a4a4;">
+			<button mat-icon-button (click)="show_login=true" *ngIf="!show_login && !user.isConnected()">
+				<mat-icon>login</mat-icon>
+			</button>
+
+			<button mat-icon-button (click)="user.logout()" *ngIf="user.isConnected()">
+				<mat-icon>logout</mat-icon>
+			</button>
+		</div>
+
 	</div>
-
-	<br>
-	<button mat-raised-button style="margin-top: 40px;"
-	        (click)="show_login=true"
-	        *ngIf="!show_login && !user.isConnected()">
-		Se connecter
-	</button>
-
-	<button mat-raised-button style="margin-top: 40px;"
-	        (click)="user.logout()"
-	        *ngIf="user.isConnected()">
-		Se déconnecter
-	</button>
 
 
 	<div *ngIf="network.isDevnet() && collection" class="mat-body-2"

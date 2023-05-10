@@ -18,4 +18,20 @@ body,html {
 // emit any typography styles.
 @include mat.all-component-themes($nfluent-dark-theme);
 
+a:link {
+  color: darkgrey;
+  text-decoration: none;
+}
+
+a:visited {
+  color: darkgrey;
+  text-decoration: none;
+}
+
+a:hover {
+  color: white;
+  text-decoration: none;
+}
+
+
 

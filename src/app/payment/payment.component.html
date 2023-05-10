@@ -1,0 +1,76 @@
+
+
+<div *ngIf="buy_method=='crypto' && money && wallet_provider">
+    <div *ngIf="money" style="font-size: large;margin: 15px;">
+        <div style="margin: 15px;" class="mat-subheading-1">{{price}} {{money!.unity}} + Frais de service</div>
+        <div *ngIf="balance>=0">Vous disposez actuellement de {{balance/1e18 | number:"1.0-1"}} {{money!.unity}}</div>
+    </div>
+
+    <div *ngIf="qrcode_buy_token.length>0" style="margin-top: 20px;">
+        <div class="color-accent">Votre solde est insuffisant</div>
+        <div class="mat-body-2">
+            Recevoir des {{money.unity}} sur votre adresse
+        </div>
+        <img style="width: 150px" [src]="qrcode_buy_token"
+             [cdkCopyToClipboard]="user" [title]="'Recevoir des '+money.unity" >
+        <br>
+        <button mat-icon-button
+                style="margin: 20px;"
+                (click)="refresh_solde()">
+            Rafraichir le solde
+        </button>
+    </div>
+
+
+
+    <button type="button" mat-raised-button color="primary"
+            *ngIf="qrcode_buy_token.length==0"
+            style="margin: 20px;"
+            (click)="start_payment(price)">
+        Payer {{price}} {{money!.unity}}
+    </button>
+</div>
+
+
+<div *ngIf="buy_method=='fiat' && merchant">
+    <div style="margin: 15px;" class="mat-subheading-1">
+        {{fiat_price}} {{merchant!.currency}}
+    </div>
+
+    <google-pay-button
+            environment="TEST"
+            buttonType="buy"
+            buttonColor="black"
+            [existingPaymentMethodRequired]="false"
+            [paymentRequest]="payment_request"
+            [clickCallback]="onClickPreventDefault"
+            [loadPaymentDataCallback]="onLoadPaymentData"
+            [readyToPayChangeCallback]="onReadyToPayChange"
+            (cancel)="cancel_fiat_payment()"
+            (error)="error_fiat_event($event)"
+    >
+    </google-pay-button>
+</div>
+
+<div *ngIf="qrcode_buy_token.length==0">
+    <div *ngIf="billing_to.length>0">
+        Facture envoyée à {{billing_to}}
+        <mat-icon style="font-size: xx-small" (click)="change_billing_address()">edit</mat-icon>
+    </div>
+    <button type="button" mat-raised-button
+            style="margin-top: 20px;"
+            *ngIf="billing_to.length==0"
+            (click)="change_billing_address()">
+        Recevoir<br>une facture
+    </button>
+
+    <button type="button" mat-raised-button
+            style="margin-top: 20px;"
+            *ngIf="billing_to.length==0"
+            (click)="change_payment_mode()">
+        Autre mode<br>de paiement
+    </button>
+</div>
+
+
+

@@ -7,7 +7,7 @@
 		<app-hourglass [message]="message"></app-hourglass>
 
 		<br>
-		<app-input value_type="text" maxlength="50"
+		<app-input value_type="text" maxlength="40"
 		           *ngIf="photo && message.length==0 && visuels.length==0" width="300px"
 		           label="Titre du NFT" [value]="name"
 		           (valueChange)="name=$event">
@@ -16,7 +16,7 @@
 
 
 		<app-upload-file (uploaded)="onFileSelected($event)"
-		                 *ngIf="message=='' && !photo" width="150px" height="150px"
+		                 *ngIf="message=='' && !photo" width="250px" height="150px"
 		                 [zone]="true" style="display: inline-block;margin-top: 20px;padding: 20px;"
 		                 title="Importer un document depuis votre ordinateur / smartphone"
 		                 [maxsize]="10000000">
@@ -28,6 +28,10 @@
 			<img [src]="photo.file"
 			     (click)="photo=''"
 			     style="width:100%;height:100%;object-fit: cover;">
+			<mat-icon (click)="rotate_photo()" title="Tourner la photo"
+			          style="display:block;cursor:pointer;position:absolute;z-index: 100;left:20px;top:20px;color: gray;">
+				cameraswitch
+			</mat-icon>
 		</div>
 
 		<br>
@@ -57,6 +61,8 @@
 				Voir les NFTs
 			</button>
 
+
+
 			<button mat-raised-button
 			        (click)="restart()">
 				Annuler
@@ -69,14 +75,15 @@
 
 			<p class="mat-body-1">Sélectionner la photo à utiliser pour le NFT</p>
 			<gallery
-					style="width: 350px;height:440px;display: inline-block;" (indexChange)="sel_visuel=$event" [thumbHeight]="90"
+					style="width: 350px;height:440px;display: inline-block;"
+					(indexChange)="select_visuel($event)" [thumbHeight]="90"
 					[items]="visuels"></gallery>
 
 			<br><br>
 
-			<app-input label="destinataire" maxwidth="300px"
+			<app-input label="destinataire du NFT" width="300px"
+			           help="Adresse email ou d'un wallet"
 			           [value]="dests" (valueChange)="dests=$event" value_type="text"></app-input>
-
 
 			<br><br>
 			<app-input label="Nombre d'exemplaires (tirage)"
@@ -86,7 +93,6 @@
 			</app-input>
 
 			<br><br>
-
 
 			<button mat-raised-button color="primary"
 			        [disabled]="message.length>0"

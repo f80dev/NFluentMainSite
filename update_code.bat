@@ -1,21 +1,21 @@
-xcopy ..\NFTCalvi\src\app\authent\*.* src\app\authent\
-xcopy ..\NFTCalvi\src\app\payment\*.* src\app\payment\
-xcopy ..\NFTCalvi\src\app\ask-for-payment\*.* src\app\ask-for-payment\
-xcopy ..\NFTCalvi\src\app\input\*.* src\app\input\
-xcopy ..\NFTCalvi\src\app\prompt\*.* src\app\prompt\
-xcopy ..\NFTCalvi\src\app\faqs\*.* src\app\faqs\
-xcopy ..\NFTCalvi\src\app\upload-file\*.* src\app\upload-file\
-xcopy ..\NFTCalvi\src\app\network.service.ts src\app\
-xcopy ..\NFTCalvi\src\app\reversebloc\*.* src\app\reversebloc\
-xcopy ..\NFTCalvi\src\app\user.service.ts src\app\
-xcopy ..\NFTCalvi\src\app\operation.service.ts src\app\
-xcopy ..\NFTCalvi\src\app\style-manager.service.ts src\app\
-xcopy ..\NFTCalvi\src\app\device.service.ts src\app\
-xcopy ..\NFTCalvi\src\app\hourglass\*.*  src\app\hourglass\
-xcopy ..\NFTCalvi\src\app\scanner\*.*  src\app\scanner\
-xcopy ..\NFTCalvi\src\definitions.ts src\
-xcopy ..\NFTCalvi\src\operation.ts src\
-xcopy ..\NFTCalvi\src\create.ts src\
-xcopy ..\NFTCalvi\src\tools.ts src\
-xcopy ..\NFTCalvi\src\nft.ts src\
-xcopy ..\NFTCalvi\src\nfluent.scss src\
+xcopy /f /y ..\NFTCalvi\src\app\authent\*.* src\app\authent\
+xcopy /f /y ..\NFTCalvi\src\app\payment\*.* src\app\payment\
+xcopy /f /y ..\NFTCalvi\src\app\ask-for-payment\*.* src\app\ask-for-payment\
+xcopy /f /y ..\NFTCalvi\src\app\input\*.* src\app\input\
+xcopy /f /y ..\NFTCalvi\src\app\prompt\*.* src\app\prompt\
+xcopy /f /y ..\NFTCalvi\src\app\faqs\*.* src\app\faqs\
+xcopy /f /y ..\NFTCalvi\src\app\upload-file\*.* src\app\upload-file\
+xcopy /f /y ..\NFTCalvi\src\app\network.service.ts src\app\
+xcopy /f /y ..\NFTCalvi\src\app\reversebloc\*.* src\app\reversebloc\
+xcopy /f /y ..\NFTCalvi\src\app\user.service.ts src\app\
+xcopy /f /y ..\NFTCalvi\src\app\operation.service.ts src\app\
+xcopy /f /y ..\NFTCalvi\src\app\style-manager.service.ts src\app\
+xcopy /f /y ..\NFTCalvi\src\app\device.service.ts src\app\
+xcopy /f /y ..\NFTCalvi\src\app\hourglass\*.*  src\app\hourglass\
+xcopy /f /y ..\NFTCalvi\src\app\scanner\*.*  src\app\scanner\
+xcopy /f /y ..\NFTCalvi\src\definitions.ts src\
+xcopy /f /y ..\NFTCalvi\src\operation.ts src\
+xcopy /f /y ..\NFTCalvi\src\create.ts src\
+xcopy /f /y ..\NFTCalvi\src\tools.ts src\
+xcopy /f /y ..\NFTCalvi\src\nft.ts src\
+xcopy /f /y ..\NFTCalvi\src\nfluent.scss src\

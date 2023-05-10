@@ -61,6 +61,7 @@ import { AskForPaymentComponent } from './ask-for-payment/ask-for-payment.compon
 import { SupportComponent } from './support/support.component';
 import {MatCardModule} from "@angular/material/card";
 import {GooglePayButtonModule} from "@google-pay/button-angular";
+import { BankComponent } from './bank/bank.component';
 
 const routes: Routes = [
     { path: '', component: MainComponent ,pathMatch: 'full'},
@@ -70,6 +71,8 @@ const routes: Routes = [
     { path: 'leblog', component: TheblogComponent },
     { path: 'create', component: CreatorComponent,pathMatch: 'full' },
     { path: 'nftlive', component: NftliveComponent,pathMatch: 'full' },
+    { path: 'faucet', component: BankComponent,pathMatch: 'full' },
+    { path: 'bank', component: BankComponent,pathMatch: 'full' },
     { path: 'tokendoc', component: TokendocComponent},
     { path: 'admin', component: AdminComponent,pathMatch: 'full' },
     { path: 'theblog', component: TheblogComponent,pathMatch: 'full' },
@@ -107,7 +110,8 @@ const config: SocketIoConfig = { url: environment.server, options: {} };
         FaqsComponent,
         PaymentComponent,
         AskForPaymentComponent,
-        SupportComponent
+        SupportComponent,
+        BankComponent
     ],
     imports: [
         BrowserModule,

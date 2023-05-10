@@ -1,0 +1,12 @@
+<div class="mainform">
+	<app-upload-file (uploaded)="onFileSelected($event)" [zone]="true"
+	                 *ngIf="!document" [maxsize]="10000000">
+		Importer le document
+	</app-upload-file>
+
+	<app-input label="Donner l'adresse du propriétaire"
+	           [value]="address" width="200px"
+	           *ngIf="document"
+	           (valueChange)="address=$event">
+	</app-input>
+</div>
