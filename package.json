@@ -7,7 +7,7 @@
     "start local": "ng serve --port 4200 --host 0.0.0.0 --disable-host-check --live-reload",
     "start debug": "ng serve --configuration debug --live-reload",
     "build": "ng build",
-    "deploy": "ng build --aot --output-hashing=all --configuration production && gh-pages -d ./docs --repo https://github.com/f80dev/WebSiteNFluent.git -f -t true -b gh-pages -m \"update from gh-pages\"",
+    "deploy": "ng build --aot --output-hashing=none --source-map=false --optimization=true --configuration production && gh-pages -d ./docs --repo https://github.com/f80dev/WebSiteNFluent.git -f -t true -b gh-pages -m \"update from gh-pages\"",
     "deploy_debug": "ng build --configuration debug --aot --output-hashing=all && gh-pages -d ./docs --repo https://github.com/f80dev/WebSiteNFluent.git -f -t true -b gh-pages -m \"update from gh-pages\"",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",

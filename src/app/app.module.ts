@@ -66,18 +66,18 @@ import { JaugeComponent } from './jauge/jauge.component';
 import { AutovalidatorComponent } from './autovalidator/autovalidator.component';
 
 const routes: Routes = [
-    { path: '', component: MainComponent ,pathMatch: 'full'},
+    { path: 'nftlive', component: NftliveComponent},
     { path: 'store', component: StoreComponent },
     { path: 'blog', component: TheblogComponent },
-    { path: 'support', component: SupportComponent },
     { path: 'leblog', component: TheblogComponent },
-    { path: 'create', component: CreatorComponent,pathMatch: 'full' },
-    { path: 'nftlive', component: NftliveComponent,pathMatch: 'full' },
-    { path: 'faucet', component: BankComponent,pathMatch: 'full' },
-    { path: 'bank', component: BankComponent,pathMatch: 'full' },
+    { path: 'create', component: CreatorComponent },
+    { path: 'faucet', component: BankComponent},
+    { path: 'bank', component: BankComponent },
     { path: 'tokendoc', component: TokendocComponent},
     { path: 'admin', component: AdminComponent,pathMatch: 'full' },
-    { path: 'theblog', component: TheblogComponent,pathMatch: 'full' },
+    { path: 'theblog', component: TheblogComponent },
+    { path: '', component: MainComponent ,pathMatch: 'full' },
+    { path: '**', component: MainComponent },
 ]
 
 export const GOOGLE_CLIENT_ID="167299914377-p8vuf2f6npqnigl5kpqrh34cqjd81eko.apps.googleusercontent.com"

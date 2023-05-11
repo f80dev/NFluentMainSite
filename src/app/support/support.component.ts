@@ -9,12 +9,12 @@ import {MatSnackBar} from "@angular/material/snack-bar";
   styleUrls: ['./support.component.css']
 })
 export class SupportComponent {
-  applis=["TokenForge","NFluent Web Site","TokenSign"];
-  name: any;
-  appli: any;
-  message: any;
-  email: any;
-  subject: any;
+  applis=["TokenForge","NFluent Web Site","TokenSign","Other"];
+  name: any="";
+  appli: any="";
+  message: any="";
+  email: any="";
+  subject: any="";
 
   constructor(
       public network:NetworkService,

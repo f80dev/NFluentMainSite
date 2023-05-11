@@ -1,12 +1,9 @@
-<img *ngIf="background_image.length>0"
-     style="position: fixed;display: block;left:0;top:0;width:100%;object-fit: cover;z-index: 0;"
-     [src]="background_image">
+<div class="mainform" style="position:fixed;width:100vw;height:100vh;background-repeat: no-repeat;background-size: cover;" [style.background-image]="'url('+background_image+')'">
 
-<div class="mainform" style="text-align: center;position: relative;">
-	<div class="titleform">{{appname}}</div>
-	<div class="subtitleform">{{claim}}</div>
-	<br>
-	<div class="background-component" style="min-height: 80vh;max-width: 500px;width:90%;display: inline-block;text-align: center;color: white;padding: 10px;z-index: 2;">
+	<div class="background-component" style="position:absolute;left:3%;top:3%;min-height: 90vh;max-width: 500px;width:90%;display: inline-block;text-align: center;color: white;padding: 10px;z-index: 2;">
+
+		<div class="titleform">{{appname}}</div>
+		<div class="subtitleform">{{claim}}</div>
 
 		<app-hourglass [message]="message"></app-hourglass>
 

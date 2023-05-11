@@ -326,17 +326,10 @@
   <app-section title="Contacts" id="contact" bgcolor="#EFE5F8" style="text-align: center;width:100%;">
 
     <div style="width: 50%;max-width: 600px;display: inline-block;">
-      <app-input label="Your name" [value]="name"></app-input><br>
-      <app-input label="Your email" [value]="email"></app-input><br>
-      <app-input label="The subject" [value]="subject"></app-input><br>
-      <app-input label="Your message" [cols]="20" [rows]="5" [value]="message" (validate)="send_message()"></app-input><br>
+      <app-support></app-support>
 
-      <br><br>
 
-      <button mat-button mat-raised-button type="submit" color="primary"
-              style="padding: 30px;" (click)="send_message()">
-        <mat-icon style="font-size: x-large;">send</mat-icon>&nbsp;&nbsp;SEND
-      </button>
+
 
     </div>
 

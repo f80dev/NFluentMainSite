@@ -78,8 +78,8 @@ export class NftliveComponent implements OnInit {
 
     preview(limit=10,config=environment.appli + "/assets/config_nftlive.yaml") {
         let message="Préparation des propositions de NFTs";
-        if(this.photo.file.length()>100000)message=message+" (le délai de préparation peut excéder 1 minute)"
-        wait_message(this,);
+        if(this.photo.file.length>100000)message=message+" (le délai de préparation peut excéder 1 minute)"
+        wait_message(this,message);
         let seed=Math.round(Math.random()*100);
 
         $$("On récupére une première image et la taille de la sequences")
@@ -232,7 +232,7 @@ export class NftliveComponent implements OnInit {
 
 
     is_animated_photo() {
-        let file=this.photo.file;
+        let file=this.photo.file.substring(0,100);
         return file.indexOf("gif")>-1
     }
 }
