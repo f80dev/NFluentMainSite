@@ -3,33 +3,21 @@
 	<div *ngIf="addr.length==0">
 		<h3>L'accès au blog est réservé aux visiteurs authentifiés</h3>
 
-		<!--				[showDynamicToken]="false"-->
-		<!--				[showWebcam]="false"-->
-		<!--				[showNetwork]="false"-->
-		<!--				[showWalletConnect]="false"-->
-		<!--				[showNfluentWalletConnect]="true"-->
-		<!--		network="elrond-devnet"-->
-		<!--				[checknft]="nfts_necessaires"-->
-
-<!--		nfluent_server="https://server.f80lab.com:4242"-->
-
 		<button type="button" mat-raised-button mat-button color="primary"
 		        (click)="open_store()">
 			Obtenir un NFT
 		</button>
 		<br>
 		<br>
-		<app-authent
-				operation="nfluent_access_card"
-				[size]="'400px'"
+		<app-autovalidator
+				[connexion]="operation!.validate!.authentification"
 				validator_name="leblognfluent"
-				[directShowQRCode]="true"
+				[collections]="operation!.validate!.filters!.collections"
+				[network]="operation!.network"
 				style="margin-top: 10px;"
-				explain_message="Veuillez connecter votre wallet pour vérifier le NFT d'accès"
-				(cancel)="cancel()"
-				(disconnect)="disconnect()"
-				(invalid)="fail()"
-				(authent)="authent($event)"></app-authent>
+				title="Veuillez connecter votre wallet pour vérifier le NFT d'accès"
+				(fail)="fail($event)"
+				(validate)="authent($event)"></app-autovalidator>
 		Si vous posséder déjà le NFT d'accès
 		<br>
 		<br>

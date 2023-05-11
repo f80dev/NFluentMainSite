@@ -8,7 +8,7 @@ export const environment = {
   server:"http://127.0.0.1:4242",
   appname:"NFluent Web Site",
   appli:"http://127.0.0.1:4200",
-  tokenfactory:"http://127.0.0.1:4200",
+  tokenfactory:"http:/localhost:4200",
   wallet:"http://127.0.0.1:4200",
   nftlive:{
     crypto_price:1,
@@ -17,7 +17,7 @@ export const environment = {
   tokendoc:{
     appname:"TokenDoc",
     claim:"Tokenisez vos documents en quelques clics",
-    visual: "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8cGFwZXJ8ZW58MHx8MHx8&auto=format&fit=crop&w=300&q=60",
+    visual: "https://nfluent.io/assets/paper1.jpg",
     stockage_document: "infura",
     stockage:"github-nfluentdev-storage-main",
     start_config: "config_certificat.yaml",

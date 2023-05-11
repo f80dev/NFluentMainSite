@@ -30,8 +30,6 @@ layers:
         name: image4
       - image: https://nfluent.io/assets/paper5.jpg
         name: image5
-      - image: https://nfluent.io/assets/paper6.jpg
-        name: image6
     text: ""
     unique: false
     width: 800

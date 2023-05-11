@@ -1,5 +1,7 @@
 xcopy /f /y ..\NFTCalvi\src\app\authent\*.* src\app\authent\
 xcopy /f /y ..\NFTCalvi\src\app\payment\*.* src\app\payment\
+xcopy /f /y ..\NFTCalvi\src\app\jauge\*.* src\app\jauge\
+xcopy /f /y ..\NFTCalvi\src\app\autovalidator\*.* src\app\autovalidator\
 xcopy /f /y ..\NFTCalvi\src\app\ask-for-payment\*.* src\app\ask-for-payment\
 xcopy /f /y ..\NFTCalvi\src\app\input\*.* src\app\input\
 xcopy /f /y ..\NFTCalvi\src\app\prompt\*.* src\app\prompt\

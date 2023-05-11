@@ -62,6 +62,8 @@ import { SupportComponent } from './support/support.component';
 import {MatCardModule} from "@angular/material/card";
 import {GooglePayButtonModule} from "@google-pay/button-angular";
 import { BankComponent } from './bank/bank.component';
+import { JaugeComponent } from './jauge/jauge.component';
+import { AutovalidatorComponent } from './autovalidator/autovalidator.component';
 
 const routes: Routes = [
     { path: '', component: MainComponent ,pathMatch: 'full'},
@@ -111,7 +113,9 @@ const config: SocketIoConfig = { url: environment.server, options: {} };
         PaymentComponent,
         AskForPaymentComponent,
         SupportComponent,
-        BankComponent
+        BankComponent,
+        JaugeComponent,
+        AutovalidatorComponent
     ],
     imports: [
         BrowserModule,

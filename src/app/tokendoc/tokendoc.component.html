@@ -1,3 +1,7 @@
+<img *ngIf="background_image.length>0"
+     style="position: fixed;display: block;left:0;top:0;width:100%;object-fit: cover;z-index: 0;"
+     [src]="background_image">
+
 <div class="mainform" style="overflow: hidden;text-align: center;">
 	<div class="titleform">{{appname}}</div>
 	<div class="subtitleform">{{claim}}</div>
@@ -204,7 +208,7 @@
 					(cancel)="cancel()"
 					[showCancel]="true"
 					(disconnect)="disconnect()"
-					(invalid)="fail()"
+					(invalid)="fail($event)"
 					(authent)="login($event)"></app-authent>
 		</div>
 

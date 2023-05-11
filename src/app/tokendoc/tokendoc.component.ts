@@ -70,6 +70,7 @@ export class TokendocComponent implements OnInit {
     money:{name:string,supply:number,id:string} | undefined;
     merchant: Merchant | undefined;
     api_key_document: string = "";
+    background_image: string = "";
 
     constructor(public network:NetworkService,
                 public dialog:MatDialog,
@@ -91,6 +92,7 @@ export class TokendocComponent implements OnInit {
         if(this.miner.encrypt)this.miner.encrypt=this.miner.encrypt.trim()
         this.identity=params.identity || "";
         if(params.price)this.price=Number(params.price)
+        this.background_image=params.visual || "";
         if(params.fiat_price)this.fiat_price=Number(params.fiat_price)
 
         this.stockage=params.stockage || environment.tokendoc.stockage;
@@ -394,7 +396,7 @@ export class TokendocComponent implements OnInit {
 
         this.message_preview="Preview en cours de construction";
         this.network.send_photo_for_nftlive(
-            10,this.config, this.nft_size.toString(), 80,"",
+            15,this.config, this.nft_size.toString(), 80,"",
             [{name: "title",value: this.name}, {name: "dtMining",value:now("date")}],
             {photo: this.visual}, "base64").subscribe(async (visuels: any) => {
                 this.message_preview="";
@@ -420,7 +422,7 @@ export class TokendocComponent implements OnInit {
         this.show_login=false;
     }
 
-    fail() {
+    fail(addr:string) {
         this.show_login=false;
     }
 

@@ -4,6 +4,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {ActivatedRoute} from "@angular/router";
 import {environment} from "../../environments/environment";
 import {NetworkService} from "../network.service";
+import {Operation} from "../../operation";
 
 interface Article {
   title: string
@@ -24,9 +25,11 @@ export class TheblogComponent implements OnInit {
   addr="";
   nfts_necessaires=['NFLUENTA-af9ddf'];
   articles: Article[]=[];
+  operation: Operation | undefined;
 
-  constructor(public toast:MatSnackBar,public routes:ActivatedRoute,public network:NetworkService) {
-
+  constructor(public toast:MatSnackBar,
+              public routes:ActivatedRoute,
+              public network:NetworkService) {
   }
 
   ngOnInit(): void {
@@ -34,6 +37,7 @@ export class TheblogComponent implements OnInit {
       this.network.getyaml("https://raw.githubusercontent.com/nfluentdev/LeBlogNFluent/main/articles.yaml").subscribe((result:any)=>{
         this.articles=result.articles;
       },(err)=>{showError(this,err)})
+      this.network.get_operations("nfluent_access_card").subscribe((ope)=>{this.operation=ope;})
       if(params.hasOwnProperty("nfts"))this.nfts_necessaires=params["nfts"].split(",");
       if(params.hasOwnProperty("addr"))this.addr=params["addr"];
     })
@@ -41,20 +45,17 @@ export class TheblogComponent implements OnInit {
 
 
 
-  authent(evt: {address:string,nftchecked:boolean,strong:boolean}) {
-    if(!evt.strong){
-      this.fail();
-    }else{
-      showMessage(this,"Ouverture du blog");
-      this.addr=evt.address
-    }
+  authent(addr:string) {
+    this.addr=addr;
+    showMessage(this,"Ouverture du blog pour "+addr);
   }
 
   open_store(){
-    open(environment.tokenfactory+"/cm?p=YWlyZHJvcD1mYWxzZSZ0b29sYmFyPWZhbHNlJm9wZT1uZmx1ZW50X2FjY2Vzc19jYXJkJnZpc3VhbD1iNjQlM0FiblZzYkElM0QlM0QmY2xhaW09YjY0JTNBYm5Wc2JBJTNEJTNEJmFwcG5hbWU9YjY0JTNBYm5Wc2JBJTNEJTNE","store");
+    let param="YWlyZHJvcD1mYWxzZSZ0b29sYmFyPWZhbHNlJm9wZT1uZmx1ZW50X2FjY2Vzc19jYXJkJnZpc3VhbD1iNjQlM0FiblZzYkElM0QlM0QmY2xhaW09YjY0JTNBYm5Wc2JBJTNEJTNEJmFwcG5hbWU9YjY0JTNBYm5Wc2JBJTNEJTNE";
+    open(environment.tokenfactory+"/cm?p="+param,"store");
   }
 
-  fail(){
+  fail(addr:string){
     showMessage(this,"Authentification réussie mais vous ne possédez pas les NFT requis. En savoir plus ?",4000,()=>{
       this.open_store();
     });

@@ -451,7 +451,7 @@ export function canTransfer(nft:NFT) : boolean {
 export function find_miner_from_operation(operation:any,addr:string) : any {
   let to_network=isEmail(addr) ? operation.mining?.networks[0].network : detect_network(addr);  //Si l'adresse est email on prend la première source du mining
   for(let n of operation.mining!.networks){
-    if(to_network==n.network){
+    if(n.network.startsWith(to_network)){
       return n;
     }
   }

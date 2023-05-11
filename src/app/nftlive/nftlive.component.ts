@@ -49,6 +49,7 @@ export class NftliveComponent implements OnInit {
     nft_size=800;
     merchant: Merchant | undefined;
     api_key_document: string="";
+    background_image="";
 
     public constructor(
         public network:NetworkService,
@@ -77,7 +78,7 @@ export class NftliveComponent implements OnInit {
 
     preview(limit=10,config=environment.appli + "/assets/config_nftlive.yaml") {
         let message="Préparation des propositions de NFTs";
-        if(this.photo.length()>100000)message=message+" (le délai de préparation peut excéder 1 minute)"
+        if(this.photo.file.length()>100000)message=message+" (le délai de préparation peut excéder 1 minute)"
         wait_message(this,);
         let seed=Math.round(Math.random()*100);
 
@@ -120,6 +121,7 @@ export class NftliveComponent implements OnInit {
         let params: any = await getParams(this.routes);
         $$("Lecture des parametres ", params)
         this.miner = newCryptoKey("", "", "")
+        this.background_image=params.visual || "";
         this.miner.encrypt = params.miner || environment.tokendoc.miner_key;
         this.stockage = params.stockage || environment.tokendoc.stockage;
         this.stockage_document = params.stockage_document || environment.tokendoc.stockage_document;
@@ -229,4 +231,8 @@ export class NftliveComponent implements OnInit {
     }
 
 
+    is_animated_photo() {
+        let file=this.photo.file;
+        return file.indexOf("gif")>-1
+    }
 }
