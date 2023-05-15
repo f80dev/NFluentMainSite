@@ -9,7 +9,7 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['./proofofhumanity.component.css']
 })
 export class ProofofhumanityComponent implements OnInit {
-    appname: any=environment.appname;
+    appname=""
     claim=""
     siteKey: any;
     address: string="";
@@ -46,5 +46,8 @@ export class ProofofhumanityComponent implements OnInit {
     async ngOnInit() {
         let params:any=await getParams(this.routes);
         this.background_image=params.visual || environment.poh.visual;
+        this.appname=params.appname || environment.poh.appname;
+        this.appname=params.appname || environment.poh.appname;
+        this.claim=params.claim || environment.poh.claim;
     }
 }

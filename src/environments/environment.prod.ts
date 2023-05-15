@@ -6,6 +6,14 @@ export const environment = {
   appli:"https://nfluent.io",
   tokenfactory:"https://tokenforge.nfluent.io",
   wallet:"https://wallet.nfluent.io",
+
+  poh:{
+    visual:"https://nfluent.io/assets/portrait.jpg",
+    appname: "Proof of Humanity",
+    claim:"Fabriquer une preuve d'humanité"
+  },
+
+
   tokendoc:{
     appname:"TokenDoc",
     claim:"Tokenisez vos documents en quelques clics",

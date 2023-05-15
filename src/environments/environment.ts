@@ -16,7 +16,9 @@ export const environment = {
   },
 
   poh:{
-    visual:"https://nfluent.io/assets/portrait.jpg"
+    visual:"https://nfluent.io/assets/portrait.jpg",
+    appname: "Proof of Humanity",
+    claim:"Fabriquer une preuve d'humanité"
   },
 
   tokendoc:{
