@@ -61,23 +61,24 @@ import { AskForPaymentComponent } from './ask-for-payment/ask-for-payment.compon
 import { SupportComponent } from './support/support.component';
 import {MatCardModule} from "@angular/material/card";
 import {GooglePayButtonModule} from "@google-pay/button-angular";
-import { BankComponent } from './bank/bank.component';
 import { JaugeComponent } from './jauge/jauge.component';
 import { AutovalidatorComponent } from './autovalidator/autovalidator.component';
+import { ProofofhumanityComponent } from './proofofhumanity/proofofhumanity.component';
+import {NgxCaptchaModule} from "ngx-captcha";
 
 const routes: Routes = [
     { path: 'nftlive', component: NftliveComponent},
     { path: 'store', component: StoreComponent },
     { path: 'blog', component: TheblogComponent },
-    { path: 'leblog', component: TheblogComponent },
+    { path: 'leblog', component: TheblogComponent,pathMatch:"prefix" },
     { path: 'create', component: CreatorComponent },
-    { path: 'faucet', component: BankComponent},
-    { path: 'bank', component: BankComponent },
     { path: 'tokendoc', component: TokendocComponent},
     { path: 'admin', component: AdminComponent,pathMatch: 'full' },
+    { path: 'poh', component: ProofofhumanityComponent },
+    { path: 'proofofhumanity', component: ProofofhumanityComponent },
     { path: 'theblog', component: TheblogComponent },
-    { path: '', component: MainComponent ,pathMatch: 'full' },
-    { path: '**', component: MainComponent },
+    { path: 'main', component: MainComponent },
+    { path: '', component: MainComponent ,pathMatch: 'full' }
 ]
 
 export const GOOGLE_CLIENT_ID="167299914377-p8vuf2f6npqnigl5kpqrh34cqjd81eko.apps.googleusercontent.com"
@@ -113,9 +114,9 @@ const config: SocketIoConfig = { url: environment.server, options: {} };
         PaymentComponent,
         AskForPaymentComponent,
         SupportComponent,
-        BankComponent,
         JaugeComponent,
-        AutovalidatorComponent
+        AutovalidatorComponent,
+        ProofofhumanityComponent
     ],
     imports: [
         BrowserModule,
@@ -148,7 +149,8 @@ const config: SocketIoConfig = { url: environment.server, options: {} };
         MatProgressBarModule,
         MatStepperModule,
         MatCardModule,
-        GooglePayButtonModule
+        GooglePayButtonModule,
+        NgxCaptchaModule
     ],
   providers: [
       DeviceService,StyleManagerService,

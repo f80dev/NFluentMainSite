@@ -14,6 +14,11 @@ export const environment = {
     crypto_price:1,
     fiat_price:0.5
   },
+
+  poh:{
+    visual:"https://nfluent.io/assets/portrait.jpg"
+  },
+
   tokendoc:{
     appname:"TokenDoc",
     claim:"Tokenisez vos documents en quelques clics",

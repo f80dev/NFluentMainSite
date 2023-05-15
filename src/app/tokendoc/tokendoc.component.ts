@@ -179,18 +179,18 @@ export class TokendocComponent implements OnInit {
 
     async send(cb: string) {
         $$("minage sur le réseau "+this.network.network)
-        if(this.miner){
+        if(this.miner && this.merchant){
             if(this.price>0 || this.fiat_price>0){
                 try{
                     let rep:any=await _ask_for_paiement(this,
-                        environment.merchant.wallet.token,
+                        this.merchant.wallet!.token,
                         this.price,this.fiat_price,
-                        environment.merchant,
+                        this.merchant,
                         this.user.wallet_provider,
                         "Frais de minage du certificat",
                         "Choisissez un mode de paiement",
                         "",
-                        "",{contact: "", description: "", subject: ""})
+                        "",{contact: this.merchant.contact, description: "Signature électronique de document", subject: ""})
 
                     if(rep){
                         this.user.wallet_provider=rep.data.provider;
@@ -234,20 +234,21 @@ export class TokendocComponent implements OnInit {
                     environment.appli+"/assets/existing_account_wallet_access.html"
                 ).subscribe(async (account:any)=>{
                     wait_message(this,"Fabrication du NFT"+account.explorer);
+                    let owner=account.address
+
                     let files=this.documents.map((x:any)=>{return x["url"]});
                     let attributes=[]
                     if(this.identity){
                         attributes.push({trait_type:this.identity_type,value:this.identity})
+                    } else {
+                        attributes.push({trait_type:"Propriétaire",value:owner})
                     }
                     for(let doc of this.documents){
-                        if(doc.filename.length>0){
-                            attributes.push({trait_type:doc.filename,value:doc.signature})
-                        }else{
-                            attributes.push({trait_type:doc.url,value:doc.signature})
-                        }
+                        let name_doc=(doc.filename.length>0) ? doc.filename : doc.url;
+                        attributes.push({trait_type:"Référence document",value:name_doc})
+                        attributes.push({trait_type:"Empreinte",value:doc.signature})
                     }
 
-                    let owner=account.address
                     let nft:NFT={
                         type: "SemiFungible",
                         address: undefined,

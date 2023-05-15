@@ -1,25 +1,68 @@
-<div class="mainform" style="position:fixed;width:100vw;height:100vh;background-repeat: no-repeat;background-size: cover;" [style.background-image]="'url('+background_image+')'"><div class="background-component" style="position:absolute;left:3%;top:3%;min-height: 90vh;max-width: 500px;width:90%;display: inline-block;text-align: center;color: white;padding: 10px;z-index: 2;">
-
-	<div class="titleform">{{appname}}</div>
-	<div class="subtitleform">{{claim}}</div>
+<div class="mainform" style="position:fixed;width:100vw;height:100vh;background-repeat: no-repeat;background-size: cover;"
+     [style.background-image]="'url('+background_image+')'">
 
 	<div class="background-component"
-	     style="min-height: 80vh;max-width: 500px;width:90%;display: inline-block;text-align: center;color: white;position: relative;">
+	     style="position:absolute;left:1%;top:2%;min-height: 96vh;max-width: 500px;width:98%;display: inline-block;text-align: center;color: white;z-index: 2;">
+
+		<div class="titleform">{{appname}}</div>
+		<div class="subtitleform">{{claim}}</div>
 
 		<app-hourglass anim="./assets/engrenage.gif"
 		               [message]="message"
-		               style="margin-top: 50px;margin-bottom: 50px;"></app-hourglass>
+		               style="margin-top: 100px;margin-bottom: 50px;"></app-hourglass>
 
 		<div style="position:relative;display: inline-block;text-align: center;width: 100%;overflow: hidden;" *ngIf="message.length==0 && !show_login">
-			<mat-vertical-stepper [linear]="false" style="margin-left:-10px;width:98%;"
+
+			<div *ngIf="documents.length>0 && url_wallet.length==0 && url_explorer.length==0 && network.network.length>0">
+				<button mat-raised-button color="primary"
+				        *ngIf="this.sel_visuel"
+				        [title]="'pour '+price+' '+merchant!.wallet!.unity+' ou '+fiat_price+' '+merchant!.currency"
+				        [disabled]="message_preview.length>0"
+				        (click)="send('cb')">
+					Tokenizer !
+				</button>
+
+				<button mat-raised-button (click)="restart()">
+					Effacer
+				</button>
+			</div>
+
+			<div style="position: absolute;display:block;z-index:10;top:-10px;right:5px;color:#a4a4a4;" *ngIf="message.length==0">
+				<button mat-icon-button (click)="show_login=true"
+				        title="Se connecter"
+				        *ngIf="!show_login && !user.isConnected()">
+					<mat-icon>login</mat-icon>
+				</button>
+
+				<button mat-icon-button (click)="user.logout()"
+				        title="Se déconnecter"
+				        *ngIf="user.isConnected()">
+					<mat-icon>logout</mat-icon>
+				</button>
+			</div>
+
+			<mat-vertical-stepper [linear]="false" style="width:98%;margin-left:-5px;"
 			                      [animationDuration]="'100'"
 			                      *ngIf="url_wallet.length+url_explorer.length==0">
 				<mat-step>
-					<ng-template matStepLabel>Charger un ou plusieurs documents</ng-template>
+					<ng-template matStepLabel>Charger un ou plusieurs documents :</ng-template>
+
+					<div *ngIf="documents.length>0" style="text-align: left;font-size: small;">
+						<div style="width:100%;overflow: hidden">
+							<div class="mat-subtitle-1 color-accent"
+							     *ngFor="let document of documents" style="display: flex;align-items: center;"
+							     [title]="document.signature+'\n'+document.url">
+								<mat-icon title="Enlever le document" (click)="raz_document(document)">delete</mat-icon>
+								<mat-icon title="Voir le document" *ngIf="document.url.length>0" (click)="open_doc(document)">link</mat-icon>
+								<span style="margin-left: 5px;font-size: small;">{{document.filename}}</span>
+							</div>
+						</div>
+					</div>
 
 					<div *ngIf="!show_scanner" style="display: flex;margin-left:-20px;">
 
-						<app-upload-file (uploaded)="onFileSelected($event)" [zone]="true" width="120px" height="38px"
+						<app-upload-file (uploaded)="onFileSelected($event)" [zone]="true"
+						                 width="100px" height="36px"
 						                 title="Importer un document depuis votre ordinateur / smartphone"
 						                 [maxsize]="10000000">
 							Importer
@@ -50,68 +93,58 @@
 						</app-scanner>
 					</div>
 
-
-					<div *ngIf="documents.length>0" style="text-align: left;font-size: small;margin-top: 20px;">
-						<div style="width:100%;overflow: hidden">
-							Documents attachés:<br>
-							<div class="mat-subtitle-1 color-accent"
-							     *ngFor="let document of documents" style="display: flex;align-items: center;"
-							     [title]="document.signature+'\n'+document.url">
-								<mat-icon title="Enlever le document" (click)="raz_document(document)">delete</mat-icon>
-								<mat-icon title="Voir le document" *ngIf="document.url.length>0" (click)="open_doc(document)">link</mat-icon>
-								<span style="margin-left: 5px;font-size: small;">{{document.filename}}</span>
-							</div>
-						</div>
-					</div>
-
-					<br>
+					<br><br>
 					<app-input value_type="text" maxlength="40"
 					           *ngIf="documents.length>0"
 					           (focusout)="eval_preview()"
 					           help="Ce titre est également affiché sur le visuel du NFT"
 					           label="Titre du certificat (NFT)" [value]="name" (valueChange)="name=$event">
 					</app-input>
-					<br>
+
 
 
 				</mat-step>
 
 				<mat-step *ngIf="documents.length>0">
 					<ng-template matStepLabel>Construire le certificat (NFT)</ng-template>
-					<br>
-					<app-input label="Nombre d'exemplaires (tirage)"
-					           [min]="1" [max]="50" [value]="max_supply"
-					           value_type="slider" *ngIf="isSemiFungible()"
-					           help="Ce nombre correpond au nombre de parts disponibles" (valueChange)="max_supply=$event">
-					</app-input>
 
-					<br>
-					<span class="mat-body-1" *ngIf="message_preview.length==0">Sélectionner le visuel qui convient pour le NFT</span>
-					<br><br>
+					<div class="mat-body-1"
+					     style="margin: 10px"
+					     *ngIf="message_preview.length==0">Sélectionner le visuel qui convient pour le NFT</div>
 
 					<gallery *ngIf="visuels.length>0"
-					         style="width: 320px;height:410px;display: inline-block;"
-					         (indexChange)="select_visuel($event)" [thumbHeight]="90"
+					         style="width: 250px;height:250px;display: inline-block;"
+					         (indexChange)="select_visuel($event)" [thumbHeight]="0"
 					         [items]="visuels"></gallery>
 
 					<app-hourglass [message]="message_preview" fontsize="10px"></app-hourglass>
 					<br>
 
-					<br>
 					<app-upload-file (uploaded)="select_visual($event)"
 					                 *ngIf="message_preview.length==0"
-					                  width="250px" [zone]="false"
+					                 width="250px" [zone]="false"
 					                 [maxsize]="10000000">
 						Changer de visuel
 					</app-upload-file>
-					<br>
+
 
 				</mat-step>
 
 				<mat-step *ngIf="documents.length>0">
 					<ng-template matStepLabel>Informations complémentaires</ng-template>
 
-					<br><br>
+					<br>
+					<app-input label="Nombre d'exemplaires (tirage)"
+					           [min]="1" [max]="50" [value]="max_supply"
+					           value_type="slider" *ngIf="isSemiFungible()"
+					           help="Ce nombre correpond au nombre de parts disponibles" (valueChange)="max_supply=$event">
+					</app-input>
+					<app-input label="Dimension du visuel" [min]="150" [max]="600" color_value="white"
+					           [value]="nft_size" (valueChange)="nft_size=$event" value_type="slider">
+					</app-input>
+
+
+					<br>
 					<app-input value_type="memo" [value]="infos" (valueChange)="infos=$event;save_local()"
 					           [cols]="10" [rows]="3" maxlength="200"
 					           label="Informations complémaires (texte libre)"
@@ -120,15 +153,10 @@
 
 
 					<br>
-					<mat-checkbox [(ngModel)]="joinDoc" (change)="upload_document()">
+					<mat-checkbox [(ngModel)]="joinDoc" title="Ainsi le document peut être ouvert depuis le certificat"
+					              (change)="upload_document()">
 						Joindre les documents au NFT
 					</mat-checkbox>
-					<br><br>
-					<app-input label="Dimension du visuel" [min]="150" [max]="600" color_value="white"
-					           [value]="nft_size" (valueChange)="nft_size=$event" value_type="slider">
-					</app-input>
-
-					<br>
 
 
 				</mat-step>
@@ -158,25 +186,6 @@
 
 			</mat-vertical-stepper>
 
-			<br>
-			<br>
-
-			<br>
-
-
-			<div *ngIf="documents.length>0 && url_wallet.length==0 && url_explorer.length==0 && network.network.length>0">
-				<button mat-raised-button color="primary"
-				        *ngIf="this.sel_visuel"
-				        [title]="'pour '+price+' '+merchant!.wallet!.unity+' ou '+fiat_price+' '+merchant!.currency"
-				        [disabled]="message_preview.length>0"
-				        (click)="send('cb')">
-					Tokenizer !
-				</button>
-
-				<button mat-raised-button (click)="restart()">
-					Effacer
-				</button>
-			</div>
 
 			<div *ngIf="url_explorer.length>0 && url_wallet.length>0" class="mat-body-2">
 				<a [href]="url_wallet" target="walletNFluent" style="margin: 10px;">Wallet NFLUENT</a>
@@ -200,7 +209,6 @@
 					[use_cookie]="false"
 					[showWalletConnect]="true"
 					[showExtensionWallet]="true"
-					style="margin-top: 10px;"
 					(cancel)="cancel()"
 					[showCancel]="true"
 					(disconnect)="disconnect()"
@@ -209,15 +217,7 @@
 		</div>
 
 
-		<div style="position: absolute;display:block;z-index:10;top:-5px;right:5px;color:#a4a4a4;">
-			<button mat-icon-button (click)="show_login=true" *ngIf="!show_login && !user.isConnected()">
-				<mat-icon>login</mat-icon>
-			</button>
 
-			<button mat-icon-button (click)="user.logout()" *ngIf="user.isConnected()">
-				<mat-icon>logout</mat-icon>
-			</button>
-		</div>
 
 	</div>
 
@@ -229,7 +229,5 @@
 		stockage : {{stockage}} / {{stockage_document}}<br>
 		Compte: {{miner.address}} / {{collection.id}}
 	</div>
-
-
 
 </div>

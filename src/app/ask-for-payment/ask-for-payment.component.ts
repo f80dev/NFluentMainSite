@@ -98,6 +98,8 @@ export class AskForPaymentComponent implements OnInit {
     init_provider($event:any) {
         this.data.provider=$event.provider;
         this.data.addr=$event.address
-        this.user.init($event.address,this.data.wallet.network,false,true,this.user.profil.email)
+        if(this.data.merchant.wallet){
+            this.user.init($event.address,this.data.merchant.wallet.network,false,true,this.user.profil.email)
+        }
     }
 }

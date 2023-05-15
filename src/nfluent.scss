@@ -194,17 +194,20 @@ body,html {
 
 .titleform {
   @extend .mat-headline-5, .color-primary;
-  margin: 20px;
+  margin: 8px;
 }
 
 .subtitleform {
   @extend .mat-subtitle-1, .color-primary;
   margin-top: -10px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .background-component {
   background-color: mat.get-color-from-palette(mat.$grey-palette, 900);
 }
 
+mat-vertical-stepper {
+  background: none !important;
+}
 

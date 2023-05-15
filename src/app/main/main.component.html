@@ -29,25 +29,31 @@
       <span class="menuitem">Contact</span>
     </button>
 
-    <button mat-menu-item (click)="open_theblog()" *ngIf="version=='beta'">
+    <button mat-menu-item (click)="open_blog()" *ngIf="version=='beta'">
       <span class="menuitem">Le blog</span>
     </button>
 
     <button mat-menu-item (click)="open_create()" *ngIf="version=='beta'">
-      <span class="menuitem">Créer vos NFTs</span>
+      <span class="menuitem">Create your NFTs</span>
     </button>
 
     <button mat-menu-item (click)="open_tokendoc()" *ngIf="version=='beta'">
-      <span class="menuitem">Tokenisez des documents</span>
+      <span class="menuitem">Token Doc</span>
     </button>
 
     <button mat-menu-item (click)="open_nftlive()" *ngIf="version=='beta'">
-      <span class="menuitem">Transformez des photos en NFT</span>
+      <span class="menuitem">Photos to NFT</span>
+    </button>
+
+    <button mat-menu-item (click)="open_poh()" *ngIf="version=='beta'">
+      <span class="menuitem">Proof of humanity</span>
     </button>
 
     <button mat-menu-item (click)="open_faucet()" *ngIf="version=='beta'">
-      <span class="menuitem">Banque des NfluCoin</span>
+      <span class="menuitem">NfluCoin Bank</span>
     </button>
+
+
   </mat-menu>
 </mat-toolbar>
 

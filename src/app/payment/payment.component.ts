@@ -3,10 +3,7 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges
+  Output
 } from '@angular/core';
 import {
   Transaction,
@@ -25,7 +22,16 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {MatDialog} from "@angular/material/dialog";
 import {ReadyToPayChangeResponse} from "@google-pay/button-angular";
 
-export interface PaymentTransaction {transaction:string ,price:number,ts:string,address:string,billing_to:string,unity:string};
+export interface PaymentTransaction {
+  transaction:string ,
+  price:number,
+  ts:string,
+  address:string,
+  billing_to:string,
+  unity:string,
+  provider:any
+}
+
 //Interface incluant le paiement en fiat et le paiement crypto
 export interface Merchant {
   id:string
@@ -83,7 +89,6 @@ export class PaymentComponent implements AfterContentInit {
   qrcode: string="";
   balance: number=-1;
   qrcode_buy_token: string = "";
-
 
   constructor(
       public networkService: NetworkService,
@@ -165,7 +170,8 @@ export class PaymentComponent implements AfterContentInit {
       address:event.paymentMethodData.description || "",
       price:0,
       ts:now("str"),
-      billing_to:this.billing_to
+      billing_to:this.billing_to,
+      provider:null
     }
     this.onpaid.emit(rc);
   };
@@ -176,8 +182,6 @@ export class PaymentComponent implements AfterContentInit {
   //     transactionState: 'SUCCESS',
   //   };
   // };
-
-
 
 
   error_fiat_event(event: ErrorEvent): void {
@@ -237,7 +241,14 @@ export class PaymentComponent implements AfterContentInit {
         try {
           let sign_transaction=await this.wallet_provider.signTransaction(t);
           let hash=await proxyNetworkProvider.sendTransaction(sign_transaction);
-          resolve({transaction:hash,price:this.price,ts:now("str"),address:sender_addr,billing_to:this.billing_to,unity:unity});
+          resolve({
+            transaction:hash,
+            price:this.price,
+            ts:now("str"),
+            address:sender_addr,
+            billing_to:this.billing_to,
+            unity:unity,
+            provider:this.wallet_provider});
         } catch(error) {
           $$("Error",error)
           reject(error)
@@ -275,8 +286,12 @@ export class PaymentComponent implements AfterContentInit {
     this.oncancel.emit(null);
   }
 
+  get_address(){
+    return this.wallet_provider.address || this.wallet_provider.account.address;
+  }
+
   refresh_solde() {
-    this.show_user_balance(this.wallet_provider.account.address,this.money!.id,this.merchant?.wallet?.network!)
+    this.show_user_balance(this.get_address(),this.money!.id,this.merchant?.wallet?.network!)
   }
 
     cancel_fiat_payment() {
@@ -284,4 +299,9 @@ export class PaymentComponent implements AfterContentInit {
     }
 
 
+  open_bank() {
+    let url="https://tokenforge.nfluent.io/bank?p=YW1vdW50PTUmYXBwbmFtZT1GYXVjZXQlMjBkZXZuZXQmY2xhaW09UmVjaGFyZ2VtZW50JmNvbW1lbnQ9YjY0JTNBYm5Wc2JBJTNEJTNEJmZpYXRfcHJpY2U9MCZtZXJjaGFudC5jb250YWN0PWNvbnRhY3QlNDBuZmx1ZW50LmlvJm1lcmNoYW50LmNvdW50cnk9RlImbWVyY2hhbnQuY3VycmVuY3k9RVVSJm1lcmNoYW50LmlkPUJDUjJETjRUWUQ0WjVYQ1ImbWVyY2hhbnQubmFtZT1OZmx1ZW50JTIwU3RvcmUmbWVyY2hhbnQud2FsbGV0LmJhbms9bmZsdWVudCUzQSUyMFowRkJRVUZCUW10WGNIUmFYemRwWkdWME15MVRVbFJwTTJkSmRtRmZia3hUZDI5SmIyODRWRlZzZEhscGJYbHVRek50Ymt0bFJWcEhSWFZrTkRSQ1pYRnNTVTA1YTJzNFZtUldjbkJ2YjNaU1IySjZkbmRWZW1WNllraDFVR2xuZW5KU04wRXdlbGxTWTBSM1VsUlVZVWx0ZFdFMldtdFJYeTFvZFhWaGVDMVpNVlE0VlVsUVptUnJTMnRRZGpCMk1YTkxVekJJWDJsVFRqWk1UREZFV1hKUU5WWkRVWFZXVHkxdVNrc3dhbkI0VjA5UE5IZHpQUSUzRCUzRCZtZXJjaGFudC53YWxsZXQubmV0d29yaz1lbHJvbmQtZGV2bmV0Jm1lcmNoYW50LndhbGxldC50b2tlbj1ORkxVQ09JTi00OTIxZWQmbWVyY2hhbnQud2FsbGV0LnVuaXR5PU5mbHVDb2luJnRvb2xiYXI9ZmFsc2UmdXJsPWh0dHBzJTNBJTJGJTJGdG9rZW5mb3JnZS5uZmx1ZW50LmlvJTJGYmFuayZ2aXN1YWw9aHR0cHMlM0ElMkYlMkZpbWFnZXMudW5zcGxhc2guY29tJTJGcGhvdG8tMTU2MjA2OTAyOC05MmYxMGUzN2FjOWQlM0ZpeGxpYiUzRHJiLTQuMC4zJTI2aXhpZCUzRE1ud3hNakEzZkRCOE1IeHdhRzkwYnkxd1lXZGxmSHg4ZkdWdWZEQjhmSHg4JTI2YXV0byUzRGZvcm1hdCUyNmZpdCUzRGNyb3AlMjZ3JTNENjg3JTI2cSUzRDgwJnRpdGxlPUZhdWNldCUyMGRldm5ldA%3D%3D";
+    url=url+"&address="+this.get_address()
+    open(url,"bank")
+  }
 }

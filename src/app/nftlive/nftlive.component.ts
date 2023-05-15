@@ -12,7 +12,7 @@ import {
     showMessage,
     get_nfluent_wallet_url,
     showError,
-    isEmail, rotate
+    isEmail, rotate, now
 } from "../../tools";
 import {Collection, newCollection} from "../../operation";
 import {ActivatedRoute} from "@angular/router";
@@ -50,6 +50,8 @@ export class NftliveComponent implements OnInit {
     merchant: Merchant | undefined;
     api_key_document: string="";
     background_image="";
+    joinDoc: string=""
+    photographer="";
 
     public constructor(
         public network:NetworkService,
@@ -171,16 +173,23 @@ export class NftliveComponent implements OnInit {
                     let owner=account.address
 
                     this.network.upload(this.photo.file,this.stockage_document,this.api_key_document).subscribe(async (file:any)=>{
+                        let files=(this.joinDoc=="checked") ? [file] : [];
+                        if(this.photographer.length==0)this.photographer=owner;
+                        let attributes=[
+                            {trait_type:"Prise de vue",value:now("datetime")},
+                            {trait_type:"Photographe",value:this.photographer},
+                        ]
                         this.network.upload(this.sel_visuel.data.src,this.stockage).subscribe(async (addr_visual:any)=>{
+
                             let nft:NFT={
                                 balances: undefined,
                                 type: "SemiFungible",
                                 address: undefined,
-                                attributes: [],
+                                attributes: attributes,
                                 collection: this.collection,
                                 creators: [{address:this.miner.address,share:100,verified:true}],
                                 description: this.infos,
-                                files: [file],
+                                files: files,
                                 links: undefined,
                                 supply:this.max_supply,
                                 price: 0,

@@ -11,12 +11,19 @@ import {NetworkService} from "./network.service";
 export class AppComponent implements OnInit {
 
 
-  constructor(public routes:ActivatedRoute,public network:NetworkService) {
+  constructor(
+      public routes:ActivatedRoute,
+      public router:Router,
+      public network:NetworkService
+  ) {
   }
 
   ngOnInit(): void {
     getParams(this.routes).then((params:any)=>{
       if(params.hasOwnProperty("server"))this.network.server_nfluent=params.server;
+      if(params.go){
+        this.router.navigate([params.go]);
+      }
     })
   }
 

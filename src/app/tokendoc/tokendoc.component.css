@@ -10,7 +10,7 @@ mat-raised-button {
     min-width: 100px !important;
 }
 
-mat-button {
+button {
     margin: 10px;
 }
 

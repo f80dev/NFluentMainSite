@@ -356,8 +356,13 @@ export class AuthentComponent implements OnInit {
       this.provider=ExtensionProvider.getInstance();
       let rc=await this.provider.init();
       let address=await this.provider.login();
-      this.strong=true;
-      this.validate(address);
+      if(address.length>0){
+        this.strong=true;
+        this.validate(address);
+      } else {
+        this.strong=false;
+        this.oninvalid.emit(false);
+      }
 
       //this.init_wallet.emit({provider:this.provider,address:this.address});
   }
@@ -367,21 +372,27 @@ export class AuthentComponent implements OnInit {
     this.provider=new WalletProvider(this.network.indexOf("devnet")>-1 ? WALLET_PROVIDER_DEVNET : WALLET_PROVIDER_MAINNET)
     const callback_url = encodeURIComponent(environment.appli);
     try{
-      let rc=await this.provider.login({callback_url})
-      debugger
-      this.strong=true;
-      this.validate(this.provider.account.address);
+      let address=await this.provider.login({callback_url})
+      this.strong=address.length>0;
+      if(this.strong){
+        this.validate(address);
+      } else {
+        this.oninvalid.emit(false);
+      }
 
-      //this.init_wallet.emit({provider:this.provider,address:this.address});
-      $$("Connexion web wallet ok "+rc)
+      //this.validate(this.provider.account.address);
+
+      $$("Connexion web wallet ok "+address)
 
     } catch (e) {
       this.strong=false;
+      this.oninvalid.emit(false)
     }
   }
 
   async open_wallet_connect() {
     //https://docs.multiversx.com/sdk-and-tools/sdk-js/sdk-js-signing-providers/#the-wallet-connect-provider
+    await this.provider.init()
     const { uri, approval } = await this.provider.connect();
     this.qrcode=this.api.server_nfluent+"/api/qrcode/"+encodeURIComponent(uri);
     let address=await this.provider.login({approval});
@@ -395,4 +406,7 @@ export class AuthentComponent implements OnInit {
   }
 
 
+    open_polygon_extension_wallet() {
+
+    }
 }

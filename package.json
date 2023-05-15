@@ -32,11 +32,13 @@
     "@angular/platform-browser-dynamic": "15.2.4",
     "@angular/router": "15.2.4",
     "@google-pay/button-angular": "^3.0.8",
+
     "@multiversx/sdk-core": "^12.1.1",
     "@multiversx/sdk-extension-provider": "^2.0.7",
     "@multiversx/sdk-network-providers": "^1.4.0",
     "@multiversx/sdk-wallet-connect-provider": "^3.2.1",
     "@multiversx/sdk-web-wallet-provider": "^2.4.0",
+
     "@nicky-lenaers/ngx-scroll-to": "14.0.0",
     "@solana/spl-token": "^0.3.5",
     "@solana/web3.js": "^1.63.1",
@@ -46,6 +48,7 @@
     "jsqr": "^1.4.0",
     "load-yaml-file": "^1.0.0",
     "ng-gallery": "^8.0.3",
+    "ngx-captcha": "^13.0.0",
     "ngx-socket-io": "^4.4.0",
     "ngx-webcam": "^0.4.1",
     "rxjs": "~7.5.0",
