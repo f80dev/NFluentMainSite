@@ -4,7 +4,7 @@ import {
     showMessage,
     CryptoKey, newCryptoKey,
     getParams,
-    get_nfluent_wallet_url, $$, now, showError, isEmail
+    get_nfluent_wallet_url, $$, now, showError, isEmail, init_visuels
 } from "../../tools";
 import {NFT} from "../../nft";
 import {ActivatedRoute} from "@angular/router";
@@ -14,7 +14,6 @@ import {environment} from "../../environments/environment";
 import {wait_message} from "../hourglass/hourglass.component";
 import {MatDialog} from "@angular/material/dialog";
 import {GalleryState} from "ng-gallery";
-import {init_visuels} from "../../tools_web";
 import {StyleManagerService} from "../style-manager.service";
 import {UserService} from "../user.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
@@ -71,6 +70,7 @@ export class TokendocComponent implements OnInit {
     merchant: Merchant | undefined;
     api_key_document: string = "";
     background_image: string = "";
+    dest: string="";
 
     constructor(public network:NetworkService,
                 public dialog:MatDialog,
@@ -85,21 +85,24 @@ export class TokendocComponent implements OnInit {
     async read_param(){
         let params:any=await getParams(this.routes);
         $$("Lecture des parametres ",params)
+        this.theme.setStyle("theme",params.style || "nfluent-dark-theme.css");
 
         if(params.hasOwnProperty("advanced_mode"))this.advanced_mode=(params.advanced_mode=='true');
-        this.miner=newCryptoKey("","","")
-        this.miner.encrypt=(params.miner || environment.tokendoc.miner_key);
+        this.miner=newCryptoKey("","","",params.miner || environment.tokendoc.miner_key)
         if(this.miner.encrypt)this.miner.encrypt=this.miner.encrypt.trim()
         this.identity=params.identity || "";
         if(params.price)this.price=Number(params.price)
         this.background_image=params.visual || "";
         if(params.fiat_price)this.fiat_price=Number(params.fiat_price)
 
-        this.stockage=params.stockage || environment.tokendoc.stockage;
+
+        this.dest=params.address || params.dest || localStorage.getItem("last_dest") || this.user.addr || this.user.profil.email;
+
+        this.stockage=params.stockage || environment.stockage.stockage;
         this.appname=params.appname || environment.tokendoc.appname;
         this.claim=params.claim || environment.tokendoc.claim;
 
-        this.stockage_document=params.stockage_document || environment.tokendoc.stockage_document;
+        this.stockage_document=params.stockage_document || environment.stockage.stockage_document;
         this.api_key_document=params.api_key_document || ""
 
         this.max_supply=Number(localStorage.getItem("max_supply") || "1");
@@ -129,11 +132,11 @@ export class TokendocComponent implements OnInit {
     }
 
 
+
+
     ngOnInit() {
-        this.theme.setStyle("theme","nfluent-dark-theme.css")
         this.read_param();
     }
-
 
 
     update_identity(new_value:any) {
@@ -171,7 +174,6 @@ export class TokendocComponent implements OnInit {
             this.config=environment.appli + "/assets/config_certificat_photo.yaml"
             this.eval_preview($event.file,true);
         }
-
         this.save_local();
     }
 
@@ -214,9 +216,7 @@ export class TokendocComponent implements OnInit {
 
     async run_mining(addr:string){
         let miner_addr=this.miner.address
-        let address=localStorage.getItem("last_dest") || addr || this.user.profil.email;
-        if(!this.user.isConnected())
-            address=await _prompt(this,"Adresse de réception du NFT",address,"","text","Envoyer","Annuler",false);
+        let address=this.dest;
         if(address){
             localStorage.setItem("last_dest",address);
             wait_message(this,"Mise en ligne du visuel du certificat");
@@ -458,5 +458,9 @@ export class TokendocComponent implements OnInit {
 
     select_visuel($event: GalleryState) {
         this.sel_visuel=this.visuels[$event.currIndex!]
+    }
+
+    default_visual() {
+        this.eval_preview(environment.tokendoc.visual,true);
     }
 }

@@ -3,21 +3,27 @@
 		<div class="titleform">{{appname}}</div>
 		<div class="subtitleform">{{claim}}</div>
 
+		<app-hourglass [message]="message"></app-hourglass>
+		<br>
+
 		<app-authent [showExtensionWallet]="true"
 		             [showWalletConnect]="true"
+		             *ngIf="address.length==0"
 		             (authent)="authent($event)"
 		             ></app-authent>
 
-		<ngx-recaptcha2 #captchaElem
-		                *ngIf="address.length>0"
-		                [siteKey]="siteKey"
-		                (reset)="handleReset()"
-		                (expire)="handleExpire()"
-		                (load)="handleLoad()"
-		                (success)="handleSuccess($event)"
-		                [useGlobalDomain]="false"
-		                formControlName="recaptcha">
-		</ngx-recaptcha2>
+		<form [formGroup]="aFormGroup!" *ngIf="address.length>0 && message.length==0" style="display: inline-block;margin-top:40px;">
+			<ngx-recaptcha2 #captchaElem
+			                siteKey="6Lfabw4mAAAAAOmyH52iMFsdmFs6TRvEc-I4_0Dh"
+			                (reset)="handleReset()"
+			                (expire)="handleExpire()"
+			                (load)="handleLoad()"
+			                (success)="handleSuccess($event)"
+			                [useGlobalDomain]="false"
+			                theme="dark"
+			                formControlName="recaptcha">
+			</ngx-recaptcha2>
+		</form>
 
 	</div>
 </div>

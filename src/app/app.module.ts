@@ -51,7 +51,6 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatStepperModule} from "@angular/material/stepper";
 import { TokendocVerifyComponent } from './tokendoc-verify/tokendoc-verify.component';
-import {NftliveComponent} from "./nftlive/nftlive.component";
 import {GALLERY_CONFIG, GalleryModule} from 'ng-gallery';
 import {StyleManagerService} from "./style-manager.service";
 import { FaqsComponent } from './faqs/faqs.component';
@@ -67,7 +66,6 @@ import { ProofofhumanityComponent } from './proofofhumanity/proofofhumanity.comp
 import {NgxCaptchaModule} from "ngx-captcha";
 
 const routes: Routes = [
-    { path: 'nftlive', component: NftliveComponent},
     { path: 'store', component: StoreComponent },
     { path: 'blog', component: TheblogComponent },
     { path: 'leblog', component: TheblogComponent,pathMatch:"prefix" },
@@ -88,7 +86,6 @@ const config: SocketIoConfig = { url: environment.server, options: {} };
     declarations: [
         AppComponent,
         MainComponent,
-        NftliveComponent,
         BlocComponent,
         StepsComponent,
         SectionComponent,
@@ -121,6 +118,7 @@ const config: SocketIoConfig = { url: environment.server, options: {} };
     imports: [
         BrowserModule,
         MatSliderModule,
+        ReactiveFormsModule,
         MatDialogModule,
         MatSnackBarModule,
         GalleryModule,

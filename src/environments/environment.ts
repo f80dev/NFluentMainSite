@@ -11,22 +11,34 @@ export const environment = {
   tokenfactory:"http:/localhost:4200",
   wallet:"http://127.0.0.1:4200",
   nftlive:{
+    claim:"",
     crypto_price:1,
-    fiat_price:0.5
+    fiat_price:0.5,
+    network:"elrond-devnet",
+    miner_key:"dan: Z0FBQUFBQmtJVXd6UTNFdE9sUzQ4djhwdjEzZ0NzSnF3cG5odXpyLTVGRURpUFJoU3V5YTZHbzFJMC1QVkNPbFpkV2I0TkVBcDVfNHVKWVNqMHo3UkxVc0QwRjRzVTIwbHA2Q0pGWnFXdWhqTThYSTJOdjhpSkhjZnZjMzZ2RDFORm84b0J6MDMwbDUyQ0JFMzNwemIxTlc4b0UxcTdXOXF5RDREYU5TTl9lbVMzV18zYWpmMkp1ZFpPcEw4N1pwVUVzVTc2NUVBTmFoZGJ6SldSMko3bHNfSnd4MEctbF9HWnVORmJIeTFneGppSGU0d0FSNnZjeWswelE5QkFoaWRqWktQb09SUGxxRXhOSFRxQUdxbmVEV0s4Tk83QlJSMUJSRzlfakhlSW1leEk1MmVVV3V6dFZfb1JrT0VhY3FrMzVCM3QxNDBXZTc3X1VvRXNJWFBGUmtadkZlSG1WQVVBPT0=",
+    collection: "SEMICOLL-9cf014"
   },
+
+  stockage:{
+    stockage_document: "infura",
+    stockage:"github-nfluentdev-storage-main",
+  },
+
 
   poh:{
     visual:"https://nfluent.io/assets/portrait.jpg",
     appname: "Proof of Humanity",
-    claim:"Fabriquer une preuve d'humanité"
+    claim:"Fabriquer une preuve d'humanité",
+    collection: "POHCOLLE-efa1b3",
+    miner:"dan: Z0FBQUFBQmtJVXd6UTNFdE9sUzQ4djhwdjEzZ0NzSnF3cG5odXpyLTVGRURpUFJoU3V5YTZHbzFJMC1QVkNPbFpkV2I0TkVBcDVfNHVKWVNqMHo3UkxVc0QwRjRzVTIwbHA2Q0pGWnFXdWhqTThYSTJOdjhpSkhjZnZjMzZ2RDFORm84b0J6MDMwbDUyQ0JFMzNwemIxTlc4b0UxcTdXOXF5RDREYU5TTl9lbVMzV18zYWpmMkp1ZFpPcEw4N1pwVUVzVTc2NUVBTmFoZGJ6SldSMko3bHNfSnd4MEctbF9HWnVORmJIeTFneGppSGU0d0FSNnZjeWswelE5QkFoaWRqWktQb09SUGxxRXhOSFRxQUdxbmVEV0s4Tk83QlJSMUJSRzlfakhlSW1leEk1MmVVV3V6dFZfb1JrT0VhY3FrMzVCM3QxNDBXZTc3X1VvRXNJWFBGUmtadkZlSG1WQVVBPT0=",
+    network:"elrond-devnet"
   },
 
   tokendoc:{
     appname:"TokenDoc",
     claim:"Tokenisez vos documents en quelques clics",
     visual: "https://nfluent.io/assets/paper1.jpg",
-    stockage_document: "infura",
-    stockage:"github-nfluentdev-storage-main",
+
     start_config: "config_certificat.yaml",
 
     cost_in_fiat: 1,

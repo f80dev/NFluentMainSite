@@ -42,7 +42,7 @@
 			</div>
 
 			<mat-vertical-stepper [linear]="false" style="width:98%;margin-left:-5px;"
-			                      [animationDuration]="'100'"
+			                      animationDuration="1000ms"
 			                      *ngIf="url_wallet.length+url_explorer.length==0">
 				<mat-step>
 					<ng-template matStepLabel>Charger un ou plusieurs documents :</ng-template>
@@ -128,6 +128,12 @@
 					</app-upload-file>
 
 
+					<button mat-raised-button (click)="default_visual()">
+						Visuel par défaut
+					</button>
+
+
+
 				</mat-step>
 
 				<mat-step *ngIf="documents.length>0">
@@ -149,6 +155,12 @@
 					           [cols]="10" [rows]="3" maxlength="200"
 					           label="Informations complémaires (texte libre)"
 					           help="Informations non confidentielles, ajoutées dans le NFT">
+					</app-input>
+
+					<br>
+					<app-input value_type="text" [value]="dest" (valueChange)="dest=$event;save_local()"
+					           label="destinataires"
+					           help="laissez vide pour le recevoir sur votre adresse">
 					</app-input>
 
 
