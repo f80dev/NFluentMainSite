@@ -16,7 +16,7 @@ export class InputComponent implements OnChanges,OnInit {
 
   @Input() maxlength:string=""
   @Input() width:string="100%";
-  @Input() maxwidth:string="100vw";
+  @Input() maxwidth:string="100%";
   @Input() color_value="darkgray";
 
 
@@ -44,6 +44,8 @@ export class InputComponent implements OnChanges,OnInit {
   @Input() min: number=0;
   @Input() step: number=1;
   @Input() multiselect: boolean = false;
+  @Input() showClear: boolean=true
+  @Input() fontname="mat-body-2"
 
   constructor() { }
 

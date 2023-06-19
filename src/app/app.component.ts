@@ -10,7 +10,6 @@ import {NetworkService} from "./network.service";
 })
 export class AppComponent implements OnInit {
 
-
   constructor(
       public routes:ActivatedRoute,
       public router:Router,

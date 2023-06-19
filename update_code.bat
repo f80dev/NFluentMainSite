@@ -1,5 +1,6 @@
 xcopy /f /y ..\NFTCalvi\src\app\authent\*.* src\app\authent\
 xcopy /f /y ..\NFTCalvi\src\app\payment\*.* src\app\payment\
+xcopy /f /y ..\NFTCalvi\src\app\splash\*.* src\app\splash\
 xcopy /f /y ..\NFTCalvi\src\app\jauge\*.* src\app\jauge\
 xcopy /f /y ..\NFTCalvi\src\app\autovalidator\*.* src\app\autovalidator\
 xcopy /f /y ..\NFTCalvi\src\app\ask-for-payment\*.* src\app\ask-for-payment\
@@ -21,3 +22,4 @@ xcopy /f /y ..\NFTCalvi\src\create.ts src\
 xcopy /f /y ..\NFTCalvi\src\tools.ts src\
 xcopy /f /y ..\NFTCalvi\src\nft.ts src\
 xcopy /f /y ..\NFTCalvi\src\nfluent.scss src\
+xcopy /f /y ..\NFTCalvi\src\styles.scss src\

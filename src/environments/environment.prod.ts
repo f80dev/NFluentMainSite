@@ -27,7 +27,7 @@ export const environment = {
 
     cost_in_fiat: 1,
     cost_in_crypto: 3,
-
+    cover: "https://nfluent.io/assets/paper1.jpg",
 
     visual: "https://nfluent.io/assets/paper1.jpg",
     stockage_document: "infura",
@@ -35,7 +35,7 @@ export const environment = {
     start_config: "config_certificat.yaml",
 
     network:"elrond-devnet",
-    miner_key:"Z0FBQUFBQmtIc1pSME9EQzVHRnRzbHBaMk9LOFVyWDg3eFV0MnktdWlSNWoxNmJtQkdCMEpsZUwtTjNxZFI3WmpvcjVfbFZHYTFrTm96V1BwZnUwdFpVVHdXclRnOFpaRy0xMjAzb0loeG1ENnpiTjA3WWs1UjNQQ0xJTTR3QmpRb0k2UjRXQ2xVbVpOLUlMcHd3Y3Y4QVAxSlF5bXhMTG5sSU9DNnI3TnRFZUFQUEwyaGhwQlNCcEtFNzM2bkU2OV9TVzZQTjB3SE5WN3pHMjhReTVCTHFfcHJJNk00aXV1MG15NjUwQnlKVWo5b2xtQUs5ZHNqaG5VSWQyLXNicUdRMzNlUHdLTTYza1JzRnpVMjlab09aTm41YXBvNGFDWU03Y1Q2cW96d0lSWXZ6R0NmTnJIVHpSZWtYMTBDN3dVdm8yMFNBMV80eXhSY2d6X1o4OURXbE0xbFM1OV84ME9UNHoxYWswUFRFYVNXekRBcGkwcG1rPQ==",
+    miner:"dan: Z0FBQUFBQmtJVXd6UTNFdE9sUzQ4djhwdjEzZ0NzSnF3cG5odXpyLTVGRURpUFJoU3V5YTZHbzFJMC1QVkNPbFpkV2I0TkVBcDVfNHVKWVNqMHo3UkxVc0QwRjRzVTIwbHA2Q0pGWnFXdWhqTThYSTJOdjhpSkhjZnZjMzZ2RDFORm84b0J6MDMwbDUyQ0JFMzNwemIxTlc4b0UxcTdXOXF5RDREYU5TTl9lbVMzV18zYWpmMkp1ZFpPcEw4N1pwVUVzVTc2NUVBTmFoZGJ6SldSMko3bHNfSnd4MEctbF9HWnVORmJIeTFneGppSGU0d0FSNnZjeWswelE5QkFoaWRqWktQb09SUGxxRXhOSFRxQUdxbmVEV0s4Tk83QlJSMUJSRzlfakhlSW1leEk1MmVVV3V6dFZfb1JrT0VhY3FrMzVCM3QxNDBXZTc3X1VvRXNJWFBGUmtadkZlSG1WQVVBPT0=",
     collection: "MACOLLEC-4356f0"
   },
 

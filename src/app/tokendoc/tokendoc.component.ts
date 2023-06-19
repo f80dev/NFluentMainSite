@@ -4,7 +4,7 @@ import {
     showMessage,
     CryptoKey, newCryptoKey,
     getParams,
-    get_nfluent_wallet_url, $$, now, showError, isEmail, init_visuels
+    get_nfluent_wallet_url, $$, now, showError, isEmail, init_visuels, apply_params
 } from "../../tools";
 import {NFT} from "../../nft";
 import {ActivatedRoute} from "@angular/router";
@@ -19,6 +19,7 @@ import {UserService} from "../user.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {_ask_for_paiement} from "../ask-for-payment/ask-for-payment.component";
 import {extract_merchant_from_param, Merchant} from "../payment/payment.component";
+import {DeviceService} from "../device.service";
 
 export interface Document {
     url: string;
@@ -43,7 +44,8 @@ export class TokendocComponent implements OnInit {
     sel_visuel: any;
     collection:Collection | undefined;
     miner:CryptoKey=newCryptoKey();
-    visual="";
+    sel_visual:string="";
+    visual:string="";
     joinDoc:boolean=true;
     message: string = "";
     show_scanner: boolean=false;
@@ -64,19 +66,23 @@ export class TokendocComponent implements OnInit {
     name: string="Certificat de propriété";
     visuel_size="200px";
     nft_size: number=400;
+    network:string=""
     price: number = environment.tokendoc.cost_in_crypto;
     fiat_price:number=  environment.tokendoc.cost_in_fiat;
     money:{name:string,supply:number,id:string} | undefined;
     merchant: Merchant | undefined;
     api_key_document: string = "";
-    background_image: string = "";
+    background: string = "";
     dest: string="";
+    border="10px";
+    size: string="";
 
-    constructor(public network:NetworkService,
+    constructor(public api:NetworkService,
                 public dialog:MatDialog,
                 public user:UserService,
+                public device:DeviceService,
                 public toast:MatSnackBar,
-                public theme:StyleManagerService,
+                public style:StyleManagerService,
                 public routes:ActivatedRoute) {
 
     }
@@ -85,22 +91,18 @@ export class TokendocComponent implements OnInit {
     async read_param(){
         let params:any=await getParams(this.routes);
         $$("Lecture des parametres ",params)
-        this.theme.setStyle("theme",params.style || "nfluent-dark-theme.css");
 
-        if(params.hasOwnProperty("advanced_mode"))this.advanced_mode=(params.advanced_mode=='true');
-        this.miner=newCryptoKey("","","",params.miner || environment.tokendoc.miner_key)
-        if(this.miner.encrypt)this.miner.encrypt=this.miner.encrypt.trim()
+        apply_params(this,params,environment.tokendoc);
+
         this.identity=params.identity || "";
         if(params.price)this.price=Number(params.price)
-        this.background_image=params.visual || "";
+
         if(params.fiat_price)this.fiat_price=Number(params.fiat_price)
 
 
         this.dest=params.address || params.dest || localStorage.getItem("last_dest") || this.user.addr || this.user.profil.email;
 
         this.stockage=params.stockage || environment.stockage.stockage;
-        this.appname=params.appname || environment.tokendoc.appname;
-        this.claim=params.claim || environment.tokendoc.claim;
 
         this.stockage_document=params.stockage_document || environment.stockage.stockage_document;
         this.api_key_document=params.api_key_document || ""
@@ -108,10 +110,9 @@ export class TokendocComponent implements OnInit {
         this.max_supply=Number(localStorage.getItem("max_supply") || "1");
         this.infos=localStorage.getItem("infos") || "";
         this.merchant=extract_merchant_from_param(params);
-
-        this.network.network=params.network || environment.tokendoc.network;
-        this.network.get_token(params.money || "egld",this.network.network).subscribe((money)=>{this.money=money});
-        this.network.get_collections(params.collection || environment.tokendoc.collection).subscribe((cols:any)=>{
+        
+        this.api.get_token(params.money || "egld",this.network).subscribe((money)=>{this.money=money});
+        this.api.get_collections(params.collection || environment.tokendoc.collection,this.network).subscribe((cols:any)=>{
             if(cols.length==0){
                 $$("La collection en parametre n'est pas disponible");
                 this.collection=newCollection(params.collection || environment.tokendoc.collection,this.miner);
@@ -128,13 +129,16 @@ export class TokendocComponent implements OnInit {
             this.eval_signatures();
         }
 
-        this.eval_preview(environment.tokendoc.visual,true);
+        this.eval_preview(environment.tokendoc.cover,true);
     }
 
 
 
 
     ngOnInit() {
+        this.device.isHandset$.subscribe((isHandset)=>{
+            if(isHandset){this.border="0px";this.size="100%";}
+        })
         this.read_param();
     }
 
@@ -158,7 +162,7 @@ export class TokendocComponent implements OnInit {
             if(visuel.length>10000)return;
 
         localStorage.setItem("documents",JSON.stringify(this.documents));
-        if(this.visuels.length>0)localStorage.setItem("visual",this.visual);
+        if(this.visuels.length>0)localStorage.setItem("visual",this.sel_visual);
     }
 
 
@@ -170,17 +174,17 @@ export class TokendocComponent implements OnInit {
         this.upload_document();
         this.eval_signatures();
 
-        if($event.file.startsWith("data:image")){
-            this.config=environment.appli + "/assets/config_certificat_photo.yaml"
-            this.eval_preview($event.file,true);
-        }
+        // if($event.file.startsWith("data:image")){
+        //     this.config=environment.appli + "/assets/config_certificat_photo.yaml"
+        //     this.eval_preview($event.file,true);
+        // }
         this.save_local();
     }
 
 
 
     async send(cb: string) {
-        $$("minage sur le réseau "+this.network.network)
+        $$("minage sur le réseau "+this.network)
         if(this.miner && this.merchant){
             if(this.price>0 || this.fiat_price>0){
                 try{
@@ -221,14 +225,14 @@ export class TokendocComponent implements OnInit {
             localStorage.setItem("last_dest",address);
             wait_message(this,"Mise en ligne du visuel du certificat");
             let src_image=this.sel_visuel.data.src;
-            this.network.upload(src_image,this.stockage).subscribe(async (image:any)=>{
+            this.api.upload(src_image,this.stockage).subscribe(async (image:any)=>{
                 if(!image){
                     showError(this,"Problème de mise en ligne de l'image");
                     return;
                 }
-                wait_message(this,"Création du compte sur "+this.network.network);
-                this.network.create_account(
-                    this.network.network,
+                wait_message(this,"Création du compte sur "+this.network);
+                this.api.create_account(
+                    this.network,
                     address,
                     environment.appli+"/assets/wallet_access.html",
                     environment.appli+"/assets/existing_account_wallet_access.html"
@@ -263,7 +267,7 @@ export class TokendocComponent implements OnInit {
                         message: undefined,
                         miner: this.miner,
                         name: this.name,
-                        network: this.network.network,
+                        network: this.network,
                         owner: owner,
                         royalties: 0,
                         solana: undefined,
@@ -276,12 +280,12 @@ export class TokendocComponent implements OnInit {
                     nft["balances"][miner_addr]=this.max_supply
                     $$("Minage du NFT attribué a "+account.address)
                     try{
-                        let minage:any=await this.network.mint(nft,this.miner,owner,"",false,this.stockage,this.network.network)
+                        let minage:any=await this.api.mint(nft,this.miner,owner,"",false,this.stockage,this.network)
                         wait_message(this)
                         if(minage.error==""){
                             localStorage.removeItem("document");
                             if(isEmail(address))showMessage(this,"Consulter votre mail "+address+" pour retrouver votre NFT")
-                            this.url_wallet=get_nfluent_wallet_url(owner,this.network.network,environment.wallet);
+                            this.url_wallet=get_nfluent_wallet_url(owner,this.network,environment.wallet);
                             this.url_explorer=minage.link_mint;
                             this.url_gallery=minage.link_gallery;
                         } else {
@@ -300,7 +304,7 @@ export class TokendocComponent implements OnInit {
 
     raz_document(document:any) {
         this.documents.splice(this.documents.indexOf(document),1);
-        this.visual="";
+        this.sel_visual="";
         this.save_local();
     }
 
@@ -316,7 +320,7 @@ export class TokendocComponent implements OnInit {
                         if(i==this.documents.length)resolve(true);
                     }
                     if(!document.url || document.url.length==0){
-                        this.network.upload(document,this.stockage_document,document.type,"",this.api_key_document).subscribe((r:any)=>{
+                        this.api.upload(document,this.stockage_document,document.type,"",this.api_key_document).subscribe((r:any)=>{
                             if(r && r.url){
                                 document.url=r.url.replace(" ","%20");
                                 document.signature=r.hash
@@ -363,7 +367,7 @@ export class TokendocComponent implements OnInit {
             if(d.signature=="")l.push(d.file);
         }
         if(l.length>0){
-            this.network.hashcode(l).subscribe((result:string[])=> {
+            this.api.hashcode(l).subscribe((result:string[])=> {
                 for (let i=0;i<this.documents.length;i++) {
                     this.documents[i].signature = result[i];
                 }
@@ -389,17 +393,17 @@ export class TokendocComponent implements OnInit {
     }
 
     eval_preview(visual:string="",force=false) : boolean {
-        if(visual.length>0)this.visual=visual;
+        if(visual.length>0)this.sel_visual=visual;
         if(!force && this.name==localStorage.getItem("title"))return true;
 
         $$("Mise a jour des visuels avec "+visual)
         this.save_local();
 
         this.message_preview="Preview en cours de construction";
-        this.network.send_photo_for_nftlive(
+        this.api.send_photo_for_nftlive(
             15,this.config, this.nft_size.toString(), 80,"",
             [{name: "title",value: this.name}, {name: "dtMining",value:now("date")}],
-            {photo: this.visual}, "base64").subscribe(async (visuels: any) => {
+            {photo: this.sel_visual}, "base64").subscribe(async (visuels: any) => {
                 this.message_preview="";
                 this.visuels=init_visuels(visuels.images)
                 if(!this.sel_visuel && this.visuels.length>0)this.sel_visuel=this.visuels[0];
@@ -416,6 +420,7 @@ export class TokendocComponent implements OnInit {
 
     login(event:any) {
         this.user.init_wallet_provider(event.provider,event.address)
+        if(this.dest=="")this.dest=event.address;
         this.show_login=false;
     }
 
@@ -436,7 +441,7 @@ export class TokendocComponent implements OnInit {
     }
 
     async attach_document() {
-        let url=await _prompt(this,"Indiquer l'url du document a attacher","https://");
+        let url=await _prompt(this,"Indiquer l'url du document a attacher","https://","","text","Attacher","Annuler",false);
         if(!url.startsWith("http")){
             showMessage(this,"Ceci n'est pas une adresse internet")
             return;

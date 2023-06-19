@@ -9,15 +9,28 @@
 		</button>
 		<br>
 		<br>
+<!--		Démonstration avec un validateur s'appuyant -->
+<!--		<app-autovalidator-->
+<!--				[connexion]="operation!.validate!.authentification"-->
+<!--				validator_name="leblognfluent"-->
+<!--				[collections]="operation!.validate!.filters!.collections"-->
+<!--				[network]="operation!.network"-->
+<!--				style="margin-top: 10px;"-->
+<!--				title="Veuillez connecter votre wallet pour vérifier le NFT d'accès"-->
+<!--				(fail)="fail($event)"-->
+<!--				(validate)="authent($event)"></app-autovalidator>-->
+
+
 		<app-autovalidator
-				[connexion]="operation!.validate!.authentification"
 				validator_name="leblognfluent"
-				[collections]="operation!.validate!.filters!.collections"
-				[network]="operation!.network"
+				[collections]="['NFLUPASS-92b409']"
+				network="elrond-devnet"
 				style="margin-top: 10px;"
 				title="Veuillez connecter votre wallet pour vérifier le NFT d'accès"
 				(fail)="fail($event)"
 				(validate)="authent($event)"></app-autovalidator>
+
+
 		Si vous posséder déjà le NFT d'accès
 		<br>
 		<br>

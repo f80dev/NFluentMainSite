@@ -1,0 +1,26 @@
+<div class="mainform">
+	<br>
+	<div class="mat-headline-2 color-primary">The NFluenT Apps</div>
+
+	<app-section subtitle="NFluent develop some tools for developper and create some applications with them.">
+		<div class="expansion-content" style="width:80%;margin-left: 10%;">
+			<div *ngFor="let app of _apps" style="margin: 4%;">
+				<app-reversebloc
+						[title]="app.title" color="darkblue"
+						fontsize="25px"
+						height="250px" width="250px"
+						[image]="app.image">
+					{{app.description}}<br>
+
+				</app-reversebloc>
+				<br>
+				<button mat-raised-button
+
+				        style="width: 200px;height:50px;"
+				        (click)="open_app(app)">{{app.claim}}</button>
+			</div>
+		</div>
+
+
+	</app-section>
+</div>

@@ -19,6 +19,7 @@ export class AutovalidatorComponent implements OnInit, OnDestroy, OnChanges {
   @Input() network: string = "";
   @Input() validator_name: string = "";
   @Input() connexion: Connexion = {
+    direct_connect: false, extension_wallet: false, web_wallet: false,
     address: false,
     email: false,
     google: false,
@@ -53,6 +54,7 @@ export class AutovalidatorComponent implements OnInit, OnDestroy, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (this.showCollections && this.collections.length > 0) {
       if (typeof this.collections == "string") this.collections = [this.collections];
+
       this.api.get_collections(this.collections.join(","), this.network, true).subscribe((cols: Collection[]) => {
         $$("Récupération des collections", cols);
         this._collections = cols;

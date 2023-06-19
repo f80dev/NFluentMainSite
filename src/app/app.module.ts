@@ -64,10 +64,13 @@ import { JaugeComponent } from './jauge/jauge.component';
 import { AutovalidatorComponent } from './autovalidator/autovalidator.component';
 import { ProofofhumanityComponent } from './proofofhumanity/proofofhumanity.component';
 import {NgxCaptchaModule} from "ngx-captcha";
+import { SplashComponent } from './splash/splash.component';
+import { AppsComponent } from './apps/apps.component';
 
 const routes: Routes = [
     { path: 'store', component: StoreComponent },
     { path: 'blog', component: TheblogComponent },
+    { path: 'apps', component: AppsComponent },
     { path: 'leblog', component: TheblogComponent,pathMatch:"prefix" },
     { path: 'create', component: CreatorComponent },
     { path: 'tokendoc', component: TokendocComponent},
@@ -113,7 +116,9 @@ const config: SocketIoConfig = { url: environment.server, options: {} };
         SupportComponent,
         JaugeComponent,
         AutovalidatorComponent,
-        ProofofhumanityComponent
+        ProofofhumanityComponent,
+        SplashComponent,
+        AppsComponent
     ],
     imports: [
         BrowserModule,

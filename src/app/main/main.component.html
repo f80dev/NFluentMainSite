@@ -33,6 +33,10 @@
       <span class="menuitem">Le blog</span>
     </button>
 
+    <button mat-menu-item (click)="open_apps()">
+      <span class="menuitem">The Nfluent Apps</span>
+    </button>
+
     <button mat-menu-item (click)="open_create()" *ngIf="version=='beta'">
       <span class="menuitem">Create your NFTs</span>
     </button>
@@ -51,6 +55,10 @@
 
     <button mat-menu-item (click)="open_faucet()" *ngIf="version=='beta'">
       <span class="menuitem">NfluCoin Bank</span>
+    </button>
+
+    <button mat-menu-item (click)="open_gallery()">
+      <span class="menuitem">The Public Gallery</span>
     </button>
 
 
@@ -352,7 +360,7 @@
     <div style="width: 80%;margin-left: 10%;color: white;position:absolute;display:block;bottom: 20px;font-variant-caps: all-petite-caps;"
          class="mat-headline-5">
 
-      <span style="margin: 20px;">© NFluenT 2022. - v{{version}} - Tous droits réservés</span> ·
+      <span style="margin: 20px;">© NFluenT 2023. - v{{version}} - Tous droits réservés</span> ·
       <a href="/mentions_legales.html"
          class="mat-headline-5"
          target="_blank"
