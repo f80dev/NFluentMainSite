@@ -75,7 +75,7 @@ export class TokendocComponent implements OnInit {
     background: string = "";
     dest: string="";
     border="10px";
-    size: string="";
+    size: string="450px";
 
     constructor(public api:NetworkService,
                 public dialog:MatDialog,

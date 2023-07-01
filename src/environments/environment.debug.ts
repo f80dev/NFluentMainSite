@@ -4,6 +4,7 @@ export const environment = {
   server:"https://api.nfluent.io:4242",
   appname:"NFluent Web Site",
   appli:"https://nfluent.io",
+  faqs:"{{domain_appli}}/assets/faqs.yaml",
   tokenfactory:"https://tokenfactory.nfluent.io",
   wallet:"https://wallet.nfluent.io",
   tokendoc:{

@@ -9,6 +9,7 @@ xcopy /f /y ..\NFTCalvi\src\app\prompt\*.* src\app\prompt\
 xcopy /f /y ..\NFTCalvi\src\app\faqs\*.* src\app\faqs\
 xcopy /f /y ..\NFTCalvi\src\app\upload-file\*.* src\app\upload-file\
 xcopy /f /y ..\NFTCalvi\src\app\network.service.ts src\app\
+xcopy /f /y ..\NFTCalvi\src\app\evm-wallet-service.service.ts src\app\
 xcopy /f /y ..\NFTCalvi\src\app\reversebloc\*.* src\app\reversebloc\
 xcopy /f /y ..\NFTCalvi\src\app\user.service.ts src\app\
 xcopy /f /y ..\NFTCalvi\src\app\operation.service.ts src\app\
@@ -22,4 +23,5 @@ xcopy /f /y ..\NFTCalvi\src\create.ts src\
 xcopy /f /y ..\NFTCalvi\src\tools.ts src\
 xcopy /f /y ..\NFTCalvi\src\nft.ts src\
 xcopy /f /y ..\NFTCalvi\src\nfluent.scss src\
+xcopy /f /y ..\NFTCalvi\src\nfluent-dark.scss src\
 xcopy /f /y ..\NFTCalvi\src\styles.scss src\

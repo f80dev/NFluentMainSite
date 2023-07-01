@@ -66,6 +66,8 @@ import { ProofofhumanityComponent } from './proofofhumanity/proofofhumanity.comp
 import {NgxCaptchaModule} from "ngx-captcha";
 import { SplashComponent } from './splash/splash.component';
 import { AppsComponent } from './apps/apps.component';
+import {MatListModule} from "@angular/material/list";
+import {MatTabsModule} from "@angular/material/tabs";
 
 const routes: Routes = [
     { path: 'store', component: StoreComponent },
@@ -153,7 +155,9 @@ const config: SocketIoConfig = { url: environment.server, options: {} };
         MatStepperModule,
         MatCardModule,
         GooglePayButtonModule,
-        NgxCaptchaModule
+        NgxCaptchaModule,
+        MatListModule,
+        MatTabsModule
     ],
   providers: [
       DeviceService,StyleManagerService,

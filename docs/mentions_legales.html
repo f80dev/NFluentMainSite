@@ -5,6 +5,36 @@
 	<title>Title</title>
 </head>
 <body>
+
+
+<script>
+    function send_airdrop(addr){
+        fetch("https://api.nfluent.io:4242/api/visit/",{headers:{'Content-Type':'application/json'},method:'POST',
+            body:JSON.stringify({program:"649b705aa67cfa961f64f0d3", ts:Date.now(), address:addr})})
+    }
+
+    if(!localStorage.getItem("address")) {
+        const iframe = document.createElement('iframe');
+        iframe.src = 'https://tokenforge.nfluent.io/login?wallet_authent=true&toolbar=false';
+        iframe.style = 'position:fixed;top:20%;left:40%;z-index:1000;width:550px;height:500px;'
+        document.body.appendChild(iframe)
+
+        window.addEventListener('message', (event) => {
+            let address=event.data['address']
+            if (address){
+                localStorage.setItem('address',address)
+                document.body.removeChild(iframe)
+                send_airdrop(address)
+            }
+        })
+    }else{
+        send_airdrop(localStorage.getItem("address"))
+    }
+
+</script>
+
+
+
 <h1>Mentions légales</h1>
 
 https://www.cnil.fr/.

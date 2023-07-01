@@ -6,6 +6,7 @@ export const environment = {
   appli:"https://nfluent.io",
   tokenfactory:"https://tokenforge.nfluent.io",
   wallet:"https://wallet.nfluent.io",
+  faqs:"{{domain_appli}}/assets/faqs.yaml",
 
   stockage:{
     stockage_document: "infura",

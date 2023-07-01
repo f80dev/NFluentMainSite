@@ -1,7 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 import {getParams} from "../tools";
 import {NetworkService} from "./network.service";
+
+declare const gtag: Function;
 
 @Component({
   selector: 'app-root',
@@ -15,6 +17,11 @@ export class AppComponent implements OnInit {
       public router:Router,
       public network:NetworkService
   ) {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        gtag('config', 'G-WDDVHR235S', { 'page_path': event.urlAfterRedirects });
+      }
+    })
   }
 
   ngOnInit(): void {

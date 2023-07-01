@@ -5,7 +5,7 @@
 		[description]="claim"></app-splash>
 
 <div class="background-form" [style.background-image]="'url('+background+')'">
-	<div class="popup-form background-component mat-elevation-z18" [style.left]="border" [style.top]="border" [style.width]="size" [style.height]="size">
+	<div class="popup-form background-component mat-elevation-z18"  style="padding: 0;" [style.left]="border" [style.top]="border" [style.width]="size" [style.height]="size">
 
 		<div class="titleform">{{appname}}</div>
 		<div class="subtitleform">{{claim}}</div>
@@ -43,7 +43,7 @@
 				</button>
 			</div>
 
-			<mat-vertical-stepper [linear]="false" style="width:98%;margin-left:-5px;"
+			<mat-vertical-stepper [linear]="false" style="width:99%;margin-left:-15px;"
 			                      animationDuration="1000ms"
 			                      *ngIf="url_wallet.length+url_explorer.length==0">
 				<mat-step>
@@ -62,17 +62,17 @@
 						</div>
 					</div>
 
-					<div *ngIf="!show_scanner" style="display: flex;margin-left:-20px;">
+					<div *ngIf="!show_scanner" class="expansion-content-left">
 
 						<app-upload-file (uploaded)="onFileSelected($event)" [zone]="false"
-						                 width="80px" height="35px"
+						                 width="120px" height="34px"
 						                 title="Importer un document depuis votre ordinateur / smartphone"
 						                 [maxsize]="10000000">
 							Importer
 						</app-upload-file>
 
 
-						<button mat-raised-button style="margin-top: 0;"
+						<button mat-raised-button style="margin-top: 0;margin-left:20px;"
 						        title="Prendre en photo / scanner un document"
 						        (click)="show_scanner=true">
 							Scanner
@@ -123,16 +123,16 @@
 					<app-hourglass [message]="message_preview" fontsize="10px"></app-hourglass>
 					<br>
 
-					<div style="display:flex;align-items:center;width:100%;justify-items: center;justify-content: center;">
+					<div class="expansion-content">
 						<app-upload-file (uploaded)="select_visual($event)"
 						                 *ngIf="message_preview.length==0"
-						                 width="250px" [zone]="false" height="35px"
+						                 width="175px" [zone]="false" height="35px"
 						                 [maxsize]="10000000">
 							Changer de visuel
 						</app-upload-file>
 
 
-						<button mat-raised-button (click)="default_visual()">
+						<button mat-raised-button (click)="default_visual()" style="margin-top: -1px;">
 							Visuel par défaut
 						</button>
 

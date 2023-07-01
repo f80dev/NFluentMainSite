@@ -10,6 +10,7 @@ export const environment = {
   appli:"http://127.0.0.1:4200",
   tokenfactory:"http:/localhost:4200",
   wallet:"http://127.0.0.1:4200",
+  faqs:"{{domain_appli}}/assets/faqs.yaml",
 
   stockage:{
     stockage_document: "infura",
