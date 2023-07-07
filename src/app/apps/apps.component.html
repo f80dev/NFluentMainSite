@@ -2,16 +2,19 @@
 	<br>
 	<div class="mat-headline-2 color-primary">The NFluenT Apps</div>
 
-	<app-section bgcolor="#EFE5F8" subtitle="Cas pratiques">
-		<mat-tab-group style="width: 100%;">
-			<mat-tab label="Design">
-
+	<app-section bgcolor="#EFE5F8" subtitle="NFLUENT développe des applications pour">
+		<mat-tab-group style="width: 90%;margin-left:5%;" class="mat-headline-6">
+			<mat-tab label="Les designers">
+        <app-tagged-list tags="design" [options]="_cas_pratiques"></app-tagged-list>
 			</mat-tab>
 
-			<mat-tab label="Evenementiel">
-
+			<mat-tab label="L'événementiel">
+        <app-tagged-list tags="events" [options]="_cas_pratiques"></app-tagged-list>
 			</mat-tab>
 
+      <mat-tab label="Les contrats">
+        <app-tagged-list tags="work" [options]="_cas_pratiques"></app-tagged-list>
+			</mat-tab>
 
 		</mat-tab-group>
 	</app-section>

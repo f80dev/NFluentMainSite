@@ -5,8 +5,8 @@
 	<app-input label="The application" [value]="appli" [options]="applis"></app-input><br>
 
 	<app-input label="Your message" [cols]="20" [rows]="5"
-	           (valueChange)="message=$event"
-	           [value]="message" (validate)="send_message()"></app-input><br>
+	           (valueChange)="message=$event" value_type="memo"
+	           [value]="message" (validate)="send_message()"></app-input>
 
 	<br><br>
 

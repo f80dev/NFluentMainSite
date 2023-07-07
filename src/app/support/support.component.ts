@@ -9,7 +9,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
   styleUrls: ['./support.component.css']
 })
 export class SupportComponent {
-  applis=["TokenForge","NFluent Web Site","TokenSign","Other"];
+  applis=["TokenForge","NFluent Web Site","TokenSign","Other"].map((x:any)=>{return {label:x,value:x}});
   name: any="";
   appli: any="";
   message: any="";

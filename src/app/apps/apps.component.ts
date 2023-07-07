@@ -6,7 +6,20 @@ import { Component } from '@angular/core';
     styleUrls: ['./apps.component.css']
 })
 export class AppsComponent {
-    _apps=[
+  _cas_pratiques=[
+    {label:"Vendre du contenu web, musique,vidéo dans la monnaie de votre choix",tags:"design"},
+    {label:"limiter l'accès d'une partie de votre site aux possesseurs d'un nft",tags:"design"},
+    {label:"Certifier la propriété de document en quelques clics",tags:"work"},
+    {label:"Fabriquer des séries de nfts en combinant plusieurs images",tags:"design"},
+    {label:"Transformer des photos en nft instantanément",tags:"events"},
+    {label:"Créer des pages de ventes de vos nfts intégrée dans votre sites",tags:"design"},
+    {label:"Organiser des give aways sur les possesseurs de vos nft",tags:"design,events"},
+    {label:"Distribuer vos nfts directement à des adresses mails",tags:"design"},
+    {label:"Vos visiteurs peuvent afficher leur nft sur un écran public",tags:"events"},
+    {label:"Sécuriser votre billetterie",tags:"events"},
+  ]
+
+  _apps=[
         {
             title:"TokenForge Design",url:"https://tinyurl.com/2n4pse7v",
             image:"https://tokenforge.nfluent.io/assets/icons/design-512.png",
