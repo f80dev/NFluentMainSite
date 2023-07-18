@@ -12,6 +12,7 @@ xcopy /f /y ..\NFTCalvi\src\app\network.service.ts src\app\
 xcopy /f /y ..\NFTCalvi\src\app\evm-wallet-service.service.ts src\app\
 xcopy /f /y ..\NFTCalvi\src\app\reversebloc\*.* src\app\reversebloc\
 xcopy /f /y ..\NFTCalvi\src\app\user.service.ts src\app\
+xcopy /f /y ..\NFTCalvi\src\app\filter.pipe.ts src\app\
 xcopy /f /y ..\NFTCalvi\src\app\operation.service.ts src\app\
 xcopy /f /y ..\NFTCalvi\src\app\style-manager.service.ts src\app\
 xcopy /f /y ..\NFTCalvi\src\app\device.service.ts src\app\
