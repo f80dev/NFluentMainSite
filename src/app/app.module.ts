@@ -68,7 +68,7 @@ import { SplashComponent } from './splash/splash.component';
 import { AppsComponent } from './apps/apps.component';
 import {MatListModule} from "@angular/material/list";
 import {MatTabsModule} from "@angular/material/tabs";
-import { TaggedListComponent } from './tagged-list/tagged-list.component';
+import {FilterPipe} from "./filter.pipe";
 
 const routes: Routes = [
     { path: 'store', component: StoreComponent },
@@ -106,6 +106,7 @@ const config: SocketIoConfig = { url: environment.server, options: {} };
         ScannerComponent,
         CreatorComponent,
         SafePipe,
+        FilterPipe,
         TokendocComponent,
         UploadFileComponent,
         AdminComponent,
@@ -121,8 +122,7 @@ const config: SocketIoConfig = { url: environment.server, options: {} };
         AutovalidatorComponent,
         ProofofhumanityComponent,
         SplashComponent,
-        AppsComponent,
-        TaggedListComponent
+        AppsComponent
     ],
     imports: [
         BrowserModule,
