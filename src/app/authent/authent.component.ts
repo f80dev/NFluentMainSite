@@ -81,6 +81,8 @@ export class AuthentComponent implements OnInit,OnChanges {
   relayUrl:string = "wss://relay.walletconnect.com";
   qrcode_enabled: boolean = true;
   url_xportal_direct_connect: string="";
+  web3Provider: any;
+
 
   constructor(
       public api:NetworkService,
@@ -275,7 +277,6 @@ export class AuthentComponent implements OnInit,OnChanges {
 
 
   connect(network: string) {
-    debugger
     if(network=="elrond"){
       // @ts-ignore
       open(this.network.url_wallet(),"walletElrond")
@@ -313,7 +314,6 @@ export class AuthentComponent implements OnInit,OnChanges {
 
     if(network=="code"){
       if(this.access_code && this.access_code.length==8){
-        debugger
         this.api.access_code_checking(this.access_code,this.address).subscribe(()=>{
           this.strong_connect();
         },(err:any)=>{
@@ -322,8 +322,8 @@ export class AuthentComponent implements OnInit,OnChanges {
       }
     }
 
-    if(network=="private_key" && this.private_key.split(" ").length>=12){
-      this.api.check_private_key(this.private_key,this.address,this.network).subscribe(()=>{
+    if(network=="private_key" && this.access_code.split(" ").length>=12){
+      this.api.check_private_key(this.private_key,this.address).subscribe(()=>{
         this.strong_connect();
       },()=>{
         showMessage(this,'Phrase incorrecte');

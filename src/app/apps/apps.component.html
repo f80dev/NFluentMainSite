@@ -18,9 +18,10 @@
 
 	<app-section subtitle="NFluent develop some tools for developper and create some applications with them.">
 
-    <app-input label="Compte de test" value_type="list" [options]="keys"
-               [value]="sel_key" (valueChange)="sel_key=$event"></app-input>
-
+    <app-input label="Sélectionner un compte de test" style="display:inline-block"
+               value_type="list" [options]="keys"
+               width="300px"
+               [value]="sel_key" (valueChange)="update_selkey($event)"></app-input>
 
     <div class="expansion-content" style="width:80%;margin-left: 10%;">
 			<div *ngFor="let app of _apps" style="margin: 4%;">

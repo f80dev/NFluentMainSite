@@ -22,12 +22,12 @@ export class MainComponent implements AfterViewInit,OnInit {
   version: string="";
 
   constructor(
-      public router:Router,
-      public network:NetworkService,
-      public routes:ActivatedRoute,
-      private formBuilder: FormBuilder,
-      public device:DeviceService,
-      public theme:StyleManagerService
+    public router:Router,
+    public network:NetworkService,
+    public routes:ActivatedRoute,
+    private formBuilder: FormBuilder,
+    public device:DeviceService,
+    public theme:StyleManagerService
   ) {
 
   }
@@ -41,14 +41,9 @@ export class MainComponent implements AfterViewInit,OnInit {
         this.version=environment.version;
       }
     })
+    //checkoutForm = this.formBuilder.group({name: '',      message: '',      subject:'',      email:''});
   }
 
-  checkoutForm = this.formBuilder.group({
-    name: '',
-    message: '',
-    subject:'',
-    email:''
-  });
 
 
 
@@ -76,7 +71,6 @@ export class MainComponent implements AfterViewInit,OnInit {
         value:-150,
         duration: 1,
         endDelay: 1000,
-
       },
       direction: 'alternate',
       easing: 'cubicBezier(.5, .05, .1, .3)'
@@ -182,7 +176,7 @@ export class MainComponent implements AfterViewInit,OnInit {
     open("https://bank.nfluent.io/?p="+encrypt_param)
   }
 
- open_gallery() {
+  open_gallery() {
     let encrypt_param="YXBwbmFtZT1UaGUlMjBQdWJsaWMlMjBHYWxsZXJ5JTIwKGRldm5ldCkmYmFja2dyb3VuZD1odHRwcyUzQSUyRiUyRmdhbGxlcnkubmZsdWVudC5pbyUyRmFzc2V0cyUyRnJlZHdhbGwxLmpwZyZjYW5DaGFuZ2U9dHJ1ZSZjbGFpbT1FeHBvc2VyJTIwdm9zJTIwTkZUcyZjb21tZW50PWI2NCUzQWJuVnNiQSUzRCUzRCZkdXJhdGlvbj0zJmZhdmljb249aHR0cHMlM0ElMkYlMkZnYWxsZXJ5Lm5mbHVlbnQuaW8lMkZhc3NldHMlMkZwYWxldHRlLndlYnAmbWFycXVlPU5mbHVlbnQmbmV0d29ya3M9ZWxyb25kLWRldm5ldCZxdW90YT0xJnNob3dOZmx1ZW50V2FsbGV0Q29ubmVjdD10cnVlJnN0eWxlPW5mbHVlbnQtZGFyay10aGVtZS5jc3MmdG9vbGJhcj1mYWxzZSZ1cmw9aHR0cHMlM0ElMkYlMkZnYWxsZXJ5Lm5mbHVlbnQuaW8mdmlzdWFsPWh0dHBzJTNBJTJGJTJGZ2FsbGVyeS5uZmx1ZW50LmlvJTJGYXNzZXRzJTJGbXVzZWUuanBnJnRpdGxlPVRoZSUyMFB1YmxpYyUyMEdhbGxlcnklMjAoZGV2bmV0KQ%3D%3D"
     open("https://gallery.nfluent.io/?p="+encrypt_param)
   }
@@ -191,7 +185,7 @@ export class MainComponent implements AfterViewInit,OnInit {
     this.router.navigate(["poh"])
   }
 
-    open_apps() {
-        this.router.navigate(["apps"],{queryParams:{filter:"*"}})
-    }
+  open_apps() {
+    this.router.navigate(["apps"],{queryParams:{filter:"*"}})
+  }
 }

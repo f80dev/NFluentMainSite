@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {environment} from "../../environments/environment";
-import {$$, CryptoKey, get_nfluent_wallet_url, getParams, isEmail, newCryptoKey, showMessage} from "../../tools";
+import {$$, CryptoKey,  getParams, isEmail, newCryptoKey, showMessage} from "../../tools";
 import {ActivatedRoute} from "@angular/router";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {NFT} from "../../nft";

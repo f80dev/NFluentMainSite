@@ -4,7 +4,7 @@ import {
     showMessage,
     CryptoKey, newCryptoKey,
     getParams,
-    get_nfluent_wallet_url, $$, now, showError, isEmail, init_visuels, apply_params
+    $$, now, showError, isEmail, apply_params
 } from "../../tools";
 import {NFT} from "../../nft";
 import {ActivatedRoute} from "@angular/router";
@@ -20,6 +20,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {_ask_for_paiement} from "../ask-for-payment/ask-for-payment.component";
 import {extract_merchant_from_param, Merchant} from "../payment/payment.component";
 import {DeviceService} from "../device.service";
+import {get_nfluent_wallet_url, init_visuels} from "../../nfluent";
 
 export interface Document {
     url: string;
@@ -110,7 +111,7 @@ export class TokendocComponent implements OnInit {
         this.max_supply=Number(localStorage.getItem("max_supply") || "1");
         this.infos=localStorage.getItem("infos") || "";
         this.merchant=extract_merchant_from_param(params);
-        
+
         this.api.get_token(params.money || "egld",this.network).subscribe((money)=>{this.money=money});
         this.api.get_collections(params.collection || environment.tokendoc.collection,this.network).subscribe((cols:any)=>{
             if(cols.length==0){
