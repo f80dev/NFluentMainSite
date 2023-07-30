@@ -1,7 +1,10 @@
 import {AfterContentInit, Component, OnInit} from '@angular/core';
 import {NetworkService} from "../network.service";
-import {$$, CryptoKey, setParams} from "../../tools";
+import {$$, CryptoKey, getParams, newCryptoKey, setParams} from "../../tools";
 import { Connexion } from 'src/operation';
+import {environment} from "../../environments/environment";
+import {Merchant} from "../payment/payment.component";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-apps',
@@ -24,7 +27,8 @@ export class AppsComponent implements AfterContentInit {
 
   _apps=[
     {
-      title:"TokenForge Design",url:"https://tinyurl.com/2n4pse7v",
+      title:"TokenForge Design",
+      url:"https://tinyurl.com/2n4pse7v",
       image:"https://tokenforge.nfluent.io/assets/icons/design-512.png",
       description:"Service de création de visuels en série",
       tags:"design",
@@ -32,7 +36,8 @@ export class AppsComponent implements AfterContentInit {
     },
 
     {
-      title:"TokenForge",url:"https://tokenforge.nfluent.io",
+      title:"TokenForge",
+      url:"https://tokenforge.nfluent.io",
       image:"https://tokenforge.nfluent.io/assets/icons/tokenforge-512.png",
       description:"Service de conception et fabrication de grande série de NFT",
       tags:"design mining nft",
@@ -40,16 +45,18 @@ export class AppsComponent implements AfterContentInit {
     },
 
     {
-      title: "NGallery", url: "https://gallery.nfluent.io",
+      title: "NGallery",
+      url: "https://xgallery.nfluent.io",
       image: "http://gallery.nfluent.io/assets/icons/ngallery-512.png",
       description: "NGallery affiche vos NFT sur grand écran en un seul click",
       tags: "event nft gallery",
       claim: "Exposez vos NFTs",
-      test_url:{address:'address'}
+      test_url:{address:'address',svg:'xmusee.svg'}
     },
 
     {
-      title:"NFTLive",url:"https://nftlive.nfluent.io",
+      title:"NFTLive",
+      url:"https://nftlive.nfluent.io",
       image:"http://nftlive.nfluent.io/assets/icons/nftlive-512.png",
       description:"NFTLive transforme en quelques clics une photo en NFT",
       tags:"photo live event picture nft",
@@ -62,7 +69,7 @@ export class AppsComponent implements AfterContentInit {
       image:"https://s.f80.fr/assets/logo.png",
       description:"NFTLive transforme en quelques clics une photo en NFT",
       tags:"vente nft acces",
-      test_url:{address:"address"},
+      test_url:{address:"address",merchant:"merchant",visual:"https://nftlive.nfluent.io/assets/logo_mvx.jpg"},
       claim:"Valoriser vos contenus"
     },
     {
@@ -103,42 +110,61 @@ export class AppsComponent implements AfterContentInit {
       description:"Service de distribution de NFT aux hasard dans une collection",
       tags:"distributeur distribution nft achat",
       claim:"Distribuez vos NFTs",
-      test_url: {miner:"encrypted"}
+      test_url: {miner:"encrypted",owner:"address"}
     },
     {
-      title:"Mini Store",url:"https://tokenforge.nfluent.io/cm/?p=YXBpX2tleV9kb2N1bWVudD1naXRodWJfcGF0XzExQVpKRjdYUTB0TkpVbnRQUWJIeUVfeGw2Qkt5ZjBHd2RDb0RLSWQ5ajRBNmNzQzZITFBBazAwNERMRElqME9FZzdUVFJGQUNLNEdwbEREOWwmYXBwbmFtZT1DYW5keU1hY2hpbmUmYmFja2dyb3VuZD1odHRwcyUzQSUyRiUyRm5mbHVlbnQuaW8lMkZhc3NldHMlMkZwYXBlcjEuanBnJmNndT1odHRwcyUzQSUyRiUyRm5mbHVlbnQuaW8lMkZtZW50aW9uc19sZWdhbGVzLmh0bWwmY2xhaW09RGlzdHJpYnVlciUyMGRlcyUyME5GVCZjb2xsZWN0aW9uPU5GTFVQQVNTLTkyYjQwOSZjb21tZW50PWI2NCUzQWJuVnNiQSUzRCUzRCZjb21wYW55PU5GbHVlblQmY29uZmlnPWh0dHBzJTNBJTJGJTJGbmZ0bGl2ZS5uZmx1ZW50LmlvJTJGYXNzZXRzJTJGY29uZmlnX25mdGxpdmVfZm9yX212eC55YW1sJmNvbnRhY3Q9Y29udGFjdCU0MG5mbHVlbnQuaW8mZmF2aWNvbj1mYXZpY29uLnBuZyZmaWF0X3ByaWNlPTAmbG9nbz1odHRwcyUzQSUyRiUyRm5mbHVlbnQuaW8lMkZhc3NldHMlMkZsb2dvLnBuZyZtYXJxdWU9TmZsdWVudCZtZXJjaGFudC5jb250YWN0PWNvbnRhY3QlNDBuZmx1ZW50LmlvJm1lcmNoYW50Lm5hbWU9TmZsdWVudCUyMFN0b3JlJm1pbmVyPW5mbHVlbnQlM0ElMjBaMEZCUVVGQlFtdGhjV1ZpWmtOS1dIWlpORGhZTVVSNU5IcENSemt3WjFVeVRrcDRkVW81ZUMxd2RYSlhURjl1ZURablJteGFWa0pqY2paRFpXaEdVREkxYWxOUlJuTTFVa3B0VVVKZmFHWXhNakF0VFRkUlJHdG5iRXhCYUZneVZVRTNkVlZwUXpSZlQxaGpaaTE2ZFhFd1EzbHdUekJMTTA1cldYWmhVSHBZVmxOVFJETkhXakUyVGpabFJYTmhTbE5CUzE5dmQwRkhiekpsYUVobloyWkZiM1ZrT0hoRk56UjVTbVJRYlRBdFVqVmhkWGRSUFElM0QlM0QmbmV0d29ya3M9ZWxyb25kLWRldm5ldCZwcmljZT0wJnByb21vdGlvbj1zcG9uc29yJTNEaHR0cHMlM0ElMkYlMkZtdWx0aXZlcnN4LmNvbSUwQXBhcnRlbmFpcmUlM0RodHRwcyUzQSUyRiUyRm5mbHVlbnQuY29tJnJveWFsdGllcz0wLjA1JnN0b2NrYWdlPW5mdHN0b3JhZ2Umc3RvY2thZ2VfZG9jdW1lbnQ9bmZsdWVudC1zZXJ2ZXImc3R5bGU9bmZsdWVudC1kYXJrLmNzcyZ0b29sYmFyPWZhbHNlJnVybD1odHRwcyUzQSUyRiUyRnRva2VuZm9yZ2UubmZsdWVudC5pbyUyRmNtJnZpc3VhbD1odHRwcyUzQSUyRiUyRmltYWdlcy51bnNwbGFzaC5jb20lMkZwaG90by0xNTc5NTgyOTQzNzQ1LWZiNzA5ZjU2OTdlYiUzRml4bGliJTNEcmItNC4wLjMlMjZpeGlkJTNETTN3eE1qQTNmREI4TUh4d2FHOTBieTF3WVdkbGZIeDhmR1Z1ZkRCOGZIeDhmQSUyNTNEJTI1M0QlMjZhdXRvJTNEZm9ybWF0JTI2Zml0JTNEY3JvcCUyNnclM0Q2ODclMjZxJTNEODAlMjZoJTNENjAwJndlYnNpdGU9aHR0cHMlM0ElMkYlMkZuZmx1ZW50LmlvJnRpdGxlPUNhbmR5TWFjaGluZQ%3D%3D",
+      title:"Distributeur",
+      url:"https://tokenforge.nfluent.io/dispenser",
       image:"https://tokenforge.nfluent.io/assets/icons/ministore-512.png",
-      description:"Service d'acquisition de NFT dans une collection",
+      description:"Distribuez vos NFTs",
       tags:"distributeur distribution nft achat",
       claim:"Distribuez vos NFTs",
-      test_url: {miner:"encrypted"}
+      visual:"https://images.unsplash.com/photo-1579582943745-fb709f5697eb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80&h=600",
+      test_url: {miner:"encrypted",miner_addr:"address",network_dest:"network"}
+    },
+    {
+      title:"Store",
+      url:"https://tokenforge.nfluent.io/store",
+      image:"https://tokenforge.nfluent.io/assets/icons/ministore-512.png",
+      description:"Vendez vos NFTs",
+      tags:"distributeur distribution nft achat",
+      claim:"Vendez vos NFTs",
+      test_url: {miner:"encrypted",miner_addr:"address",network_dest:"network",default_price:{egld:0.01},merchant:"merchant"}
     },
   ]
   sel_key: any
   keys:any[]=[]
   connexion:Connexion={
     address: false,
-    direct_connect: false,
+    direct_connect: true,
     email: true,
     extension_wallet: true,
     google: false,
-    keystore: "",
-    nfluent_wallet_connect: true,
+    keystore: false,
+    nfluent_wallet_connect: false,
     on_device: false,
     wallet_connect: true,
     web_wallet: false,
     webcam: false
   }
+  merchant:Merchant={contact: "", country: "", currency: "", id: "", name: "", wallet: undefined}
 
-  constructor(public api:NetworkService) {
+  constructor(public api:NetworkService,
+              public routes:ActivatedRoute) {
   }
 
-  ngAfterContentInit(): void {
-    this.refresh_keys()
+  async ngAfterContentInit()  {
+    let params:any=await getParams(this.routes)
+    if(params.key){
+      let k:CryptoKey=newCryptoKey(params.address,"mykey","",params.key)
+      this.sel_key={value:k}
+    } else {
+      this.refresh_keys()
+    }
   }
 
 
-  async refresh_keys(filter="bob,alice,dan",network="elrond-devnet"){
+  async refresh_keys(filter="bob,alice,dan,eve,franck,grace,carol,paul",network="elrond-devnet"){
     try{
       let rc=[];
       let keys:any[]=await this.api.init_keys(true,"","",network)
@@ -151,19 +177,30 @@ export class AppsComponent implements AfterContentInit {
     } catch (e){}
   }
 
-  open_app(app: any) {
+  open_app(app: any,network="elrond-devnet") {
     if(this.sel_key && this.sel_key.value){
+      this.merchant.wallet={address: this.sel_key.value.address, network: network, token: "egld", unity: "egld"}
       for(let k of Object.keys(app.test_url)){
         let v=app.test_url[k]
         if(v=="address")v=this.sel_key.value.address
         if(v=="encrypt" || v=="encrypted")v=this.sel_key.value.encrypted
+        if(v=="network")v=network
+        if(v=="merchant")v=this.merchant;
         app.test_url[k]=v
       }
-      app.test_url["network"]="elrond-devnet"
+      app.test_url["network"]=network
       app.test_url["toolbar"]=false
+      app.test_url["background"]="https://nftlive.nfluent.io/assets/wood.jpg"
+      app.test_url["style"]="nfluent-dark.css"
       app.test_url["connexion"]=this.connexion
+
+
       let url_app=app.url.split("?")[0]
       let new_url=setParams(app.test_url,"","p",url_app)
+      if(!environment.production){
+        let domain=new URL(new_url).hostname
+        new_url=new_url.replace(domain,"localhost:4200").replace("https://","http://")
+      }
       open(new_url,"App")
     }else{
       open(app.url,"App")
@@ -172,6 +209,7 @@ export class AppsComponent implements AfterContentInit {
   }
 
   update_selkey($event: any) {
+    $$("Changement de clé : ",$event.value.address)
     this.sel_key=$event
   }
 }

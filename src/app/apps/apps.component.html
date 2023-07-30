@@ -18,8 +18,9 @@
 
 	<app-section subtitle="NFluent develop some tools for developper and create some applications with them.">
 
-    <app-input label="Sélectionner un compte de test" style="display:inline-block"
+    <app-input label="Select a test account" style="display:inline-block"
                value_type="list" [options]="keys"
+               help="Les applications utiliseront ce compte en mode démonstration (devnet)"
                width="300px"
                [value]="sel_key" (valueChange)="update_selkey($event)"></app-input>
 
