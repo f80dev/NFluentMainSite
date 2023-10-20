@@ -41,7 +41,7 @@
               {
                 "input": "src/nfluent-dark.scss",
                 "inject": false,
-                "bundleName": "nfluent-dark-theme"
+                "bundleName": "nfluent-dark"
               }
             ],
             "scripts": []

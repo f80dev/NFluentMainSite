@@ -74,13 +74,14 @@ export class ProofofhumanityComponent implements OnInit {
         $$("Minage du NFT attribué a "+owner)
 
         wait_message(this,"Enregistrement de la preuve")
-        let minage:any=await this.api.mint(nft,this.miner,owner,"",false,"nftstorage",this.network)
+        let t_minage:any=await this.api.mint(nft,owner,"",false,"nftstorage",this.network)
+        this.api.execute(t_minage,this.network,this.miner)
         wait_message(this);
 
-        if(minage.error==""){
+        if(t_minage.error==""){
             showMessage(this,"Votre wallet détient une preuve d'humanité")
         } else {
-            showMessage(this,"Probleme technique "+minage.error)
+            showMessage(this,"Probleme technique "+t_minage.error)
         }
         this.address="";
     }

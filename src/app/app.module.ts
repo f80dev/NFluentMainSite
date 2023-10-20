@@ -69,6 +69,9 @@ import { AppsComponent } from './apps/apps.component';
 import {MatListModule} from "@angular/material/list";
 import {MatTabsModule} from "@angular/material/tabs";
 import {FilterPipe} from "./filter.pipe";
+import {TutoComponent} from "./tuto/tuto.component";
+import {CollectionSelectorComponent} from "./collection-selector/collection-selector.component";
+import {ShowroomComponent} from "./showroom/showroom.component";
 
 const routes: Routes = [
     { path: 'store', component: StoreComponent },
@@ -89,41 +92,44 @@ export const GOOGLE_CLIENT_ID="167299914377-p8vuf2f6npqnigl5kpqrh34cqjd81eko.app
 const config: SocketIoConfig = { url: environment.server, options: {} };
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        MainComponent,
-        BlocComponent,
-        StepsComponent,
-        SectionComponent,
-        InputComponent,
-        AuthentComponent,
-        TeamComponent,
-        ParagrapheComponent,
-        ReverseblocComponent,
-        ConvictionComponent,
-        StoreComponent,
-        TheblogComponent,
-        ScannerComponent,
-        CreatorComponent,
-        SafePipe,
-        FilterPipe,
-        TokendocComponent,
-        UploadFileComponent,
-        AdminComponent,
-        PromptComponent,
-        FileDragNDropDirective,
-        HourglassComponent,
-        TokendocVerifyComponent,
-        FaqsComponent,
-        PaymentComponent,
-        AskForPaymentComponent,
-        SupportComponent,
-        JaugeComponent,
-        AutovalidatorComponent,
-        ProofofhumanityComponent,
-        SplashComponent,
-        AppsComponent
-    ],
+  declarations: [
+    AppComponent,
+    MainComponent,
+    BlocComponent,
+    StepsComponent,
+    SectionComponent,
+    InputComponent,
+    AuthentComponent,
+    TeamComponent,
+    ParagrapheComponent,
+    ReverseblocComponent,
+    ConvictionComponent,
+    StoreComponent,
+    TheblogComponent,
+    ScannerComponent,
+    CreatorComponent,
+    SafePipe,
+    FilterPipe,
+    TokendocComponent,
+    UploadFileComponent,
+    AdminComponent,
+    PromptComponent,
+    FileDragNDropDirective,
+    HourglassComponent,
+    TokendocVerifyComponent,
+    FaqsComponent,
+    PaymentComponent,
+    AskForPaymentComponent,
+    SupportComponent,
+    JaugeComponent,
+    AutovalidatorComponent,
+    ProofofhumanityComponent,
+    SplashComponent,
+    AppsComponent,
+    TutoComponent,
+    CollectionSelectorComponent,
+    ShowroomComponent
+  ],
     imports: [
         BrowserModule,
         MatSliderModule,

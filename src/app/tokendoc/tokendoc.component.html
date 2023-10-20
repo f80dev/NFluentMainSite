@@ -1,41 +1,80 @@
 <app-splash
 		[appname]="appname"
 		[duration]="2000"
-		[image]="sel_visual"
+		[image]="visual"
 		[description]="claim"></app-splash>
 
-<div class="background-form" [style.background-image]="'url('+background+')'">
-	<div class="popup-form background-component mat-elevation-z18"  style="padding: 0;" [style.left]="border" [style.top]="border" [style.width]="size" [style.height]="size">
 
-		<div class="titleform">{{appname}}</div>
-		<div class="subtitleform">{{claim}}</div>
+<app-tuto label="{{appname}} est un outil de certification de vos documents par génération automatique d'un NFT"
+          align_image="left"
+          type="title"
+          background="https://images.unsplash.com/photo-1635859890085-ec8cb5466806?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+          [duration]="40" *ngIf="slide==1" (close)="slide=slide+1"></app-tuto>
+
+<app-tuto label="Pour un ou plusieurs documents ou image, Il produit un NFT contenant <br>
+                <ul>
+                 <li>une emprunte cryptographique du document</li>
+                 <li>des informations sur son ou ses auteurs, ayant droits</li>
+                 <li>un horodatage</li>
+                 </ul>"
+          align="left" type="title"
+          background="https://images.unsplash.com/photo-1547190027-9156686aa2f0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+          [duration]="40" *ngIf="slide==2" (close)="slide=slide+1"></app-tuto>
+
+<app-tuto label="En cas de litige, ce NFT est utilisable au titre d'une signature électronique qualifiée"
+          type="title"
+          background="./assets/justice.jpg"
+          [duration]="40" *ngIf="slide==3" (close)="slide=slide+1"></app-tuto>
+
+
+
+<div class="background-form" [style.background-image]="'url('+background+')'" *ngIf="slide>3">
+	<div class="popup-form background-component mat-elevation-z18"
+       style="min-height: 100vh;margin:0;padding: 0;"
+       [style.margin]="border" [style.width]="size" >
+		<div class="subtitleform" style="margin-top: 10px">{{claim}}</div>
 
 		<app-hourglass anim="./assets/engrenage.gif"
 		               [message]="message"
 		               style="margin-top: 100px;margin-bottom: 50px;"></app-hourglass>
 
-		<div style="position:relative;display: inline-block;text-align: center;width: 100%;overflow: hidden;" *ngIf="message.length==0 && !show_login">
+
+    <div style="display: inline-block;text-align: center;width:100%;" *ngIf="message.length==0 && show_login">
+      Veuillez vous connecter
+      <app-authent
+        size="350px"
+        [use_cookie]="false"
+        [network]="this.network"
+        [connexion]="authentification"
+        (cancel)="cancel()"
+        [showCancel]="true"
+        (disconnect)="disconnect()"
+        (invalid)="fail($event)"
+        (authent)="login($event)"></app-authent>
+    </div>
+
+
+    <div style="position:relative;display: inline-block;text-align: center;width: 100%;overflow: hidden;" *ngIf="message.length==0 && !show_login">
 
 			<div *ngIf="documents.length>0 && url_wallet.length==0 && url_explorer.length==0 && network.length>0">
-				<button mat-raised-button color="primary"
-				        [title]="'pour '+price+' '+merchant!.wallet!.unity+' ou '+fiat_price+' '+merchant!.currency"
+				<button mat-raised-button color="primary" *ngIf="merchant || user.wallet_provider"
+				        [title]="title_button"
 				        [disabled]="message_preview.length>0 || !this.sel_visuel"
 				        (click)="send('cb')">
-					Tokenizer !
+					Valider
 				</button>
 
+        <button mat-raised-button color="primary" *ngIf="!merchant && !user.wallet_provider"
+                (click)="show_login=true">
+          Se connecter
+        </button>
+
 				<button mat-raised-button (click)="restart()">
-					Effacer
+					Annuler
 				</button>
 			</div>
 
-			<div style="position: absolute;display:block;z-index:10;top:-10px;right:5px;color:#a4a4a4;" *ngIf="message.length==0">
-				<button mat-icon-button (click)="show_login=true"
-				        title="Se connecter"
-				        *ngIf="!show_login && !user.isConnected()">
-					<mat-icon>login</mat-icon>
-				</button>
-
+			<div style="position: absolute;display:block;z-index:10;top:0;right:5px;color:#a4a4a4;" *ngIf="message.length==0">
 				<button mat-icon-button (click)="user.logout()"
 				        title="Se déconnecter"
 				        *ngIf="user.isConnected()">
@@ -43,7 +82,7 @@
 				</button>
 			</div>
 
-			<mat-vertical-stepper [linear]="false" style="width:99%;margin-left:-15px;"
+			<mat-vertical-stepper [linear]="false" style="width:99%;margin-left:-17px;"
 			                      animationDuration="1000ms"
 			                      *ngIf="url_wallet.length+url_explorer.length==0">
 				<mat-step>
@@ -62,23 +101,22 @@
 						</div>
 					</div>
 
-					<div *ngIf="!show_scanner" class="expansion-content-left">
+					<div *ngIf="!show_scanner" class="expansion-content" style="margin-left: -20px;width:120%;">
 
 						<app-upload-file (uploaded)="onFileSelected($event)" [zone]="false"
-						                 width="120px" height="34px"
+						                 width="100px" height="34px"
 						                 title="Importer un document depuis votre ordinateur / smartphone"
 						                 [maxsize]="10000000">
 							Importer
 						</app-upload-file>
 
-
-						<button mat-raised-button style="margin-top: 0;margin-left:20px;"
+						<button mat-raised-button style="margin-top: 5px;"
 						        title="Prendre en photo / scanner un document"
 						        (click)="show_scanner=true">
 							Scanner
 						</button>
 
-						<button mat-raised-button style="margin-top: 0;"
+						<button mat-raised-button style="margin-top: 5px;"
 						        title="Attacher un document via son adresse internet (url)"
 						        (click)="attach_document()">
 							Attacher
@@ -115,7 +153,7 @@
 					     style="margin: 10px"
 					     *ngIf="message_preview.length==0">Sélectionner le visuel qui convient pour le NFT</div>
 
-					<gallery *ngIf="visuels.length>0"
+					<gallery *ngIf="visuels.length>0 && message_preview==''"
 					         style="width: 250px;height:250px;display: inline-block;"
 					         (indexChange)="select_visuel($event)" [thumbHeight]="0"
 					         [items]="visuels"></gallery>
@@ -123,7 +161,7 @@
 					<app-hourglass [message]="message_preview" fontsize="10px"></app-hourglass>
 					<br>
 
-					<div class="expansion-content">
+					<div class="expansion-content" style="margin-top: 15px;">
 						<app-upload-file (uploaded)="select_visual($event)"
 						                 *ngIf="message_preview.length==0"
 						                 width="175px" [zone]="false" height="35px"
@@ -137,6 +175,22 @@
 						</button>
 
 					</div>
+
+          <div  style="width: 100%;text-align: center;" class="mat-body-2">
+            <br>
+            <span *ngIf="!collection">Vous devez sélectionner une collection pour créer le certificat</span>
+
+            <span *ngIf="!user.isConnected()">Pour cela vous devez vous connecter</span>
+            <app-collection-selector [owner]="user.addr"
+                                     style="margin: 20px;"
+                                     [create_collection]="user.wallet_provider"
+                                     w_image="150px"
+                                     *ngIf="user.isConnected()"
+                                     [network]="network"
+                                     (selected)="sel_collection($event)">
+            </app-collection-selector>
+
+          </div>
 
 
 
@@ -221,19 +275,6 @@
 
 		<br>
 
-		<div style="display: inline-block;text-align: center;" *ngIf="message.length==0">
-			<app-authent
-					*ngIf="show_login"
-					size="350px"
-					[use_cookie]="false"
-					[showWalletConnect]="true"
-					[showExtensionWallet]="true"
-					(cancel)="cancel()"
-					[showCancel]="true"
-					(disconnect)="disconnect()"
-					(invalid)="fail($event)"
-					(authent)="login($event)"></app-authent>
-		</div>
 
 
 
@@ -246,7 +287,7 @@
 		Version test<br>
 		network: {{network}}<br>
 		stockage : {{stockage}} / {{stockage_document}}<br>
-		Compte: {{miner.address}} / {{collection.id}}
+    <span *ngIf="miner">Compte: {{miner.address}} / {{collection.id}}</span>
 	</div>
 
 </div>

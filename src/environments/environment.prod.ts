@@ -3,15 +3,17 @@ export const environment = {
   version: "0.1.36",
   server:"https://api.nfluent.io:4242",
   appname:"NFluent Web Site",
+  style:"nfluent-dark.css",
   appli:"https://nfluent.io",
   tokenfactory:"https://tokenforge.nfluent.io",
   wallet:"https://wallet.nfluent.io",
   faqs:"{{domain_appli}}/assets/faqs.yaml",
 
   stockage:{
-    stockage_document: "infura",
-    stockage:"github-nfluentdev-storage-main",
+    stockage_document: "github-nfluentdev-storage_3-main",
+    stockage:"github-nfluentdev-storage_2-main",
   },
+
 
   poh:{
     visual:"https://nfluent.io/assets/portrait.jpg",
@@ -25,14 +27,15 @@ export const environment = {
   tokendoc:{
     appname:"TokenDoc",
     claim:"Tokenisez vos documents en quelques clics",
+    background:"./assets/wood2.jpg",
 
+    visual: "https://nfluent.io/assets/signature.jpg",
+    cover: "https://nfluent.io/assets/paper1.jpg",
+    website:"https://nfluent.io",
+    style:"nfluent-dark.css",
     cost_in_fiat: 1,
     cost_in_crypto: 3,
-    cover: "https://nfluent.io/assets/paper1.jpg",
 
-    visual: "https://nfluent.io/assets/paper1.jpg",
-    stockage_document: "infura",
-    stockage:"nftstorage",
     start_config: "config_certificat.yaml",
 
     network:"elrond-devnet",
@@ -40,19 +43,21 @@ export const environment = {
     collection: "MACOLLEC-4356f0"
   },
 
-  merchant:{
-    id:"BCR2DN4TYD4Z5XCR",
-    name:"NFluenT",
-    currency:"EUR",
-    country:"FR",
-    contact:"contact@nfluent.io",
-    wallet:
-        {
-          token:"NFLUCOIN-4921ed",
-          address:"erd1gkd6f8wm79v3fsyyklp2qkhq0eek28cnr4jhj9h87zwqxwdz7uwstdzj3m",
-          network:"elrond-devnet",
-          unity: "NfluCoin",
-          bank : "nfluent: Z0FBQUFBQmtXblgwRGxBQ21NdXFVdHFIVlZNcUN3elpKc2xmem5WNHFrZVRYSEhXZWdJSGZzeENQY2xFY0N6a0dUaDM3SU5zYjRIQmpLak12ZWxRZkJrNU4tMmtaTkVOZlhIbF9NTlNoV1FkYlUtakxyR0cyQXRJNk9JcmpUWm5rSnNJSEZTS3dMV3NGSmgtZ1lsZG5OYkJVOEZ5UU"
-        }
-  }
+  merchant:undefined
+
+  // merchant:{
+  //   id:"BCR2DN4TYD4Z5XCR",
+  //   name:"NFluenT",
+  //   currency:"EUR",
+  //   country:"FR",
+  //   contact:"contact@nfluent.io",
+  //   wallet:
+  //       {
+  //         token:"NFLUCOIN-4921ed",
+  //         address:"erd1gkd6f8wm79v3fsyyklp2qkhq0eek28cnr4jhj9h87zwqxwdz7uwstdzj3m",
+  //         network:"elrond-devnet",
+  //         unity: "NfluCoin",
+  //         bank : "nfluent: Z0FBQUFBQmtXblgwRGxBQ21NdXFVdHFIVlZNcUN3elpKc2xmem5WNHFrZVRYSEhXZWdJSGZzeENQY2xFY0N6a0dUaDM3SU5zYjRIQmpLak12ZWxRZkJrNU4tMmtaTkVOZlhIbF9NTlNoV1FkYlUtakxyR0cyQXRJNk9JcmpUWm5rSnNJSEZTS3dMV3NGSmgtZ1lsZG5OYkJVOEZ5UU"
+  //       }
+  // }
 };

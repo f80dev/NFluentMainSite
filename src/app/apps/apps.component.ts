@@ -135,6 +135,7 @@ export class AppsComponent implements AfterContentInit {
   sel_key: any
   keys:any[]=[]
   connexion:Connexion={
+    private_key: false,
     address: false,
     direct_connect: true,
     email: true,
