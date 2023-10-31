@@ -68,7 +68,7 @@ export class CollectionSelectorComponent implements OnChanges,OnDestroy {
 
   refresh_collections(owner="",filter=""){
       if(owner=="")owner=filter;
-      wait_message(this,"Recherche des collections contenant "+this.query_collection)
+      wait_message(this,"Recherche des collections "+(this.query_collection!='' ? 'contenant '+this.query_collection : ''))
       this.api.get_collections(owner, this.network, true, this.limit, this.roles,this.min_supply,this.min_balance).subscribe((cols: any) => {
         wait_message(this)
         this.collections = []

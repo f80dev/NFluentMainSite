@@ -24,7 +24,7 @@
             {{collections.length}} collections <span *ngIf="query_collection.length>0">contenant {{query_collection}}</span>
         </p>
 
-        <div class="expansion-content" style="width: 100%;margin-top:15px;" *ngIf="w_image!=''">
+        <div class="expansion-content" style="width: 100%;margin-top:15px;max-height:600px;overflow: scroll;" *ngIf="w_image!=''">
             <div *ngFor="let c of collections"
                  [style.display]="c.cover=='' ? 'none' : 'inline-box'" class="mat-elevation-z4"
                  style="position: relative;cursor: pointer; display: inline-flex;overflow: hidden;margin: 3px;"
