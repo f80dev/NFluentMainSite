@@ -37,6 +37,9 @@ export const environment = {
     style:"nfluent-dark.css",
     background:"https://nfluent.io/assets/wood2.jpg",
 
+    stockage:"nfluent-server",
+    stockage_document:"nfluent-server",
+
     start_config: "config_certificat.yaml",
 
     cost_in_fiat: 0,

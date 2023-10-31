@@ -39,52 +39,21 @@
 		               style="margin-top: 100px;margin-bottom: 50px;"></app-hourglass>
 
 
-    <div style="display: inline-block;text-align: center;width:100%;" *ngIf="message.length==0 && show_login">
-      Veuillez vous connecter
-      <app-authent
-        size="350px"
-        [use_cookie]="false"
-        [network]="this.network"
-        [connexion]="authentification"
-        (cancel)="cancel()"
-        [showCancel]="true"
-        (disconnect)="disconnect()"
-        (invalid)="fail($event)"
-        (authent)="login($event)"></app-authent>
-    </div>
+
+    <div style="position:relative;display: inline-block;text-align: center;width: 100%;overflow: hidden;" *ngIf="message.length==0">
 
 
-    <div style="position:relative;display: inline-block;text-align: center;width: 100%;overflow: hidden;" *ngIf="message.length==0 && !show_login">
+<!--			<div style="position: absolute;display:block;z-index:10;top:0;right:5px;color:#a4a4a4;" *ngIf="message.length==0">-->
+<!--				<button mat-icon-button (click)="user.logout()"-->
+<!--				        title="Se déconnecter"-->
+<!--				        *ngIf="user.isConnected()">-->
+<!--					<mat-icon>logout</mat-icon>-->
+<!--				</button>-->
+<!--			</div>-->
 
-			<div *ngIf="documents.length>0 && url_wallet.length==0 && url_explorer.length==0 && network.length>0">
-				<button mat-raised-button color="primary" *ngIf="merchant || user.wallet_provider"
-				        [title]="title_button"
-				        [disabled]="message_preview.length>0 || !this.sel_visuel"
-				        (click)="send('cb')">
-					Valider
-				</button>
-
-        <button mat-raised-button color="primary" *ngIf="!merchant && !user.wallet_provider"
-                (click)="show_login=true">
-          Se connecter
-        </button>
-
-				<button mat-raised-button (click)="restart()">
-					Annuler
-				</button>
-			</div>
-
-			<div style="position: absolute;display:block;z-index:10;top:0;right:5px;color:#a4a4a4;" *ngIf="message.length==0">
-				<button mat-icon-button (click)="user.logout()"
-				        title="Se déconnecter"
-				        *ngIf="user.isConnected()">
-					<mat-icon>logout</mat-icon>
-				</button>
-			</div>
-
-			<mat-vertical-stepper [linear]="false" style="width:99%;margin-left:-17px;"
+			<mat-vertical-stepper [linear]="false" style="width:99%;margin-left:-12px;"
 			                      animationDuration="1000ms"
-			                      *ngIf="url_wallet.length+url_explorer.length==0">
+			                      *ngIf="url_wallet=='' && url_explorer==''">
 				<mat-step>
 					<ng-template matStepLabel>Charger un ou plusieurs documents</ng-template>
 
@@ -96,7 +65,7 @@
 								<mat-icon title="Enlever le document" (click)="raz_document(document)">delete</mat-icon>
 								<app-hourglass message="" *ngIf="document.url.length==0"></app-hourglass>
 								<mat-icon title="Voir le document" *ngIf="document.url.length>0" (click)="open_doc(document)">link</mat-icon>
-								<span style="margin-left: 5px;font-size: small;">{{document.filename}}</span>
+								<span style="margin-left: 5px;font-size: small;">{{document.filename.substring(0,40)+"..."}}</span>
 							</div>
 						</div>
 					</div>
@@ -170,22 +139,66 @@
 						</app-upload-file>
 
 
-						<button mat-raised-button (click)="default_visual()" style="margin-top: -1px;">
+						<button mat-raised-button (click)="default_visual()"
+                    style="margin-top: -1px;" *ngIf="user.advance_mode">
 							Visuel par défaut
 						</button>
 
 					</div>
 
-          <div  style="width: 100%;text-align: center;" class="mat-body-2">
-            <br>
-            <span *ngIf="!collection">Vous devez sélectionner une collection pour créer le certificat</span>
+          <br><br>
+          <app-input value_type="memo" [value]="infos" (valueChange)="infos=$event;save_local()"
+                     [cols]="10" [rows]="3" maxlength="200"
+                     label="Informations complémentaires à associer au certificat"
+                     help="Informations non confidentielles, ajoutées dans le NFT">
+          </app-input>
 
-            <span *ngIf="!user.isConnected()">Pour cela vous devez vous connecter</span>
+          <br><br>
+
+          <app-input label="Nombre d'exemplaires (tirage)"
+                     [min]="1" [max]="50" [value]="max_supply"
+                     value_type="slider" *ngIf="isSemiFungible()"
+                     help="Ce nombre correpond au nombre de parts disponibles" (valueChange)="max_supply=$event">
+          </app-input>
+
+				</mat-step>
+
+				<mat-step *ngIf="documents.length>0">
+					<ng-template matStepLabel>Fabrication</ng-template>
+
+					<br>
+
+          <div style="display: inline-block;text-align: center;width:100%;"
+               class="mat-body-1"
+               *ngIf="!merchant && !user.wallet_provider && !miner" >
+            Veuillez vous connecter
+            <app-authent
+              size="350px"
+              [network]="this.network"
+              [connexion]="authentification"
+              (authent)="login($event)"></app-authent>
+          </div>
+
+
+					<app-input value_type="text" [value]="dest"
+                     *ngIf="miner && collection"
+                     (valueChange)="dest=$event;save_local()"
+					           label="destinataires"
+					           help="laissez vide pour le recevoir sur votre adresse">
+					</app-input>
+
+
+					<br>
+
+          <p *ngIf="collection">Collection {{collection.name}} sélectionnée pour le minage</p>
+
+          <div style="width: 100%;text-align: center;" class="mat-body-2" *ngIf="user.wallet_provider">
             <app-collection-selector [owner]="user.addr"
+                                     title="Sélectionnez une collection pour recevoir le certificat"
                                      style="margin: 20px;"
+                                     roles="canCreate"
                                      [create_collection]="user.wallet_provider"
-                                     w_image="150px"
-                                     *ngIf="user.isConnected()"
+                                     w_image="100px" w_image_selected="200px"
                                      [network]="network"
                                      (selected)="sel_collection($event)">
             </app-collection-selector>
@@ -193,85 +206,67 @@
           </div>
 
 
+          <div *ngIf="documents.length>0" style="margin-top: 20px;" class="expansion-content">
+            <button mat-raised-button color="primary" class="mat-body-1"
+                    *ngIf="collection && (miner || user.wallet_provider)"
+                    [title]="title_button"
+                    [disabled]="message_preview.length>0 || !this.sel_visuel"
+                    (click)="send('cb')">
+              Fabriquer le certificat
+            </button>
+          </div>
 
-				</mat-step>
+          <br>
+          <mat-expansion-panel *ngIf="documents.length>0" style="margin-top: 75px;text-align: left;">
+            <mat-expansion-panel-header>Paramètres avancées</mat-expansion-panel-header>
+            <mat-checkbox [(ngModel)]="joinDoc" title="Ainsi le document peut être ouvert depuis le certificat"
+                          (change)="upload_document()">
+              Joindre les documents au NFT
+            </mat-checkbox>
 
-				<mat-step *ngIf="documents.length>0">
-					<ng-template matStepLabel>Informations complémentaires</ng-template>
-
-					<br>
-					<app-input value_type="memo" [value]="infos" (valueChange)="infos=$event;save_local()"
-					           [cols]="10" [rows]="3" maxlength="200"
-					           label="Informations complémaires (texte libre)"
-					           help="Informations non confidentielles, ajoutées dans le NFT">
-					</app-input>
-
-					<br>
-					<app-input value_type="text" [value]="dest" (valueChange)="dest=$event;save_local()"
-					           label="destinataires"
-					           help="laissez vide pour le recevoir sur votre adresse">
-					</app-input>
-
-
-					<br>
-					<app-input label="Nombre d'exemplaires (tirage)"
-					           [min]="1" [max]="50" [value]="max_supply"
-					           value_type="slider" *ngIf="isSemiFungible()"
-					           help="Ce nombre correpond au nombre de parts disponibles" (valueChange)="max_supply=$event">
-					</app-input>
-					<app-input label="Dimension du visuel" [min]="150" [max]="600" color_value="white"
-					           [value]="nft_size" (valueChange)="nft_size=$event" value_type="slider">
-					</app-input>
+            <app-input label="Dimension du visuel" [min]="150" [max]="600" color_value="white"
+                       [value]="nft_size" (valueChange)="nft_size=$event" value_type="slider">
+            </app-input>
 
 
-					<br>
+<!--            <div style="width: 100%;display: flex;flex-wrap: wrap;margin-top: 20px;">-->
+<!--              <app-input label="Identifiez vous par"-->
+<!--                         width="200px"-->
+<!--                         *ngIf="documents.length>0" value_field="value"-->
+<!--                         [options]="identity_types"-->
+<!--                         [value]="identity_type"-->
+<!--                         (valueChange)="update_identity($event)">-->
+<!--              </app-input>-->
+<!--              <app-input [label]="identity_type"-->
+<!--                         [value]="identity" width="200px"-->
+<!--                         *ngIf="identity_type?.length>0"-->
+<!--                         (valueChange)="identity=$event">-->
+<!--              </app-input>-->
+<!--            </div>-->
+          </mat-expansion-panel>
 
-					<mat-checkbox [(ngModel)]="joinDoc" title="Ainsi le document peut être ouvert depuis le certificat"
-					              (change)="upload_document()">
-						Joindre les documents au NFT
-					</mat-checkbox>
-
-
-				</mat-step>
-
-
-				<mat-step *ngIf="documents.length>0 && advanced_mode" >
-					<ng-template matStepLabel>Signatures complémentaire</ng-template>
-
-					<div style="width: 100%;display: flex;flex-wrap: wrap;margin-top: 20px;">
-						<app-input label="Identifiez vous par"
-						           width="200px"
-						           *ngIf="documents.length>0" value_field="value"
-						           [options]="identity_types"
-						           [value]="identity_type"
-						           (valueChange)="update_identity($event)">
-						</app-input>
-						<app-input [label]="identity_type"
-						           [value]="identity" width="200px"
-						           *ngIf="identity_type?.length>0"
-						           (valueChange)="identity=$event">
-						</app-input>
-					</div>
-
-
-
-				</mat-step>
+        </mat-step>
 
 			</mat-vertical-stepper>
 
 
-			<div *ngIf="url_explorer.length>0 && url_wallet.length>0" class="mat-body-2">
-				<a [href]="url_wallet" target="walletNFluent" style="margin: 10px;">Wallet NFLUENT</a>
-				<a [href]="url_gallery" target="Gallery" style="margin: 10px;">Voir le NFT</a><br><br>
+      <div *ngIf="url_explorer!='' && url_wallet!=''" class="mat-body-2">
+        <br>
+<!--				<a [href]="url_wallet" target="walletNFluent" style="margin: 20px;">Wallet NFLUENT</a>-->
+				<a [href]="url_gallery" target="Gallery" style="margin: 20px;">Voir le NFT</a><br><br>
 
 				<button mat-raised-button color="primary" (click)="restart(true)">
 					Nouveau Certificat
 				</button>
 			</div>
 
-			<br>
 
-		</div>
+      <button mat-raised-button (click)="restart()" *ngIf="documents.length>0 && url_explorer==''">
+        Annuler
+      </button>
+
+
+    </div>
 
 		<br>
 
