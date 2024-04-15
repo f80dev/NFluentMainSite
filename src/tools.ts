@@ -36,6 +36,26 @@ export function url_wallet(network:string) : string {
 }
 
 
+export function parseFrenchDate(dateString: string): Date | null {
+  const dateParts = dateString.split('/');
+
+  if (dateParts.length !== 3) {
+    console.error('Invalid date format');
+    return null;
+  }
+
+  const day = parseInt(dateParts[0], 10);
+  const month = parseInt(dateParts[1], 10) - 1; // Months are zero-based in JavaScript
+  const year = parseInt(dateParts[2], 10);
+
+  if (isNaN(day) || isNaN(month) || isNaN(year)) {
+    console.error('Invalid date components');
+    return null;
+  }
+
+  return new Date(year, month, day);
+}
+
 export function hashCode(s:string):number {
   var hash = 0,
     i, chr;
@@ -307,7 +327,16 @@ export function get_images_from_banks(vm:any,api:any,sample:string="",sticker:bo
     }
 
   })
+}
 
+export function deleteAllCookies() {
+  var cookies = document.cookie.split(';');
+  for (var i = 0; i < cookies.length; i++) {
+    var cookie = cookies[i];
+    var eqPos = cookie.indexOf('=');
+    var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+    document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+  }
 }
 
 export function eval_direct_url_xportal(uri:string) : string {
@@ -321,7 +350,7 @@ export function apply_params(vm:any,params:any,env:any={}){
   }
 
   if(vm.hasOwnProperty("network")){
-    if(typeof vm.network=="string")vm.network = params.networks || env.network || "elrond-devnet"
+    if(typeof vm.network=="string")vm.network = params.network || env.network || "elrond-devnet"
   }
   if(params.hasOwnProperty("advanced_mode"))vm.advanced_mode=(params.advanced_mode=='true');
 
@@ -369,6 +398,11 @@ export function getParams(routes:ActivatedRoute,local_setting_params="",force_tr
         }
 
         if(ps){
+          if(ps.hasOwnProperty("b")){
+            let rc=JSON.parse(decrypt(ps.b))
+            $$("Lecture des paramètres ",rc)
+            resolve(rc)
+          }
           if(ps.hasOwnProperty("p")){
             let temp:any=analyse_params(decodeURIComponent(ps["p"]));
             for(let k of Object.keys(ps)){
@@ -516,7 +550,7 @@ export function hasWebcam(result:boolean) {
 
 
 export function showError(vm:any,err:any=null){
-  $$("!Error ",err);
+  $$("!Error ",err.message);
   if(vm && vm.hasOwnProperty("message"))vm.message="";
   let mes="Oops, un petit problème technique. Veuillez recommencer l'opération";
   if(err && err.hasOwnProperty("error"))mes=err.error;
@@ -653,6 +687,7 @@ export function getWalletUrl(network="elrond"): string {
 
 export function detect_type_network(network:string){
   if(network.indexOf("devnet")>-1)return "devnet";
+  if(network.toLowerCase().indexOf(" test")>-1)return "devnet";
   return "mainnet";
 }
 
@@ -685,12 +720,18 @@ export interface Bank {
   histo: string //Base de données de stockage de l'historique des transactions
 }
 
-export function convert_to_list(text:string="",separator=",") : string[] {
+export function convert_to_list(text:string="",separator=",",labelandvalue=false) : any[] {
   if(!text)return [];
   if(typeof text!="string")return text;
   text=text.trim()
   if(text.length==0)return [];
-  return text.split(",");
+  let rc:any[]=text.split(",")
+  if(labelandvalue){
+    rc=[]
+    for(let t of text.split(","))
+      rc.push({label:t,value:t})
+  }
+  return rc
 }
 
 export function extract_bank_from_param(params:any) : Bank | undefined {

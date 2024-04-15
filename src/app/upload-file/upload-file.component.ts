@@ -2,9 +2,19 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {showMessage} from "../../tools";
 import {MAX_FILE_SIZE} from "../../definitions";
+import {NgIf, NgStyle} from "@angular/common";
+import {MatIcon} from "@angular/material/icon";
+import {MatButton, MatIconButton} from "@angular/material/button";
+import {FileDragNDropDirective} from "../file-drag-ndrop.directive";
+
 
 @Component({
   selector: 'app-upload-file',
+  standalone:true,
+  imports: [
+    NgStyle, NgIf,
+    MatIcon, MatIconButton, MatButton, FileDragNDropDirective
+  ],
   templateUrl: './upload-file.component.html',
   styleUrls: ['./upload-file.component.css']
 })
@@ -19,7 +29,7 @@ export class UploadFileComponent implements OnInit, OnChanges {
   @Input() width: string = "fit-content";
   @Input() height: string = "fit-content";
   @Input() zone: boolean = false;
-  @Input("encode") encode = true;
+  // @Input("encode") encode = true;
   @Input() format = "binary";
   @Input() visual="";
   @Input() can_drop: boolean = true;
@@ -80,7 +90,7 @@ export class UploadFileComponent implements OnInit, OnChanges {
             this.refresh();
           }
           this.message = "";
-          if(!this.encode)content=atob(content);
+          // if(!this.encode)content=atob(content);
           if(this.format=="text"){
             this.onupload.emit({
               filename:file.name,

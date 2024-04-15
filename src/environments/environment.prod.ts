@@ -35,7 +35,7 @@ export const environment = {
     style:"nfluent-dark.css",
     cost_in_fiat: 1,
     cost_in_crypto: 3,
-
+    direct_template:"https://nfluent.io/assets/certificat1.webp,https://nfluent.io/assets/certificat2.webp,https://nfluent.io/assets/certificat3.webp,https://nfluent.io/assets/certificat4.webp",
     stockage:"nfluent-server",
     stockage_document:"nfluent-server",
 

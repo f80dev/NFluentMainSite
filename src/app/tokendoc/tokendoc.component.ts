@@ -13,7 +13,7 @@ import {_prompt} from "../prompt/prompt.component";
 import {environment} from "../../environments/environment";
 import {wait_message} from "../hourglass/hourglass.component";
 import {MatDialog} from "@angular/material/dialog";
-import {GalleryState} from "ng-gallery";
+import {GalleryItem, GalleryState, ImageItem} from "ng-gallery";
 import {StyleManagerService} from "../style-manager.service";
 import {UserService} from "../user.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
@@ -61,11 +61,10 @@ export class TokendocComponent implements OnInit {
   stockage_document:string=environment.tokendoc.stockage_document;
   appname: string=environment.tokendoc.appname;
   claim:string=environment.tokendoc.claim;
-  visuels: any[]=[];
+  visuels: ImageItem[]=[];
   message_preview="";
 
   name: string="Certificat de propriété";
-  visuel_size="200px";
   nft_size: number=400;
   network:string=""
   price: number = environment.tokendoc.cost_in_crypto;
@@ -173,8 +172,8 @@ export class TokendocComponent implements OnInit {
       }
     }
 
+    this.default_visual(params)
 
-    this.eval_preview(environment.tokendoc.cover,true);
   }
 
 
@@ -185,6 +184,7 @@ export class TokendocComponent implements OnInit {
       if(isHandset){this.border="0px";this.size="100%";}
     })
     this.read_param();
+
   }
 
 
@@ -203,11 +203,11 @@ export class TokendocComponent implements OnInit {
     for(let document of this.documents)
       if(document.file.length>10000)return;
 
-    for(let visuel of this.visuels)
-      if(visuel.length>10000)return;
+    // for(let visuel of this.visuels)
+    //   if(visuel.length>10000)return;
 
     localStorage.setItem("documents",JSON.stringify(this.documents));
-    if(this.visuels.length>0)localStorage.setItem("visual",this.sel_visual);
+    //if(this.visuels.length>0)localStorage.setItem("visual",this.sel_visual);
   }
 
 
@@ -219,10 +219,6 @@ export class TokendocComponent implements OnInit {
     this.upload_document();
     this.eval_signatures();
 
-    // if($event.file.startsWith("data:image")){
-    //     this.config=environment.appli + "/assets/config_certificat_photo.yaml"
-    //     this.eval_preview($event.file,true);
-    // }
     this.save_local();
   }
 
@@ -458,7 +454,7 @@ export class TokendocComponent implements OnInit {
       [{name: "title",value: this.name}, {name: "dtMining",value:now("date")}],
       {photo: this.sel_visual}, "base64").subscribe(async (visuels: any) => {
       this.message_preview="";
-      this.visuels=init_visuels(visuels.images)
+      for(let i of init_visuels(visuels.images)) this.visuels.push(i)
       if(!this.sel_visuel && this.visuels.length>0)this.sel_visuel=this.visuels[0];
     },()=>{
       this.message_preview="";
@@ -520,8 +516,11 @@ export class TokendocComponent implements OnInit {
     this.sel_visuel=this.visuels[$event.currIndex!]
   }
 
-  default_visual() {
-    this.eval_preview(environment.tokendoc.visual,true);
+  async default_visual(params:any=null) {
+    if(!params)params=await getParams(this.routes)
+    let images=params.direct_template || environment.tokendoc.direct_template || ""
+    this.visuels=init_visuels(images.split(","))
+    this.eval_preview(params.visual || environment.tokendoc.visual,true);
   }
 
   sel_collection($event: Collection) {

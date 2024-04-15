@@ -36,7 +36,7 @@ export const environment = {
     website:"https://nfluent.io",
     style:"nfluent-dark.css",
     background:"https://nfluent.io/assets/wood2.jpg",
-
+    direct_template:"https://nfluent.io/assets/certificat1.webp,https://nfluent.io/assets/certificat2.webp,https://nfluent.io/assets/certificat3.webp,https://nfluent.io/assets/certificat4.webp",
     stockage:"nfluent-server",
     stockage_document:"nfluent-server",
 
