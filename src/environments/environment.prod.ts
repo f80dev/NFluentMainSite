@@ -31,6 +31,7 @@ export const environment = {
 
     visual: "https://nfluent.io/assets/signature.jpg",
     cover: "https://nfluent.io/assets/paper1.jpg",
+    max_file_size:1000000,
     website:"https://nfluent.io",
     style:"nfluent-dark.css",
     cost_in_fiat: 1,

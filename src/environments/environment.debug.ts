@@ -5,6 +5,7 @@ export const environment = {
   appname:"NFluent Web Site",
   appli:"https://nfluent.io",
   faqs:"{{domain_appli}}/assets/faqs.yaml",
+  max_file_size:1000000,
   tokenfactory:"https://tokenfactory.nfluent.io",
   wallet:"https://wallet.nfluent.io",
   tokendoc:{
