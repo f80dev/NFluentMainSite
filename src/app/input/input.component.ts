@@ -5,7 +5,7 @@ import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {MatIcon} from "@angular/material/icon";
 import {MatOption, MatSelect} from "@angular/material/select";
 import {MatSlider, MatSliderThumb} from "@angular/material/slider";
-import {MatListOption, MatSelectionList} from "@angular/material/list";
+import {MatList, MatListItem, MatListItemAvatar, MatListOption, MatSelectionList} from "@angular/material/list";
 import {MatCheckbox} from "@angular/material/checkbox";
 import {MatInputModule} from "@angular/material/input";
 import {MatButton} from "@angular/material/button";
@@ -44,7 +44,10 @@ import {parseFrenchDate} from "../../tools";
     MatDatepickerToggle,
     MatDatepickerModule,
     MatDateRangeInput,
-    MatDateRangePicker
+    MatDateRangePicker,
+    MatListItem,
+    MatList,
+    MatListItemAvatar
   ],
   providers: [
       provideNativeDateAdapter(),
@@ -85,7 +88,7 @@ export class InputComponent implements OnChanges,OnInit {
   @Output() action=new EventEmitter();
   @Output() cancel=new EventEmitter();
 
-  @Input() value_type:"text" | "time" | "date" | "daterange" | "number" | "memo" | "list" | "listimages" | "boolean" | "images" | "slide" | "slider" = "text";
+  @Input() value_type: "options" | "text" | "time" | "date" | "daterange" | "number" | "memo" | "list" | "listimages" | "boolean" | "images" | "slide" | "slider" = "text";
   @Input() help:string="";
   @Input() help_input: string="";
   @Input() help_button: string="Enregistrez";
@@ -99,7 +102,7 @@ export class InputComponent implements OnChanges,OnInit {
   @Input() multiselect: boolean = false;
   @Input() showClear: boolean=true
   @Input() fontname="mat-body-2"
-  @Input() height="200px"
+  @Input() height="auto"
   @Input() unity: string="";
   @Input() init: string="";
   range= new FormGroup({
@@ -126,6 +129,9 @@ export class InputComponent implements OnChanges,OnInit {
   }
 
   on_key($event: any) {
+    if(this.value_type=="options"){
+      this.valueChange.emit(this.options);
+    }
     if(this.value_type=="daterange"){
       this.valueChange.emit(this.range.value);
     }else{
@@ -233,7 +239,7 @@ export class InputComponent implements OnChanges,OnInit {
   }
   ngOnInit(): void {
     if(typeof(this.options)=="string")this.options=this.options.split(",")
-    if(this.options.length>0){this.value_type="list";}
+    //if(this.options.length>0 && this.value_type==""){this.value_type="list";}
     if(this.rows>0 && this.cols==0)this.cols=10;
     if(this.value_type=="daterange"){
       this.range== new FormGroup({
